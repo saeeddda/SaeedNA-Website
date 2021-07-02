@@ -1,0 +1,83 @@
+/*
+* CSS for WordPress back-end settings page
+*/
+.lievo-admin-settings .margin-right-20 {
+  display: inline-block;
+  margin-right: 20px;
+}
+.lievo-admin-settings .wp-picker-container {
+  position: relative;
+}
+.lievo-admin-settings .wp-picker-holder {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  z-index: 100;
+}
+.lievo-admin-settings .description code {
+  font-style: normal;
+}
+.lievo-admin-settings #customDrawColor .wp-picker-container {
+  top: 10px;
+}
+.lievo-admin-settings ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  opacity: 0.5;
+}
+.lievo-admin-settings ::-moz-placeholder { /* Firefox 19+ */
+  opacity: 0.5;
+}
+.lievo-admin-settings :-ms-input-placeholder { /* IE 10+ */
+  opacity: 0.5;
+}
+.lievo-admin-settings :-moz-placeholder { /* Firefox 18- */
+  opacity: 0.5;
+}
+.lievo-admin-settings .CodeMirror.cm-s-default {
+  border: 1px solid #ccc;
+  margin-top: 7px;
+  max-width: 675px;
+}
+.lievo-admin-settings .lievo-tab-content h2 {
+  margin-top:30px;
+}
+.lievo-admin-settings .normal {
+  font-style: normal;
+  font-size: 14px;
+  margin-top: 20px;
+}
+#lievo_about {
+  max-width: 1050px;
+  position: relative;
+}
+#lievo_about .wp-badge {
+  background: url(../img/logo.png) center 35px no-repeat #20252a;
+  background-size: 80px 80px;
+  color: #b4b4b4;
+  float: left;
+  margin-right: 40px;
+  padding-top: 135px;
+  width: 150px;
+}
+#lievo_about h2 {
+  font-size: 30px;
+  font-weight: 400;
+  margin-top: 40px;
+  line-height: 36px;
+}
+#lievo_about .description {
+  font-style: normal;
+  line-height: 1.6;
+}
+#lievo_about table {
+  margin-top: 40px;
+}
+#lievo_about th {
+  width: 170px;
+}
+@media screen and (max-width: 480px) {
+  #lievo_about .wp-badge {
+    width: 100%;
+    float: none;
+    margin-top: 40px;
+  }
+}

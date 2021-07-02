@@ -1,0 +1,125 @@
+﻿@model IEnumerable<ServiceCounter>
+@{
+    ViewData["Title"] = "شمارنده";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row" id="table-hover-row">
+    <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
+        <button class="btn btn-success" type="button" onclick="addNewServiceCounter()"><i class="bx bx-list-plus"></i>افزودن شمارنده</button>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <!-- table hover -->
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width:20px;">کد</th>
+                            <th scope="col" style="width:350px;">عنوان</th>
+                            <th scope="col" style="width:900px;">مقدار</th>
+                            <th scope="col">عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td scope="row">@item.ServiceCounterId</td>
+                                <td>@item.ServiceCounterTitle</td>
+                                <td>@item.ServiceCounterCount</td>
+                                <td>
+                                    <a onclick="editServiceCounter(@item.ServiceCounterId)">
+                                        <i class="badge-circle badge-circle-light-secondary bx bx-edit font-medium-1"></i>
+                                    </a>
+                                    <a class="pl-2" onclick="deleteServiceCounter(@item.ServiceCounterId)" id="confirm-color">
+                                        <i class="badge-circle badge-circle-light-secondary bx bx-trash font-medium-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal -->
+<div class="modal fade" id="service-counter-modal" tabindex="-1" aria-labelledby="service-counter-modal" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- modal -->
+
+@section Scripts{
+    <script>
+        function addNewServiceCounter() {
+            $.get("/Admin/ServiceCounter/Add", function (result) {
+                $("#modal-title").html("افزودن شمارنده");
+                $("#modal-body").html(result);
+                $("#service-counter-modal").modal();
+            });
+        }
+        function editServiceCounter(id) {
+            $.get("/Admin/ServiceCounter/Edit/" + id, function (result) {
+                $("#modal-title").html("ویرایش شمارنده");
+                $("#modal-body").html(result);
+                $("#service-counter-modal").modal();
+            });
+        }
+        function deleteServiceCounter(id) {
+            Swal.fire({
+                title: "آیا شما مطمئن هستید ؟",
+                text: "درصورت حذف شدن قابل برگشت نیست!",
+                type: "warning",
+                showCancelButton: !0,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "بله! مطمئن هستم.",
+                confirmButtonClass: "btn btn-primary",
+                cancelButtonText: "لغو کن",
+                cancelButtonClass: "btn btn-danger ml-1",
+                buttonsStyling: !1
+            }).then(function (t) {
+                if (t.value) {
+                    $.post("/Admin/ServiceCounter/Delete/" + id, function (result) {
+                        if (result.status === "ok") {
+                            setTimeout(function () {
+                                location.reload();
+                            }, 300);
+                        } else if (result.status === "error") {
+                            Swal.fire({
+                                title: "اشکال در حذف!",
+                                text: "در هنگام حذف با خطایی مواجه شدیم.",
+                                type: "error",
+                                confirmButtonText: "تائید",
+                                confirmButtonClass: "btn btn-success"
+                            })
+                        }
+                    });
+                }
+                else if (t.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: "لغو شد",
+                        text: "درخواست لغو شد. اطلاعات شما ایمن است",
+                        type: "error",
+                        confirmButtonText: "تائید",
+                        confirmButtonClass: "btn btn-success"
+                    })
+                }
+            });
+        }
+    </script>
+}

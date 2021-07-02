@@ -1,0 +1,52 @@
+*{
+	font-family: dana !important;
+}
+h1,h2,h3,h4,h5,h6,a,li,ul,table thead th,table tbody tr{
+	font-family: dana !important;
+}
+
+.sales-item-name p {
+    line-height: 1
+}
+
+@media (max-width:767.98px) {
+    .order-summary {
+        border-left: 0 !important
+    }
+}
+
+@media screen and (max-width:1280px) and (min-width:768px) {
+
+    .dashboard-order-summary,
+    .dashboard-users {
+        max-width: 100% !important;
+        -webkit-box-flex: 1;
+        -webkit-flex: auto;
+        -ms-flex: auto;
+        flex: auto
+    }
+
+    .dashboard-users-danger,
+    .dashboard-users-success {
+        max-width: 30% !important;
+        -webkit-box-flex: 1;
+        -webkit-flex: auto;
+        -ms-flex: auto;
+        flex: auto;
+        width: auto !important
+    }
+
+}
+
+@media screen and (max-width:1280px) {
+
+    .dashboard-users .dashboard-users-danger .card-body,
+    .dashboard-users .dashboard-users-success .card-body {
+        padding-top: 1.7rem !important;
+        padding-bottom: 1.7rem !important
+    }
+}
+
+i.uploaded-file{
+    padding: 5px;
+}

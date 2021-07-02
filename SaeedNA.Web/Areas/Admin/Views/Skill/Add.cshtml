@@ -1,0 +1,24 @@
+﻿@model Skill
+
+<form asp-action="Add" asp-controller="Skill" asp-area="Admin" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="SkillTitle">عنوان</label>
+            <input type="text" class="form-control" asp-for="SkillTitle">
+            <span asp-validation-for="SkillTitle" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="SkillProgress">مقدار</label>
+            <input type="text" class="form-control" asp-for="SkillProgress">
+            <span asp-validation-for="SkillProgress" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">ثبت</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+    </div>
+</form>

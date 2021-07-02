@@ -1,0 +1,47 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "ورود";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="container-fluid main-container p-0 revealator-slideup revealator-once revealator-delay1">
+    <div class="color-block d-none d-lg-block"></div>
+    <div class="row d-flex align-content-center justify-content-center vh-100">
+        @if(ViewData["LoginError"] != null)
+        {
+            <div class="alert alert-danger">
+                @ViewData["LoginError"]
+            </div>
+        }
+        <div class="card" style="width:400px;">
+            <div class="card-header d-flex justify-content-center">
+                <h4 class="card-title text-dark mb-0">ورود به حساب کاربری</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Login" asp-controller="Account" asp-route-returnUrl="@ViewData["returnUrl"]">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user"></i></span>
+                        </div>
+                        <input asp-for="UserName" class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-key"></i></span>
+                        </div>
+                        <input asp-for="Password" class="form-control">
+                    </div>
+                    <div class="custom-control custom-switch custom-control-inline">
+                        <input type="checkbox" class="custom-control-input" asp-for="RememberMe">
+                        <label class="custom-control-label mr-1" for="RememberMe"></label>
+                        <span class="switch-label w-100 ml-2 text-dark">من را به خاطر بسپارید؟</span>
+                    </div>
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="fa fa-unlock mr-2"></i>
+                        <span>ورود</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

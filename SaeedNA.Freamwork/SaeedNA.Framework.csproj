@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SaeedNA.Service\SaeedNA.Service.csproj" />
+    <ProjectReference Include="..\SaeedNA.Data\SaeedNA.Data.csproj" />
+    <ProjectReference Include="..\SaeedNA.Domain\SaeedNA.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

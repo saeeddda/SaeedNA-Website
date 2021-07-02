@@ -1,0 +1,27 @@
+﻿@model Email
+
+<div class="col-12">
+    <div class="form-group">
+        <label asp-for="EmailName"></label>
+        <input type="text" class="form-control" asp-for="EmailName" readonly>
+    </div>
+</div>
+<div class="col-12">
+    <div class="form-group">
+        <label asp-for="EmailPhone"></label>
+        <input type="tel" class="form-control" asp-for="EmailPhone" dir="ltr" readonly>
+    </div>
+</div>
+<div class="col-12">
+    <div class="form-group">
+        <label asp-for="EmailEmail"></label>
+        <input type="email" class="form-control" asp-for="EmailEmail" dir="ltr" readonly>
+    </div>
+</div>
+<div class="col-12">
+    <div class="form-group">
+        <label asp-for="EmailText"></label>
+        <textarea class="form-control" rows="5" asp-for="EmailText" readonly></textarea>
+    </div>
+</div>
+<button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>

@@ -1,0 +1,38 @@
+﻿@model History
+
+<form asp-action="Add" asp-controller="History" asp-area="Admin" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="HistoryTitle"></label>
+            <input type="text" class="form-control" asp-for="HistoryTitle">
+            <span asp-validation-for="HistoryTitle" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="HistoryDate"></label>
+            <input type="text" class="form-control" asp-for="HistoryDate">
+            <span asp-validation-for="HistoryDate" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="HistoryDescription"></label>
+            <input type="text" class="form-control" asp-for="HistoryDescription">
+            <span asp-validation-for="HistoryDescription" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="HistoryWorkPlace"></label>
+            <input type="text" class="form-control" asp-for="HistoryWorkPlace">
+            <span asp-validation-for="HistoryWorkPlace" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">ثبت</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+    </div>
+</form>

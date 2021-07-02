@@ -1,0 +1,86 @@
+/*
+* CSS for WordPress front-end
+*/
+.livicon-evo-link {
+  text-decoration: none!important;
+  box-shadow: none!important;
+  border-bottom: none!important;
+}
+.livicon-evo-combined {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+}
+.livicon-evo-back-in-combined {
+  /* any additional styles if you need */
+}
+.livicon-evo-front-in-combined {
+  width: 100%;
+  display: inline-block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.livicon-evo-holder {
+  width: 0; /*to prevent "flickering" while rendering*/
+  display: inline-block;
+  vertical-align: middle;
+}
+.livicon-evo-holder .lievo-svg-wrapper {
+  display: inline-block;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%!important;
+  padding-bottom: 100%!important;
+  vertical-align: middle;
+  overflow: hidden!important;
+}
+.livicon-evo-holder svg {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden!important;
+  width: 100%!important;
+  height: 100%!important;
+}
+.livicon-evo-holder svg,
+.livicon-evo-holder svg * {
+  -webkit-box-sizing: border-box; 
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; 
+}
+.livicon-evo-error {
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border: 1px solid #c94242;
+}
+.livicon-evo-error span {
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 20px;
+  margin-top: -4px;
+}
+.livicon-evo-error acronym {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  cursor:help;
+  color:#c94242;
+  border-bottom: 1px dotted #c94242;
+}
+
+/*the size of icons can be controled via media queries with !important statement*/
+/*@media (max-width:480px) {
+  .livicon-evo-holder {
+    width:50px!important;
+  }
+}
+@media (min-width: 481px) {
+  .livicon-evo-holder {
+    width: 200px!important;
+  }
+}*/

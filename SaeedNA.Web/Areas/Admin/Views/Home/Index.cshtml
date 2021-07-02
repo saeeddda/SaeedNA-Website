@@ -1,0 +1,140 @@
+﻿
+@{
+    ViewData["Title"] = "پیشخوان";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Dashboard  Starts -->
+<section id="dashboard-main">
+    <!-- statistic section -->
+    <div class="dashboard-users">
+        <!-- Statistics Cards Starts -->
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12 dashboard-users-success">
+                <div class="card text-center">
+                    <div class="card-body py-1">
+                        <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto mb-50">
+                            <i class="bx bx-user font-medium-5"></i>
+                        </div>
+                        <div class="text-muted line-ellipsis">کاربران آنلاین</div>
+                        <h3 class="mb-0">1.2k</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 dashboard-users-danger">
+                <div class="card text-center">
+                    <div class="card-body py-1">
+                        <div class="badge-circle badge-circle-lg badge-circle-light-danger mx-auto mb-50">
+                            <i class="bx bx-stats font-medium-5"></i>
+                        </div>
+                        <div class="text-muted line-ellipsis">بازدید در روز</div>
+                        <h3 class="mb-0">45.6k</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 dashboard-users-success">
+                <div class="card text-center">
+                    <div class="card-body py-1">
+                        <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto mb-50">
+                            <i class="bx bx-calendar-event font-medium-5"></i>
+                        </div>
+                        <div class="text-muted line-ellipsis">بازدید در ماه</div>
+                        <h3 class="mb-0">1.2k</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12 dashboard-users-danger">
+                <div class="card text-center">
+                    <div class="card-body py-1">
+                        <div class="badge-circle badge-circle-lg badge-circle-light-danger mx-auto mb-50">
+                            <i class="bx bx-book-alt font-medium-5"></i>
+                        </div>
+                        <div class="text-muted line-ellipsis">تعداد مطالب</div>
+                        <h3 class="mb-0">45.6k</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- statistic section -->
+    <!-- chart section -->
+    <div class="row">
+        <div class="col-xl-12 col-12 dashboard-order-summary">
+            <div class="card">
+                <div class="row">
+                    <!-- Order Summary Starts -->
+                    <div class="col-md-8 col-12 order-summary border-right pr-md-0">
+                        <div class="card mb-0">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <h4 class="card-title">خلاصه بازدید</h4>
+                                <div class="d-flex">
+                                    <button type="button"
+                                            class="btn btn-sm btn-light-primary mr-1">
+                                        هفته
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-sm btn-primary glow">
+                                        ماه
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div id="order-summary-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sales History Starts -->
+                    <div class="col-md-4 col-12 pl-md-0">
+                        <div class="card mb-0">
+                            <div class="card-header pb-50">
+                                <h4 class="card-title">Best Sellers</h4>
+                            </div>
+                            <div class="card-body py-1">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="sales-item-name">
+                                        <p class="mb-0">iPhone</p>
+                                        <small class="text-muted">Smartphone</small>
+                                    </div>
+                                    <h6 class='mb-0'>794</h6>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <div class="sales-item-name">
+                                        <p class="mb-0">Airpods</p>
+                                        <small class="text-muted">Earphone</small>
+                                    </div>
+                                    <h6 class='mb-0'>550</h6>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="sales-item-name">
+                                        <p class="mb-0">MacBook</p>
+                                        <small class="text-muted">Laptop</small>
+                                    </div>
+                                    <h6 class='mb-0'>271</h6>
+                                </div>
+                            </div>
+                            <div class="card-footer border-top pb-md-0">
+                                <h5>Total Sales</h5>
+                                <span class="text-primary text-bold-500">$82,950.96</span>
+                                <div class="progress progress-bar-primary progress-sm mt-50 mb-md-50">
+                                    <div class="progress-bar" role="progressbar" aria-valuenow="78"
+                                         style="width:78%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- chart section -->
+</section>
+<!-- Dashboard  ends -->
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" href="~/admin/css/extensions/apexcharts.css">
+}
+@section Scripts{
+    <script src="~/admin/js/charts/apexcharts.min.js"></script>
+    <script src="~/admin/js/custom.js"></script>
+} 

@@ -1,0 +1,116 @@
+﻿@model SiteSettingViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Page Title Starts -->
+<section class="title-section text-left text-sm-center revealator-slideup revealator-once revealator-delay1">
+    <h1>در ارتباط <span>با من </span></h1>
+    <span class="title-bg">تماس با من </span>
+</section>
+<!-- Page Title Ends -->
+<!-- Main Content Starts -->
+<section class="main-content revealator-slideup revealator-once revealator-delay1">
+    <div class="container">
+        <div class="row">
+            <!-- Left Side Starts -->
+            <div class="col-12 col-lg-4">
+                <h3 class="text-uppercase custom-title mb-0 ft-wt-600 pb-3">خجالت نکشید!</h3>
+                <p class="open-sans-font mb-3">در صورت تمایل با من در تماس باشید. من همیشه در مورد بحث درباره پروژه های جدید ، ایده های خلاقانه یا فرصت هایی که بخشی از دیدگاه های شما باشد ، آماده هستم.</p>
+                <p class="open-sans-font custom-span-contact position-relative">
+                    <i class="fa fa-envelope-open position-absolute"></i>
+                    <span class="d-block">ایمیل من</span>@ViewBag.Email
+                </p>
+                <p class="open-sans-font custom-span-contact position-relative">
+                    <i class="fa fa-phone-square position-absolute"></i>
+                    <span class="d-block">تلفن من</span>@ViewBag.Mobile
+                </p>
+                <ul class="social list-unstyled pt-1 mb-5">
+                    <li class="telegram">
+                        <a title="Telegram" href="@(ViewBag.Telegram)"><i class="fa fa-telegram"></i></a>
+                    </li>
+                    <li class="instagram">
+                        <a title="Instagram" href="@(ViewBag.Instagram)"><i class="fa fa-instagram"></i></a>
+                    </li>
+                    <li class="facebook">
+                        <a title="Facebook" href="@(ViewBag.Facebook)"><i class="fa fa-facebook"></i></a>
+                    </li>
+                    <li class="twitter">
+                        <a title="Twitter" href="@(ViewBag.Twitter)"><i class="fa fa-twitter"></i></a>
+                    </li>
+                    <li class="youtube">
+                        <a title="Youtube" href="@(ViewBag.Youtube)"><i class="fa fa-youtube"></i></a>
+                    </li>
+                    <li class="linkedin">
+                        <a title="Linkedin" href="@(ViewBag.Linkedin)"><i class="fa fa-linkedin"></i></a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Left Side Ends -->
+            <!-- Contact Form Starts -->
+            <div class="col-12 col-lg-8">
+                <form class="contactform" method="post" asp-action="SendMail" asp-controller="ContactUs">
+                    @Html.AntiForgeryToken()
+                    <div class="contactform">
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <input type="text" name="name" placeholder="نام شما ">
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <input type="text" name="tel" placeholder="تلفن شما ">
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <input type="email" name="email" placeholder="ایمیل شما ">
+                            </div>
+                            <div class="col-12">
+                                <input type="text" name="subject" placeholder="موضوع شما ">
+                            </div>
+                            <div class="col-12">
+                                <textarea name="message" placeholder="پیغام شما"></textarea>
+                                <button type="submit" class="button">
+                                    <span class="button-text">ارسال پیام</span>
+                                    <span class="button-icon fa fa-send"></span>
+                                </button>
+                            </div>
+                            <div class="col-12 form-message">
+                                <span class="output_message text-center font-weight-600 text-uppercase"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Contact Form Ends -->
+        </div>
+    </div>
+
+</section>
+
+@section Scripts{
+    <script>
+        $(function () {
+            $('.contactform').submit(function (e) {
+                e.preventDefault();
+                $(".output_message").text("در حال ارسال...");
+
+                var form = $(this);
+
+                $.ajax({
+                    url: form.attr("action"),
+                    method: form.attr("method"),
+                    data: form.serialize(),
+
+                }).done(function (result) {
+                    if (result.status === "success") {
+                        $(".output_message").text("پیام شما ارسال شد.");
+                        $(".contactform").find(".output_message").addClass("success");
+
+                    } else {
+                        $(".output_message").text("ارسال پیام با خطا مواجه شد.");
+                        $(".contactform").find(".output_message").addClass("error");
+                        console.log(result.msg);
+                    }
+                });
+            });
+        });
+    </script>
+ }

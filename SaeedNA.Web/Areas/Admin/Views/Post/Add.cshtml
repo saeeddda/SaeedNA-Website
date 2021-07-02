@@ -1,0 +1,157 @@
+﻿@model Post
+@{
+    ViewData["Title"] = "افزودن نوشته";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section id="post-new">
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Add" asp-controller="Post" asp-area="Admin" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-xl-9">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="PostTitle"></label>
+                                    <input class="form-control" asp-for="PostTitle" type="text">
+                                    <span class="text-danger" asp-validation-for="PostTitle"></span>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-1">
+                                <label asp-for="PostShortDescription"></label>
+                                <textarea class="form-control" asp-for="PostShortDescription" rows="5"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <textarea asp-for="PostDescription" rows="10"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <div class="border rounded py-1">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label for="post-image">تصویر یا ویدئو نوشته</label>
+                                        <input type="text" class="form-control" asp-for="PostFile" readonly>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="media py-1">
+                                            <div class="media-body">
+                                                <fieldset id="upload-field">
+                                                    <label for="file" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
+                                                        <span>بارگذاری فایل</span>
+                                                        <input id="file" name="file" type="file" hidden>
+                                                    </label>
+                                                    <button id="resetUpload" class="ml-1 btn btn-sm btn-light-secondary">بازنشانی</button>
+                                                    <div id="loader" class="ml-1">
+
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="CategoryId">دسته بندی</label>
+                                    <select class="form-control" asp-for="CategoryId" asp-items="ViewBag.Categories"></select>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label>نوع نوشته</label>
+                                <select class="form-control" asp-for="PostType">
+                                    <option value="article" selected>مقاله</option>
+                                    <option value="project">پروژه</option>
+                                </select>
+                            </div>
+                            <div class="col-12 my-1">
+                                <div class="custom-control custom-switch custom-control-inline">
+                                    <span class="switch-label w-100 ">منتشر شده ؟</span>
+                                    <input asp-for="IsPublished" type="checkbox" class="custom-control-input" checked>
+                                    <label class="custom-control-label mr-1" for="IsPublished"></label>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="PostTags"></label>
+                                    <input class="form-control" asp-for="PostTags" placeholder="با کاما از هم جدا کنید" type="text">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="border rouded pb-1 px-1 mb-2">
+                                    <div class="mt-1 d-flex">
+                                        <i class="text-danger bx bx-info-circle"></i>
+                                        <small class="text-danger font-weight-light"> فقط برای پروژه میباشد.</small>
+                                    </div>
+                                    <fieldset>
+                                        <div class="form-group">
+                                            <label asp-for="ProjectCustomer"></label>
+                                            <input class="form-control" asp-for="ProjectCustomer" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="ProjectLanguage"></label>
+                                            <input class="form-control" asp-for="ProjectLanguage" type="text">
+                                        </div>
+                                        <div class="form-group mb-0">
+                                            <label asp-for="ProjectAddress"></label>
+                                            <input class="form-control" asp-for="ProjectAddress" type="text">
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                            <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
+                                <button type="submit" class="btn btn-primary glow mr-1">ذخیره تغییرات</button>
+                                <a asp-action="Index" asp-controller="Post" asp-area="Admin" class="btn btn-light">لغو</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+@section Scripts{
+    <script src="~/admin/js/ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('PostDescription', {
+            language: 'fa'
+        });
+
+        function uploadFile() {
+            document.getElementById("loader").innerHTML = '<div class="spinner-border text-primary" role="upload" ><span class="sr-only">در حال بارگذاری ...</span></div>';
+            document.getElementById("upload-field").disabled = true;
+
+            var fdata = new FormData();
+            var fileInput = $('#select-files')[0];
+            var file = fileInput.files[0];
+
+            fdata.append("file", file);
+
+            $.ajax({
+                type: 'post',
+                url: "/Post/AjaxUpload",
+                data: fdata,
+                processData: false,
+                contentType: false
+            }).done(function (result) {
+                if (result.status === "success") {
+                    document.getElementById("PostFile").value = result.url;
+                    document.getElementById("loader").innerHTML = '';
+                    document.getElementById("upload-field").disabled = false;
+                } else {
+                    console.log(result.message);
+                }
+            });
+        }
+
+        function removeFile() {
+            document.getElementById("PostFile").value = "";
+            document.getElementById("select-files").value = "";
+        }
+    </script>
+}
