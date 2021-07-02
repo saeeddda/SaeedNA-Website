@@ -81,6 +81,9 @@ namespace SaeedNA.Web.Controllers
         {
             try
             {
+                if(!ModelState.IsValid)
+                    return RedirectToAction("Index");
+
                 var auth = new EmailAuth()
                 {
                     UserName = _configuration.GetSection("MailServer")["Username"],

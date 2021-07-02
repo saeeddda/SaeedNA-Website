@@ -12,6 +12,8 @@ using SaeedNA.Framework.Identity;
 using System;
 using SaeedNA.Framework.Email;
 using AspNetCore.ReCaptcha;
+using System.Linq;
+using System.Globalization;
 
 namespace SaeedNA.Web
 {
@@ -80,6 +82,12 @@ namespace SaeedNA.Web
             services.AddReCaptcha(Configuration.GetSection("ReCaptcha"));
 
             #endregion
+
+            #region Localization
+
+            services.AddLocalization();
+
+            #endregion
         }
 
 
@@ -97,6 +105,17 @@ namespace SaeedNA.Web
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            var supportedLocales =
+                "en-US,fa-IR"
+                    .Split(',')
+                    .Select(code => new CultureInfo(code))
+                    .ToList();
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                SupportedCultures = supportedLocales,
+                SupportedUICultures = supportedLocales,
+            });
 
             app.UseRouting();
 
