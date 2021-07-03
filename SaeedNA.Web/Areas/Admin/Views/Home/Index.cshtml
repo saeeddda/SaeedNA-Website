@@ -17,7 +17,7 @@
                             <i class="bx bx-user font-medium-5"></i>
                         </div>
                         <div class="text-muted line-ellipsis">کاربران آنلاین</div>
-                        <h3 class="mb-0">1.2k</h3>
+                        <h3 class="mb-0">@OnlineUserMiddleware.GetOnlineUsersCount()</h3>
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
                             <i class="bx bx-book-alt font-medium-5"></i>
                         </div>
                         <div class="text-muted line-ellipsis">تعداد مطالب</div>
-                        <h3 class="mb-0">45.6k</h3>
+                        <h3 class="mb-0">@ViewBag.PostCount</h3>
                     </div>
                 </div>
             </div>
@@ -124,6 +124,7 @@
                     </div>
                 </div>
             </div>
+            <span > @ViewBag.IPAddress</span>
         </div>
 
     </div>

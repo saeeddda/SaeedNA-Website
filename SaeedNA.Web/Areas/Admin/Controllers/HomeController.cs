@@ -12,10 +12,12 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         #region Ctor
 
         private readonly SettingManager _settingManager;
+        private readonly IPost _post;
 
-        public HomeController(ISiteSettings settingManager)
+        public HomeController(ISiteSettings settingManager, IPost post)
         {
             _settingManager = new SettingManager(settingManager);
+            _post = post;
         }
 
         #endregion
@@ -30,6 +32,8 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             ViewBag.SiteLogo = set.SiteLogo;
             ViewBag.FullName = set.FullName;
             ViewBag.AvatarImage = set.AvatarImage;
+            ViewBag.PostCount = _post.GetAllPostCount();
+            //ViewBag.IPAddress = HttpContext.Connection.
 
             return View();
         }

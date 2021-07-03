@@ -1,3 +1,4 @@
+using AspNetCore.ReCaptcha;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -5,15 +6,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SaeedNA.Data.Context;
+using SaeedNA.Framework.Email;
+using SaeedNA.Framework.Identity;
+using SaeedNA.Framework.Middlewares;
 using SaeedNA.Service.Repositories;
 using SaeedNA.Service.Services;
-using SaeedNA.Data.Context;
-using SaeedNA.Framework.Identity;
 using System;
-using SaeedNA.Framework.Email;
-using AspNetCore.ReCaptcha;
-using System.Linq;
 using System.Globalization;
+using System.Linq;
 
 namespace SaeedNA.Web
 {
@@ -56,6 +57,7 @@ namespace SaeedNA.Web
                 options.SignIn.RequireConfirmedAccount = false;
                 options.SignIn.RequireConfirmedEmail = false;
                 options.SignIn.RequireConfirmedPhoneNumber = false;
+                
             })
                 .AddEntityFrameworkStores<SaeedNAContext>()
                 .AddDefaultTokenProviders()
@@ -116,6 +118,8 @@ namespace SaeedNA.Web
                 SupportedCultures = supportedLocales,
                 SupportedUICultures = supportedLocales,
             });
+
+            app.UseOnlineUsers();
 
             app.UseRouting();
 
