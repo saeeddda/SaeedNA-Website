@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using SaeedNA.Data.Context;
 using SaeedNA.Domain.Models.OnlineManager;
 using SaeedNA.Service.Repositories;
 using System;

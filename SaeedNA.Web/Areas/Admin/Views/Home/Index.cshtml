@@ -27,8 +27,8 @@
                         <div class="badge-circle badge-circle-lg badge-circle-light-danger mx-auto mb-50">
                             <i class="bx bx-stats font-medium-5"></i>
                         </div>
-                        <div class="text-muted line-ellipsis">بازدید در روز</div>
-                        <h3 class="mb-0">45.6k</h3>
+                        <div class="text-muted line-ellipsis">بازدید امروز</div>
+                        <h3 class="mb-0">@ViewBag.OnlineUserPerDay</h3>
                     </div>
                 </div>
             </div>
@@ -38,8 +38,8 @@
                         <div class="badge-circle badge-circle-lg badge-circle-light-success mx-auto mb-50">
                             <i class="bx bx-calendar-event font-medium-5"></i>
                         </div>
-                        <div class="text-muted line-ellipsis">بازدید در ماه</div>
-                        <h3 class="mb-0">1.2k</h3>
+                        <div class="text-muted line-ellipsis">بازدید این ماه</div>
+                        <h3 class="mb-0">@ViewBag.OnlineUserPerMounth</h3>
                     </div>
                 </div>
             </div>
@@ -124,7 +124,6 @@
                     </div>
                 </div>
             </div>
-            <span > @ViewBag.IPAddress</span>
         </div>
 
     </div>

@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using SaeedNA.Framework.Configuration;
 using SaeedNA.Service.Repositories;
+using System;
+using SaeedNA.Framework.Utilities;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -13,11 +15,14 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         private readonly SettingManager _settingManager;
         private readonly IPost _post;
+        private readonly IOnlineUser _onlineUser;
+        private readonly PersianDateConvertor pdc = new PersianDateConvertor();
 
-        public HomeController(ISiteSettings settingManager, IPost post)
+        public HomeController(ISiteSettings settingManager, IPost post, IOnlineUser onlineUser)
         {
             _settingManager = new SettingManager(settingManager);
             _post = post;
+            _onlineUser = onlineUser;
         }
 
         #endregion
@@ -33,7 +38,11 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             ViewBag.FullName = set.FullName;
             ViewBag.AvatarImage = set.AvatarImage;
             ViewBag.PostCount = _post.GetAllPostCount();
-            ViewBag.IPAddress = HttpContext.Connection.RemoteIpAddress;
+
+            DateTime startdate = DateTime.Parse(DateTime.Now.Year + "/" + DateTime.Now.Month + "/01");
+
+            ViewBag.OnlineUserPerDay = _onlineUser.GetOnlineUserCount(pdc.ConvertToShamsi(DateTime.Now), pdc.ConvertToShamsi(DateTime.Now));
+            ViewBag.OnlineUserPerMounth = _onlineUser.GetOnlineUserCount(pdc.ConvertToShamsi(startdate), pdc.ConvertToShamsi(DateTime.Now));
 
             return View();
         }
