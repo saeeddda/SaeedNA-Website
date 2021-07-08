@@ -76,6 +76,7 @@ namespace SaeedNA.Web
             services.AddScoped<ISiteSettings, SiteSettingsService>();
             services.AddScoped<IEmail, EmailService>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IOnlineUser, OnlineUserService>();
 
             #endregion
 

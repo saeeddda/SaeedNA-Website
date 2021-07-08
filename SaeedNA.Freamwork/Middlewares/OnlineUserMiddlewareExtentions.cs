@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using SaeedNA.Data.Context;
+using SaeedNA.Domain.Models.OnlineManager;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
@@ -33,7 +35,7 @@ namespace SaeedNA.Framework.Middlewares
             _latActivity = lastActivity;
         }
 
-        public Task InvokeAsync(HttpContext context, IMemoryCache memoryCache)
+        public Task InvokeAsync(HttpContext context, IMemoryCache memoryCache, SaeedNAContext db)
         {
             if(context.Request.Cookies.TryGetValue(_cookieName, out var userGuid) == false)
             {
@@ -52,6 +54,8 @@ namespace SaeedNA.Framework.Middlewares
                 {
                     cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(_latActivity);
                     cacheEntry.RegisterPostEvictionCallback(RemoveKeyWenExpire);
+                    db.OnlineUsers.Add(new OnlineUser() { UserGuid = userGuid, UserIp = context.Connection.RemoteIpAddress.ToString(), VisitDate = DateTime.Now.ToString("0000/00/00") });
+                    db.SaveChanges();
                 }
 
                 return string.Empty;

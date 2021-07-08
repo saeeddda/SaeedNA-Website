@@ -33,7 +33,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             ViewBag.FullName = set.FullName;
             ViewBag.AvatarImage = set.AvatarImage;
             ViewBag.PostCount = _post.GetAllPostCount();
-            //ViewBag.IPAddress = HttpContext.Connection.
+            ViewBag.IPAddress = HttpContext.Connection.RemoteIpAddress;
 
             return View();
         }

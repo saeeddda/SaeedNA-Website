@@ -5,6 +5,7 @@ using SaeedNA.Domain.Models.Resume;
 using SaeedNA.Domain.Models.MService;
 using SaeedNA.Domain.Models.Settings;
 using SaeedNA.Domain.Models.Email;
+using SaeedNA.Domain.Models.OnlineManager;
 
 namespace SaeedNA.Data.Context
 {
@@ -209,19 +210,19 @@ namespace SaeedNA.Data.Context
                 },
                 new SiteSettings()
                 {
-                    SettingId = 132,
+                    SettingId = 150,
                     SettingName = "Age",
                     SettingValue = "25"
                 },
                 new SiteSettings()
                 {
-                    SettingId = 133,
+                    SettingId = 151,
                     SettingName = "Language",
                     SettingValue = "فارسی، ترکی، انگلیسی"
                 },
                 new SiteSettings()
                 {
-                    SettingId = 134,
+                    SettingId = 152,
                     SettingName = "Nationality",
                     SettingValue = "ایران"
                 }
@@ -331,5 +332,6 @@ namespace SaeedNA.Data.Context
         public DbSet<Skill> Skills { get; set; }
         public DbSet<SiteSettings> SiteSettings { get; set; }
         public DbSet<Email> Emails { get; set; }
+        public DbSet<OnlineUser> OnlineUsers { get; set; }
     }
 }
