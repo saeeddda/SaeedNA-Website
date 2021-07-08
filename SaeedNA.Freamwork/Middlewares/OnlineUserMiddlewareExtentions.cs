@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
 using SaeedNA.Data.Context;
 using SaeedNA.Domain.Models.OnlineManager;
+using SaeedNA.Service.Repositories;
 using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,7 +37,7 @@ namespace SaeedNA.Framework.Middlewares
             _latActivity = lastActivity;
         }
 
-        public Task InvokeAsync(HttpContext context, IMemoryCache memoryCache, SaeedNAContext db)
+        public Task InvokeAsync(HttpContext context, IMemoryCache memoryCache, IOnlineUser onlineUser)
         {
             if(context.Request.Cookies.TryGetValue(_cookieName, out var userGuid) == false)
             {
@@ -47,15 +49,15 @@ namespace SaeedNA.Framework.Middlewares
             {
                 if(_allKey.TryAdd(userGuid, true) == false)
                 {
-                    
+
                     cacheEntry.AbsoluteExpiration = DateTimeOffset.MinValue;
                 }
                 else
                 {
                     cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(_latActivity);
                     cacheEntry.RegisterPostEvictionCallback(RemoveKeyWenExpire);
-                    db.OnlineUsers.Add(new OnlineUser() { UserGuid = userGuid, UserIp = context.Connection.RemoteIpAddress.ToString(), VisitDate = DateTime.Now.ToString("0000/00/00") });
-                    db.SaveChanges();
+                    onlineUser.AddOnlineUser(new OnlineUser() { UserGuid = userGuid, UserIp = context.Connection.RemoteIpAddress.ToString(), VisitDate = ConvertToShamsi(DateTime.Now) });
+
                 }
 
                 return string.Empty;
@@ -74,6 +76,13 @@ namespace SaeedNA.Framework.Middlewares
         public static int GetOnlineUsersCount()
         {
             return _allKey.Count(p => p.Value);
+        }
+
+        private string ConvertToShamsi(DateTime dateTime)
+        {
+            PersianCalendar pc = new PersianCalendar();
+            return pc.GetYear(dateTime) + "/" + pc.GetMonth(dateTime).ToString("00") + "/" +
+                   pc.GetDayOfMonth(dateTime).ToString("00");
         }
     }
 }
