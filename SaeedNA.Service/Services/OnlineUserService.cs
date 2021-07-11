@@ -46,6 +46,14 @@ namespace SaeedNA.Service.Services
                 .Where(c => c.VisitDate.CompareTo(startDateTime) >= 0 && c.VisitDate.CompareTo(endDateTime) <= 0)
                 .ToList();
         }
+        public ICollection<OnlineUser> GetOnlineUsersByDate(string startDateTime, string endDateTime,int take=20, int skip=0)
+        {
+            return _context.OnlineUsers
+                .Where(c => c.VisitDate.CompareTo(startDateTime) >= 0 && c.VisitDate.CompareTo(endDateTime) <= 0)
+                .Skip(skip)
+                .Take(take)
+                .ToList();
+        }
 
         public ICollection<OnlineUser> GetOnlineUsersByIP(string ipAddress)
         {

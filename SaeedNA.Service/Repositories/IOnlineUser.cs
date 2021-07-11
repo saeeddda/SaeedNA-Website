@@ -11,7 +11,8 @@ namespace SaeedNA.Service.Repositories
         ICollection<OnlineUser> GetAllOnlineUsers();
         ICollection<OnlineUser> GetOnlineUsersByIP(string ipAddress);
         ICollection<OnlineUser> GetOnlineUsersByDate(string startDateTime, string endDateTime);
+        ICollection<OnlineUser> GetOnlineUsersByDate(string startDateTime, string endDateTime, int take = 20, int skip = 0);
         int GetOnlineUserCount();
-        int GetOnlineUserCount(string startDateTime,string endDateTime);
+        int GetOnlineUserCount(string startDateTime, string endDateTime);
     }
 }
