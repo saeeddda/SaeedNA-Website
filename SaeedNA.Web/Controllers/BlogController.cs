@@ -29,7 +29,7 @@ namespace SaeedNA.Web.Controllers
             ViewBag.SiteMode = set.SiteMode;
             ViewBag.SiteTitle = set.SiteTitle;
             ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags;
+            ViewBag.MetaTags = set.MetaTags.Split(',');
             ViewBag.MetaDescription = set.MetaDescription;
             ViewBag.GoogleAnalytics = set.GoogleAnalytics;
             ViewBag.MainMenu = set.MainMenu;
@@ -62,7 +62,7 @@ namespace SaeedNA.Web.Controllers
             ViewBag.SiteMode = set.SiteMode;
             ViewBag.SiteTitle = set.SiteTitle;
             ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags;
+            ViewBag.MetaTags = set.MetaTags.Split(',');
             ViewBag.MetaDescription = set.MetaDescription;
             ViewBag.GoogleAnalytics = set.GoogleAnalytics;
             ViewBag.MainMenu = set.MainMenu;
@@ -99,7 +99,7 @@ namespace SaeedNA.Web.Controllers
             ViewBag.SiteMode = set.SiteMode;
             ViewBag.SiteTitle = set.SiteTitle;
             ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags;
+            ViewBag.MetaTags = set.MetaTags.Split(',');
             ViewBag.MetaDescription = set.MetaDescription;
             ViewBag.GoogleAnalytics = set.GoogleAnalytics;
             ViewBag.MainMenu = set.MainMenu;
@@ -120,7 +120,7 @@ namespace SaeedNA.Web.Controllers
             return View("Portfolio", post);
         }
 
-        [Route("portfolio/{id}/{title}")]
+        [Route("portfolio/single/{id}/{title}")]
         public IActionResult Portfolio(string id, string title)
         {
             var set = _settingManager.GetAllSettings();

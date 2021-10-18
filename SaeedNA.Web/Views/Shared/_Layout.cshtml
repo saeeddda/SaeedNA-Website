@@ -1,4 +1,5 @@
-﻿@{
+﻿@using System.Net.Http
+@{
     var controller = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
     var action = ViewContext.RouteData.Values["Action"].ToString().ToLower();
 
@@ -6,20 +7,35 @@
     {
         controller = "blog-post";
     }
+    
+    Html.SetSeoInfo(seoInfo =>
+    {
+        seoInfo.SetCommonInfo(
+            ViewBag.SiteTitle,
+            ViewBag.MetaDescription,
+            ViewBag.SiteUrl,
+            ViewBag.MetaTags
+            );
+
+        seoInfo.SetImageInfo("/uploads/img/2.jpg");
+
+        seoInfo.SetArticleInfo(ViewBag.FullName, DateTime.Now);
+    });
 }
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <title>@ViewBag.SiteTitle</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="@(ViewBag.FullName)" />
-    <meta name="description" content="@(ViewBag.MetaDescription)" />
-    <meta name="keywords" content="@(ViewBag.MetaTags)" />
-    <meta name="robots" content="index,follow" />
-    <link rel="shortcut icon" href="@ViewBag.SiteFavIcon" type="image/png">
+    @Html.SeoTags()
+    <link rel="apple-touch-icon" sizes="180x180" href="/uploads/img/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/uploads/img/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/uploads/img/favicon-16x16.png">
+    <link rel="manifest" href="/uploads/img/site.webmanifest">
+    <link rel="mask-icon" href="/uploads/img/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="shortcut icon" href="/uploads/img/favicon.ico" type="image/png">
 
     <!-- Template CSS Files -->
     <link href="/site/css/bootstrap.min.css" rel="stylesheet">
@@ -142,12 +158,12 @@
     <script src="~/site/js/bootstrap.js"></script>
     <script src="~/site/js/custom.js"></script>
     @RenderSection("Scripts", required: false)
-<script>
+    <script>
         $("#@controller").addClass("active");
         if ("@controller" === "blog") {
             $("#@controller-@action").addClass("active");
         }
-</script>
+    </script>
 </body>
 
 </html>

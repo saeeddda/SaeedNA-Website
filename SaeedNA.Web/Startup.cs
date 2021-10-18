@@ -1,4 +1,4 @@
-using AspNetCore.ReCaptcha;
+﻿using AspNetCore.ReCaptcha;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -89,6 +89,21 @@ namespace SaeedNA.Web
             #region Localization
 
             services.AddLocalization();
+
+            #endregion
+
+            #region Seo
+
+            services.AddSeoTags(seoinfo =>
+            {
+                seoinfo.SetSiteInfo(
+                    siteTitle: "وبسایت شخصی سعید نوری",
+                    siteTwitterId: "@saeeddda",
+                    robots: "index, follow"
+                );
+
+                seoinfo.SetLocales("fa_IR");
+            });
 
             #endregion
         }
