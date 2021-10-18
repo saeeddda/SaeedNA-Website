@@ -38,7 +38,7 @@ namespace SaeedNA.Web.Controllers
             ViewBag.SiteMode = set.SiteMode;
             ViewBag.SiteTitle = set.SiteTitle;
             ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags;
+            ViewBag.MetaTags = set.MetaTags.Split(',');
             ViewBag.MetaDescription = set.MetaDescription;
             ViewBag.GoogleAnalytics = set.GoogleAnalytics;
             ViewBag.MainMenu = set.MainMenu;
