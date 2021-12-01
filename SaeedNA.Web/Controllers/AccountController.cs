@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SaeedNA.Service.ViewModels;
 using System.Threading.Tasks;
+using SaeedNA.Framework.Configuration;
+using SaeedNA.Service.Repositories;
 
 namespace SaeedNA.Web.Controllers
 {
@@ -10,18 +12,38 @@ namespace SaeedNA.Web.Controllers
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SettingManager _settingManager;
 
         public AccountController(
             SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager)
+            UserManager<IdentityUser> userManager, ISiteSettings siteSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _settingManager =new SettingManager(siteSettings);
         }
 
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
         {
+            var set = _settingManager.GetAllSettings();
+
+            //Site Settings
+            ViewBag.SiteLogo = set.SiteLogo;
+            ViewBag.SiteFavIcon = set.SiteFavIcon;
+            ViewBag.SiteColor = set.SiteColor;
+            ViewBag.SiteMode = set.SiteMode;
+            ViewBag.SiteTitle = set.SiteTitle;
+            ViewBag.SiteUrl = set.SiteUrl;
+            ViewBag.MetaTags = set.MetaTags.Split(',');
+            ViewBag.MetaDescription = set.MetaDescription;
+            ViewBag.GoogleAnalytics = set.GoogleAnalytics;
+            ViewBag.MainMenu = set.MainMenu;
+            ViewBag.PortfolioMenu = set.PortfolioMenu;
+            ViewBag.BlogMenu = set.BlogMenu;
+            ViewBag.ContactMeMenu = set.ContactMeMenu;
+            ViewBag.AboutMeMenu = set.AboutMeMenu;
+
             if(_signInManager.IsSignedIn(User))
                 return RedirectToAction("Index", "Home");
 
@@ -74,6 +96,24 @@ namespace SaeedNA.Web.Controllers
         [Authorize]
         public IActionResult Register()
         {
+            var set = _settingManager.GetAllSettings();
+
+            //Site Settings
+            ViewBag.SiteLogo = set.SiteLogo;
+            ViewBag.SiteFavIcon = set.SiteFavIcon;
+            ViewBag.SiteColor = set.SiteColor;
+            ViewBag.SiteMode = set.SiteMode;
+            ViewBag.SiteTitle = set.SiteTitle;
+            ViewBag.SiteUrl = set.SiteUrl;
+            ViewBag.MetaTags = set.MetaTags.Split(',');
+            ViewBag.MetaDescription = set.MetaDescription;
+            ViewBag.GoogleAnalytics = set.GoogleAnalytics;
+            ViewBag.MainMenu = set.MainMenu;
+            ViewBag.PortfolioMenu = set.PortfolioMenu;
+            ViewBag.BlogMenu = set.BlogMenu;
+            ViewBag.ContactMeMenu = set.ContactMeMenu;
+            ViewBag.AboutMeMenu = set.AboutMeMenu;
+
             return View();
         }
 

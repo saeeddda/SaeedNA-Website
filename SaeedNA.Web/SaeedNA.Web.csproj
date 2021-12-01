@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.ReCaptcha" Version="1.2.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="AspNetCore.SEOHelper" Version="1.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
       <PrivateAssets>all</PrivateAssets>
@@ -34,9 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SaeedNA.Service\SaeedNA.Service.csproj" />
-    <ProjectReference Include="..\SaeedNA.Domain\SaeedNA.Domain.csproj" />
-    <ProjectReference Include="..\SaeedNA.Freamwork\SaeedNA.Framework.csproj" />
+    <ProjectReference Include="..\SaeedNA.Domain\SaeedNA.Data.csproj" />
+    <ProjectReference Include="..\SaeedNA.Freamwork\SaeedNA.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
