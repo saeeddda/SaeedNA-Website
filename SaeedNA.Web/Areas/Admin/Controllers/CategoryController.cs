@@ -12,10 +12,10 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly ICategory _category;
+        private readonly ICategoryService _category;
         private readonly SettingManager _settingManager;
 
-        public CategoryController(ICategory category,ISiteSettings siteSettings)
+        public CategoryController(ICategoryService category,ISettingService siteSettings)
         {
             _category = category;
             _settingManager = new SettingManager(siteSettings);

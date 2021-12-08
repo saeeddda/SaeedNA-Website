@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Framework.Configuration;
+using SaeedNA.Application.Configuration;
 using SaeedNA.Service.Repositories;
 
 namespace SaeedNA.Web.Controllers
 {
     public class BlogController : Controller
     {
-        private readonly IPost _post;
+        private readonly IPostService _post;
         private readonly SettingManager _settingManager;
 
         public BlogController(
-            IPost post, 
-            ISiteSettings siteSettings)
+            IPostService post, 
+            ISettingService siteSettings)
         {
             _post = post;
             _settingManager = new SettingManager(siteSettings);

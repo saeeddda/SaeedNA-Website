@@ -1,20 +1,19 @@
 ﻿using AspNetCore.ReCaptcha;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SaeedNA.Data.Context;
-using SaeedNA.Framework.Email;
-using SaeedNA.Framework.Identity;
-using SaeedNA.Framework.Middlewares;
-using SaeedNA.Service.Repositories;
-using SaeedNA.Service.Services;
+using SaeedNA.Application.Middlewares;
+using SaeedNA.Service.Interfaces;
+using SaeedNA.Service.Implementations;
 using System;
 using System.Globalization;
 using System.Linq;
+using AspNetCore.SEOHelper;
+using SaeedNA.Domain.Repository;
 
 namespace SaeedNA.Web
 {
@@ -36,47 +35,15 @@ namespace SaeedNA.Web
 
             services.AddDbContext<SaeedNAContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetSection("connectionString")["SqlServer"], b => b.MigrationsAssembly("SaeedNA.Web"));
-                //options.UseSqlServer("Data Source=.;Initial Catalog=SaeedNADb;Integrated Security=True;", b => b.MigrationsAssembly("SaeedNA.Web"));
+                options.UseSqlServer(Configuration.GetSection("connectionString")["SqlServer"]);
             });
-
-            #endregion
-
-            #region Identity
-
-            services.AddIdentity<IdentityUser, IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireLowercase = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequiredUniqueChars = 0;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(20);
-                options.Lockout.MaxFailedAccessAttempts = 3;
-                options.User.RequireUniqueEmail = true;
-                options.SignIn.RequireConfirmedAccount = false;
-                options.SignIn.RequireConfirmedEmail = false;
-                options.SignIn.RequireConfirmedPhoneNumber = false;
-                
-            })
-                .AddEntityFrameworkStores<SaeedNAContext>()
-                .AddDefaultTokenProviders()
-                .AddErrorDescriber<PersianIdentityErrorDescriber>();
 
             #endregion
 
             #region IoC
 
-            services.AddScoped<IPost, PostService>();
-            services.AddScoped<ISkill, SkillService>();
-            services.AddScoped<ICategory, CategoryService>();
-            services.AddScoped<IHistory, HistoryService>();
-            services.AddScoped<IServiceCounter, ServiceCounterService>();
-            services.AddScoped<IMyService, MyServiceService>();
-            services.AddScoped<ISiteSettings, SiteSettingsService>();
-            services.AddScoped<IEmail, EmailService>();
-            services.AddScoped<IEmailSender, EmailSender>();
-            services.AddScoped<IOnlineUser, OnlineUserService>();
+            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
+            services.AddScoped<IPasswordHelper, PasswordHelper>();
 
             #endregion
 
@@ -135,12 +102,13 @@ namespace SaeedNA.Web
                 SupportedUICultures = supportedLocales,
             });
 
-            app.UseOnlineUsers();
-
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseRobotsTxt(env.ContentRootPath);
+            app.UseXMLSitemap(env.ContentRootPath);
 
             app.UseEndpoints(endpoints =>
             {

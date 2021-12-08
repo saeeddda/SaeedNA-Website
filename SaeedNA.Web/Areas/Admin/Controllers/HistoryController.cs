@@ -15,7 +15,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         private readonly IHistory _history;
         private readonly SettingManager _settingManager;
 
-        public HistoryController(IHistory history, ISiteSettings settingManager)
+        public HistoryController(IHistory history, ISettingService settingManager)
         {
             _history = history;
             _settingManager = new SettingManager(settingManager);

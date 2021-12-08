@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace SaeedNA.Framework.Utilities
+namespace SaeedNA.Application.Utilities
 {
     /// <summary>
     /// Methods to remove HTML from strings.

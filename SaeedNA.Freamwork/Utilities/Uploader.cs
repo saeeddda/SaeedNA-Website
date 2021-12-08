@@ -5,7 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SaeedNA.Framework.Utilities
+namespace SaeedNA.Application.Utilities
 {
     public class Uploader
     {

@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 
-namespace SaeedNA.Framework.Utilities
+namespace SaeedNA.Application.Utilities
 {
     public static class HtmlHelperExtensions
     {

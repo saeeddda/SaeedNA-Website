@@ -19,12 +19,12 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly ICategory _category;
-        private readonly IPost _post;
+        private readonly ICategoryService _category;
+        private readonly IPostService _post;
         private Uploader _fileUploader;
         private readonly SettingManager _settingManager;
 
-        public PostController(ICategory category, IPost post,ISiteSettings siteSettings)
+        public PostController(ICategoryService category, IPostService post,ISettingService siteSettings)
         {
             _category = category;
             _post = post;

@@ -17,7 +17,7 @@ namespace SaeedNA.Web.Controllers
         private readonly IEmail _email;
 
         public ContactUsController(
-            ISiteSettings siteSettings,
+            ISettingService siteSettings,
             IEmailSender emailSender,
             IConfiguration configuration,
             IEmail email)

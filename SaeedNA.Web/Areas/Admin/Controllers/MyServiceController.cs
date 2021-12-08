@@ -12,10 +12,10 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Cotr
 
-        private readonly IMyService _myService;
+        private readonly IMSService _myService;
         private readonly SettingManager _settingManager;
 
-        public MyServiceController(IMyService myService,ISiteSettings siteSettings)
+        public MyServiceController(IMSService myService,ISettingService siteSettings)
         {
             _myService = myService;
             _settingManager = new SettingManager(siteSettings);

@@ -7,11 +7,11 @@ namespace SaeedNA.Web.Controllers
     public class HistoryController : Controller
     {
         private readonly IHistory _experience;
-        private readonly ISiteSettings _siteSettings;
+        private readonly ISettingService _siteSettings;
 
         public HistoryController(
             IHistory experience,
-            ISiteSettings siteSettings)
+            ISettingService siteSettings)
         {
             _experience = experience;
             _siteSettings = siteSettings;

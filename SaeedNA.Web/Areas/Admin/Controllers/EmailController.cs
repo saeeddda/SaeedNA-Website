@@ -14,7 +14,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         private readonly IEmail _email;
         private readonly SettingManager _settingManager;
 
-        public EmailController(IEmail email,ISiteSettings siteSetting)
+        public EmailController(IEmail email,ISettingService siteSetting)
         {
             _email = email;
             _settingManager = new SettingManager(siteSetting);

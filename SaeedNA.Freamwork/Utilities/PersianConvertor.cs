@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 
-namespace SaeedNA.Framework.Utilities
+namespace SaeedNA.Application.Utilities
 {
     public static class PersianConvertor
     {

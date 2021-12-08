@@ -21,7 +21,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         private readonly SettingManager _settingManager;
         private Uploader uploader;
 
-        public SettingsController(ISiteSettings siteSettings)
+        public SettingsController(ISettingService siteSettings)
         {
             _settingManager = new SettingManager(siteSettings);
         }

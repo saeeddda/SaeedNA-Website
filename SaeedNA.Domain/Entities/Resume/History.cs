@@ -1,30 +1,28 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SaeedNA.Data.Entities.Common;
 
-namespace SaeedNA.Domain.Models.Resume
+namespace SaeedNA.Data.Entities.Resume
 {
-    public class History
+    public class History : BaseEntity
     {
-        [Key]
-        public int HistoryId { get; set; }
-
         [Display(Name = "عنوان")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(30, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
-        public string HistoryTitle { get; set; }
+        public string Title { get; set; }
 
         [Display(Name = "برای چه کسی")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(30, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
-        public string HistoryWorkPlace { get; set; }
+        public string WorkPlace { get; set; }
 
         [Display(Name = "تاریخ")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(30, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
-        public string HistoryDate { get; set; }
+        public string Date { get; set; }
 
         [Display(Name = "توضیحات")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(150, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
-        public string HistoryDescription { get; set; }
+        public string Description { get; set; }
     }
 }

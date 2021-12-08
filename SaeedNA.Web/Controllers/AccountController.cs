@@ -16,7 +16,7 @@ namespace SaeedNA.Web.Controllers
 
         public AccountController(
             SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager, ISiteSettings siteSettings)
+            UserManager<IdentityUser> userManager, ISettingService siteSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;

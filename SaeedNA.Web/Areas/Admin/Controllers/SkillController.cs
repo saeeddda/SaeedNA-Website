@@ -12,10 +12,10 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly ISkill _skill;
+        private readonly ISkillService _skill;
         private readonly SettingManager _settingManager;
 
-        public SkillController(ISkill skill,ISiteSettings siteSettings)
+        public SkillController(ISkillService skill,ISettingService siteSettings)
         {
             _skill = skill;
             _settingManager = new SettingManager(siteSettings);

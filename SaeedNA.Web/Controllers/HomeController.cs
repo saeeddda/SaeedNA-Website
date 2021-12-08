@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Application.Configuration;
+using SaeedNA.Service.Interfaces;
 using SaeedNA.Web.Models;
 using System.Diagnostics;
 
@@ -12,7 +12,7 @@ namespace SaeedNA.Web.Controllers
 
         private readonly SettingManager _settingManager;
 
-        public HomeController(ISiteSettings siteSettings)
+        public HomeController(ISettingService siteSettings)
         {
             _settingManager = new SettingManager(siteSettings);
         }

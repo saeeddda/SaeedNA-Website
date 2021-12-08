@@ -20,7 +20,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         private readonly IOnlineUser _onlineUser;
         private PersianDateConvertor pdc = new PersianDateConvertor();
 
-        public OnlineUserController(IOnlineUser onlineUser, ISiteSettings siteSettings)
+        public OnlineUserController(IOnlineUser onlineUser, ISettingService siteSettings)
         {
             _onlineUser = onlineUser;
             _settingManager = _settingManager = new SettingManager(siteSettings); 

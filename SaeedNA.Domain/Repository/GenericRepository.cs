@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SaeedNA.Data.Context;
-using SaeedNA.Domain.Models.Common;
+using SaeedNA.Data.Entities.Common;
 
 namespace SaeedNA.Domain.Repository
 {
@@ -61,7 +61,7 @@ namespace SaeedNA.Domain.Repository
             return await _dbSet.SingleOrDefaultAsync(s => s.Id == entityId);
         }
 
-        public IQueryable<TEntity> GetQuery(TEntity entity)
+        public IQueryable<TEntity> GetQuery()
         {
             return _dbSet.AsQueryable();
         }

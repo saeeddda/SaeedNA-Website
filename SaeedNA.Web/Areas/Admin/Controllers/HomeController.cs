@@ -14,11 +14,11 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         #region Ctor
 
         private readonly SettingManager _settingManager;
-        private readonly IPost _post;
+        private readonly IPostService _post;
         private readonly IOnlineUser _onlineUser;
         private readonly PersianDateConvertor pdc = new PersianDateConvertor();
 
-        public HomeController(ISiteSettings settingManager, IPost post, IOnlineUser onlineUser)
+        public HomeController(ISettingService settingManager, IPostService post, IOnlineUser onlineUser)
         {
             _settingManager = new SettingManager(settingManager);
             _post = post;

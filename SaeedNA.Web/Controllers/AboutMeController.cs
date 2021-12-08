@@ -8,17 +8,17 @@ namespace SaeedNA.Web.Controllers
     public class AboutMeController : Controller
     {
         private readonly IHistory _history;
-        private readonly ISkill _skill;
-        private readonly IServiceCounter _serviceCounter;
-        private readonly IMyService _myService;
+        private readonly ISkillService _skill;
+        private readonly ICounterService _serviceCounter;
+        private readonly IMSService _myService;
         private readonly SettingManager _settingManager;
 
         public AboutMeController(
             IHistory history,
-            ISkill skill,
-            IServiceCounter serviceCounter,
-            IMyService myService,
-            ISiteSettings siteSettings)
+            ISkillService skill,
+            ICounterService serviceCounter,
+            IMSService myService,
+            ISettingService siteSettings)
         {
             _history = history;
             _skill = skill;

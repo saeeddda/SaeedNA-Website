@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using SaeedNA.Domain.Models.Common;
+using SaeedNA.Data.Entities.Common;
 
 namespace SaeedNA.Domain.Repository
 {
@@ -13,7 +13,7 @@ namespace SaeedNA.Domain.Repository
         
         Task<TEntity> GetEntityById(long entityId);
 
-        IQueryable<TEntity> GetQuery(TEntity entity);
+        IQueryable<TEntity> GetQuery();
 
         bool DeleteEntity(TEntity entity);
 

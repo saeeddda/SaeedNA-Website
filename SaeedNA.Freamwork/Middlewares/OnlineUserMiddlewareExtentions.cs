@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using SaeedNA.Domain.Models.OnlineManager;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Service.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SaeedNA.Framework.Middlewares
+namespace SaeedNA.Application.Middlewares
 {
     public static class OnlineUserMiddlewareExtentions
     {
@@ -36,7 +35,7 @@ namespace SaeedNA.Framework.Middlewares
             _latActivity = lastActivity;
         }
 
-        public Task InvokeAsync(HttpContext context, IMemoryCache memoryCache, IOnlineUser onlineUser)
+        public Task InvokeAsync(HttpContext context, IMemoryCache memoryCache)
         {
             if(context.Request.Cookies.TryGetValue(_cookieName, out var userGuid) == false)
             {
@@ -55,7 +54,7 @@ namespace SaeedNA.Framework.Middlewares
                 {
                     cacheEntry.SlidingExpiration = TimeSpan.FromMinutes(_latActivity);
                     cacheEntry.RegisterPostEvictionCallback(RemoveKeyWenExpire);
-                    onlineUser.AddOnlineUser(new OnlineUser() { UserGuid = userGuid, UserIp = context.Connection.RemoteIpAddress.ToString(), VisitDate = ConvertToShamsi(DateTime.Now) });
+                    //onlineUser.AddOnlineUser(new OnlineUser() { UserGuid = userGuid, UserIp = context.Connection.RemoteIpAddress.ToString(), VisitDate = ConvertToShamsi(DateTime.Now) });
 
                 }
 

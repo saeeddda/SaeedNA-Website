@@ -12,10 +12,10 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Cotr
 
-        private readonly IServiceCounter _serviceCounter;
+        private readonly ICounterService _serviceCounter;
         private readonly SettingManager _settingManager;
 
-        public ServiceCounterController( IServiceCounter serviceCounter,ISiteSettings siteSettings)
+        public ServiceCounterController( ICounterService serviceCounter,ISettingService siteSettings)
         {
             _serviceCounter = serviceCounter;
             _settingManager = new SettingManager(siteSettings);
