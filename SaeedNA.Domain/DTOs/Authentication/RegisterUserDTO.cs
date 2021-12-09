@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SaeedNA.Data.Entities.Common;
 
-namespace SaeedNA.Data.Entities.Authentication
+namespace SaeedNA.Data.DTOs.Authentication
 {
-    public class User:BaseEntity
+    public class RegisterUserDTO
     {
-        [Display(Name ="نام کاربری")]
+        [Display(Name = "نام کاربری")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(100, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string UserName { get; set; }
@@ -20,8 +19,10 @@ namespace SaeedNA.Data.Entities.Authentication
         [MaxLength(64, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string Password { get; set; }
 
-        [Display(Name = "کد بازیابی")]
+        [Display(Name = "تکرار کلمه عبور")]
+        [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(64, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
-        public string ForgotToken { get; set; }
+        [Compare(nameof(Password))]
+        public string ConfirmPassword { get; set; }
     }
 }

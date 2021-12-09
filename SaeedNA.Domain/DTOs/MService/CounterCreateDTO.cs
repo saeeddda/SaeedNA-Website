@@ -13,5 +13,8 @@ namespace SaeedNA.Data.DTOs.MService
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(20, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string Number { get; set; }
+
+        [Display(Name = "آیکون")]
+        public string Icon { get; set; }
     }
 }

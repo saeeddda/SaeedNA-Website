@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Paging;
 using SaeedNA.Data.Entities.Pages;
 
@@ -8,6 +9,10 @@ namespace SaeedNA.Data.DTOs.Pages
     {
         public string Title { get; set; }
         public long CategoryId { get; set; }
+        public bool IsDelete { get; set; }
+        public bool IsDescending { get; set; }
+        public PagesPublishState State { get; set; }
+
         public List<Portfolio> Portfolios { get; set; }
 
         public PortfolioFilterDTO SetPortfolio(List<Portfolio> portfolios)

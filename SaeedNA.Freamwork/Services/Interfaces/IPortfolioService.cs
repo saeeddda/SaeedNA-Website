@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Data.DTOs.Pages;
+using System;
 using System.Threading.Tasks;
-using SaeedNA.Data.Entities.Pages;
 
 namespace SaeedNA.Service.Interfaces
 {
     public interface IPortfolioService:IAsyncDisposable 
     {
-        Task<ICollection<Portfolio>> GetAllPortfolio();
-        Task<ICollection<Portfolio>> GetAllDeletedPortfolio();
-        Task<ICollection<Portfolio>> GetAllPortfolioDes();
+        Task<ServiceResult> AddNewPortfolio(PortfolioCreateDTO portfolio);
+        Task<ServiceResult> EditPortfolio(PortfolioEditDTO portfolio);
+        Task<ServiceResult> DeletePortfolio(long portfolioId);
+        Task<PortfolioFilterDTO> FilterPortfolio(PortfolioFilterDTO filter);
     }
 }

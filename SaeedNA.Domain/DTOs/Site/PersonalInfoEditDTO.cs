@@ -54,5 +54,8 @@ namespace SaeedNA.Data.DTOs.Site
 
         [Display(Name = "فایل رزومه")]
         public string ResumeFile { get; set; }
+
+        [Display(Name = "پیشفرض")]
+        public bool IsDefault { get; set; }
     }
 }

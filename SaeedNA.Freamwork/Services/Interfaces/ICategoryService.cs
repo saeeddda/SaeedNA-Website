@@ -1,5 +1,5 @@
-﻿using SaeedNA.Data.DTOs.Pages;
-using SaeedNA.Data.Entities.Pages;
+﻿using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Data.DTOs.Pages;
 using System;
 using System.Threading.Tasks;
 
@@ -7,9 +7,10 @@ namespace SaeedNA.Service.Interfaces
 {
     public interface ICategoryService:IAsyncDisposable
     {
-        Task<CategoryStatusResult> AddNewCategory(CategoryCreateDTO category);
-        Task<CategoryStatusResult> EditCategory(CategoryEditDTO category);
-        Task<CategoryStatusResult> DeleteCategory(long categoryId); 
-        Task<Category> GetCategoryById(long categoryId);
+        Task<ServiceResult> AddNewCategory(CategoryCreateDTO category);
+        Task<ServiceResult> EditCategory(CategoryEditDTO category);
+        Task<ServiceResult> DeleteCategory(long categoryId); 
+        Task<CategoryEditDTO> EditCategoryById(long categoryId);
+        Task<CategoryFilterDTO> FilterCategory(CategoryFilterDTO filter);
     }
 }

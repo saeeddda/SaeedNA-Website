@@ -14,7 +14,7 @@ namespace SaeedNA.Data.DTOs.Pages
         public string Title { get; set; }
 
         [Display(Name = "تصویر نوشته")]
-        public string Imgae { get; set; }
+        public string Image { get; set; }
 
         [Display(Name = "شرح کوتاه")]
         [MaxLength(150, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
@@ -25,8 +25,6 @@ namespace SaeedNA.Data.DTOs.Pages
 
         [Display(Name = "برچسب")]
         public string Tags { get; set; }
-
-        public int Visit { get; set; }
 
         [Display(Name = "وضعیت")]
         public PostPublishingState State { get; set; }

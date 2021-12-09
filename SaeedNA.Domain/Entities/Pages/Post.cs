@@ -19,7 +19,7 @@ namespace SaeedNA.Data.Entities.Pages
         public string Title { get; set; }
 
         [Display(Name = "تصویر نوشته")]
-        public string Imgae { get; set; }
+        public string Image { get; set; }
 
         [Display(Name = "شرح کوتاه")]
         [MaxLength(150, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]

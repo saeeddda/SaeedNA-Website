@@ -6,16 +6,18 @@ namespace SaeedNA.Data.DTOs.Common
     {
         Success,
         Error,
-        NotFond
+        NotFond,
+        Exist,
+        NotMatch
     }
 
     public enum PagesPublishState
     {
+        [Display(Name = "همه")]
+        All,
         [Display(Name = "پیش نویس")]
         Draft,
         [Display(Name = "منتشر شده")]
         Published,
-        [Display(Name = "در انتظار")]
-        Pending
     }
 }

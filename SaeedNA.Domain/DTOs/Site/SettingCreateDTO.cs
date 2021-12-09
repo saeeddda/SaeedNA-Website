@@ -18,5 +18,8 @@ namespace SaeedNA.Data.DTOs.Site
 
         [Display(Name = "حالت سایت")]
         public string SiteMode { get; set; }
+
+        [Display(Name = "پیشفرض")]
+        public bool IsDefault { get; set; }
     }
 }

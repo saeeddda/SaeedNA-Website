@@ -1,8 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Pages;
+using SaeedNA.Data.DTOs.Paging;
 using SaeedNA.Data.Entities.Pages;
 using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Interfaces;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Implementations
@@ -21,7 +24,7 @@ namespace SaeedNA.Service.Implementations
             await _categoryRepository.DisposeAsync();
         }
 
-        public async Task<CategoryStatusResult> AddNewCategory(CategoryCreateDTO category)
+        public async Task<ServiceResult> AddNewCategory(CategoryCreateDTO category)
         {
             try
             {
@@ -32,56 +35,78 @@ namespace SaeedNA.Service.Implementations
                 };
 
                 var result = await _categoryRepository.AddEntity(entity);
-                
-                return result ? CategoryStatusResult.Success : CategoryStatusResult.Error;
+                await _categoryRepository.SaveChanges();
+
+                return result ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {
-                return CategoryStatusResult.Error;
+                return ServiceResult.Error;
             }
         }
 
-        public async Task<CategoryStatusResult> EditCategory(CategoryEditDTO category)
+        public async Task<ServiceResult> EditCategory(CategoryEditDTO category)
         {
             try
             {
+                var entity = await _categoryRepository.GetEntityById(category.CategoryId);
+                if (entity == null) return ServiceResult.NotFond;
 
-                var entity = new Category
-                {
-                    IsDelete = false,
-                    Id = category.Id,
-                    Name = category.Name,
-                };
+                entity.Name= category.Name;
 
                 var result = _categoryRepository.EditEntity(entity);
+                await _categoryRepository.SaveChanges();
 
-                await Task.CompletedTask;
-
-                return result ? CategoryStatusResult.Success : CategoryStatusResult.Error;
+                return result ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {
-                return CategoryStatusResult.Error;
+                return ServiceResult.Error;
             }
         }
 
-        public async Task<CategoryStatusResult> DeleteCategory(long categoryId)
+        public async Task<ServiceResult> DeleteCategory(long categoryId)
         {
             try
             {
-                var result = await _categoryRepository.DeleteEntity(categoryId);
+                var entity = await _categoryRepository.GetEntityById(categoryId);
+                if(entity == null) return ServiceResult.NotFond;
 
-                return result ? CategoryStatusResult.Success : CategoryStatusResult.Error;
+                var result = await _categoryRepository.DeleteEntity(categoryId);
+                await _categoryRepository.SaveChanges();
+
+                return result ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {
-                return CategoryStatusResult.Error;
+                return ServiceResult.Error;
             }
         }
         
-        public async Task<Category> GetCategoryById(long categoryId)
+        public async Task<CategoryEditDTO> EditCategoryById(long categoryId)
         {
-            return await _categoryRepository.GetQuery().SingleOrDefaultAsync(s => s.Id==categoryId &&  !s.IsDelete);
+            var entity = await _categoryRepository.GetQuery()
+                .SingleOrDefaultAsync(s => s.Id == categoryId && !s.IsDelete);
+            if (entity == null) return null;
+
+            return new CategoryEditDTO()
+            {
+                CategoryId = entity.Id,
+                Name = entity.Name
+            };
+        }
+
+        public async Task<CategoryFilterDTO> FilterCategory(CategoryFilterDTO filter)
+        {
+            var query = _categoryRepository.GetQuery().AsQueryable();
+
+            if (!string.IsNullOrEmpty(filter.Name))
+                query = query.Where(s => EF.Functions.Like(s.Name, $"%{filter.Name}%"));
+
+            var pager = Pager.Build(filter.PageId,await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
+            var allEntities = await query.Paging(pager).ToListAsync();
+
+            return filter.SetCategory(allEntities).SetPaging(pager);
         }
     }
 }

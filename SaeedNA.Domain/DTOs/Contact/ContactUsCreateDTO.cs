@@ -14,6 +14,10 @@ namespace SaeedNA.Data.DTOs.Contact
         [MaxLength(100, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         public string Email { get; set; }
 
+        [Display(Name = "موبایل")]
+        [MaxLength(15, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
+        public string Mobile { get; set; }
+
         [Display(Name = "پیام")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         public string Text { get; set; }

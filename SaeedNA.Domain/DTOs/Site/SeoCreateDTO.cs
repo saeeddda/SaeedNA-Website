@@ -21,5 +21,14 @@ namespace SaeedNA.Data.DTOs.Site
 
         [Display(Name = "کد گوگل آنالایتیکس")]
         public string GoogleAnalytics { get; set; }
+
+        [Display(Name = "فایل sitemap.xml")]
+        public string SiteMap { get; set; }
+
+        [Display(Name = "فایل robot.txt")]
+        public string RobotsTxt { get; set; }
+
+        [Display(Name = "پیشفرض")]
+        public bool IsDefault { get; set; }
     }
 }

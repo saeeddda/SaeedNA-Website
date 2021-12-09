@@ -6,7 +6,7 @@ namespace SaeedNA.Data.DTOs.Pages
 {
     public class CategoryFilterDTO : BasePaging
     {
-        public string Title { get; set; }
+        public string Name { get; set; }
 
         public List<Category> Categories { get; set; }
 

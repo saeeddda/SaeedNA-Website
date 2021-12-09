@@ -8,7 +8,7 @@ namespace SaeedNA.Data.DTOs.Contact
     {
         public string FullName { get; set; }
         public string Email { get; set; }
-        public string Text { get; set; }
+        public string Mobile { get; set; }
 
         public List<ContactUs> ContactUs { get; set; }
 
