@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\Authentication\" />
+    <Folder Include="Entities\Account\" />
     <Folder Include="Entities\Contact\" />
   </ItemGroup>
 

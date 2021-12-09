@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SaeedNA.Data.Entities.Common;
 
-namespace SaeedNA.Data.Entities.Authentication
+namespace SaeedNA.Data.Entities.Account
 {
     public class User:BaseEntity
     {

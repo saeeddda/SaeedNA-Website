@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SaeedNA.Data.DTOs.Authentication;
 using SaeedNA.Data.DTOs.Common;
-using SaeedNA.Data.Entities.Authentication;
+using SaeedNA.Data.Entities.Account;
 using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Interfaces;
 using System;
