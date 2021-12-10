@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class HistoryService : IHistoryService
     {
-        public readonly IGenericRepository<History> _historyRepository;
+        private readonly IGenericRepository<History> _historyRepository;
 
         public HistoryService(IGenericRepository<History> historyRepository)
         {

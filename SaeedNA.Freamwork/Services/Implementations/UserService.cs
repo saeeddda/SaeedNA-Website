@@ -12,13 +12,15 @@ namespace SaeedNA.Service.Implementations
 {
     public class UserService : IUserService
     {
-        public readonly IGenericRepository<User> _userRepository;
-        public readonly IPasswordHelper _passwordHelper;
+        private readonly IGenericRepository<User> _userRepository;
+        private readonly IPasswordHelper _passwordHelper;
+        private readonly IEmailSender _emailSender;
 
-        public UserService(IGenericRepository<User> userRepository, IPasswordHelper passwordHelper)
+        public UserService(IGenericRepository<User> userRepository, IPasswordHelper passwordHelper, IEmailSender emailSender)
         {
             _userRepository = userRepository;
             _passwordHelper = passwordHelper;
+            _emailSender = emailSender;
         }
 
         public async ValueTask DisposeAsync()
@@ -79,7 +81,7 @@ namespace SaeedNA.Service.Implementations
                 var result =  _userRepository.EditEntity(entity);
                 await _userRepository.SaveChanges();
 
-                // TODO: Send verification token with email
+                await _emailSender.SendEmail("بازیابی کلمه عبور", $"کد بازیابی رمز عبور شما : {token}", forgot.Email);
 
                 return result ? ServiceResult.Success : ServiceResult.Error;
 

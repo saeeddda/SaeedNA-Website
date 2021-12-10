@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class CounterService : ICounterService
     {
-        public readonly IGenericRepository<Counter> _counterRepository;
+        private readonly IGenericRepository<Counter> _counterRepository;
 
         public CounterService(IGenericRepository<Counter> counterRepository)
         {

@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class PortfolioService:IPortfolioService
     {
-        public readonly IGenericRepository<Portfolio> _portfolioRepository;
+        private readonly IGenericRepository<Portfolio> _portfolioRepository;
 
         public PortfolioService(IGenericRepository<Portfolio> portfolioRepository)
         {

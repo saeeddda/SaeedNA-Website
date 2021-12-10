@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class ContactUsService : IContactUsService
     {
-        public readonly IGenericRepository<ContactUs> _contactUsRepository;
+        private readonly IGenericRepository<ContactUs> _contactUsRepository;
 
         public ContactUsService(IGenericRepository<ContactUs> contactUsRepository)
         {

@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class CategoryService : ICategoryService
     {
-        public readonly IGenericRepository<Category> _categoryRepository;
+        private readonly IGenericRepository<Category> _categoryRepository;
 
         public CategoryService(IGenericRepository<Category> categoryRepository)
         {

@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class PostService : IPostService
     {
-        public readonly IGenericRepository<Post> _postRepository;
+        private readonly IGenericRepository<Post> _postRepository;
 
         public PostService(IGenericRepository<Post> postRepository)
         {

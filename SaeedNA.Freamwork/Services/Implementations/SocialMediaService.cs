@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class SocialMediaService : ISocialMediaService
     {
-        public readonly IGenericRepository<SocialMedia> _socialMediaRepository;
+        private readonly IGenericRepository<SocialMedia> _socialMediaRepository;
 
         public SocialMediaService(IGenericRepository<SocialMedia> socialMediaRepository)
         {

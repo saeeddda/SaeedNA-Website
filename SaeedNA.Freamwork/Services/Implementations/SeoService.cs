@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class SeoService : ISeoService
     {
-        public readonly IGenericRepository<Seo> _seoRepository;
+        private readonly IGenericRepository<Seo> _seoRepository;
 
         public SeoService(IGenericRepository<Seo> seoRepository)
         {

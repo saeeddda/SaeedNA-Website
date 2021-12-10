@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class PersonalService : IPersonalService
     {
-        public readonly IGenericRepository<PersonalInfo> _personalInfoRepository;
+        private readonly IGenericRepository<PersonalInfo> _personalInfoRepository;
 
         public PersonalService(IGenericRepository<PersonalInfo> personalInfoRepository)
         {

@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class MyServiceService : IMSService
     {
-        public readonly IGenericRepository<MyService> _myServiceRepository;
+        private readonly IGenericRepository<MyService> _myServiceRepository;
 
         public MyServiceService(IGenericRepository<MyService> myServiceRepository)
         {

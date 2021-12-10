@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class SkillService : ISkillService
     {
-        public readonly IGenericRepository<Skill> _skillRepository;
+        private readonly IGenericRepository<Skill> _skillRepository;
 
         public SkillService(IGenericRepository<Skill> skillRepository)
         {

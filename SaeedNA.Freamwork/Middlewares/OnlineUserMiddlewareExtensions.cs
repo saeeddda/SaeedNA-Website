@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
-using SaeedNA.Service.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Globalization;
@@ -10,12 +9,9 @@ using System.Threading.Tasks;
 
 namespace SaeedNA.Application.Middlewares
 {
-    public static class OnlineUserMiddlewareExtentions
+    public static class OnlineUserMiddlewareExtensions
     {
-        public static void UseOnlineUsers(
-            this IApplicationBuilder app,
-            string cookieName = "UserGuid",
-            int lastActivity = 20)
+        public static void UseOnlineUsers(this IApplicationBuilder app, string cookieName = "UserGuid", int lastActivity = 20)
         {
             app.UseMiddleware<OnlineUserMiddleware>(cookieName, lastActivity);
         }

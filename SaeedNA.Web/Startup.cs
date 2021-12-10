@@ -1,4 +1,5 @@
 ﻿using AspNetCore.ReCaptcha;
+using AspNetCore.SEOHelper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -6,14 +7,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SaeedNA.Data.Context;
-using SaeedNA.Application.Middlewares;
-using SaeedNA.Service.Interfaces;
+using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Implementations;
-using System;
+using SaeedNA.Service.Interfaces;
 using System.Globalization;
 using System.Linq;
-using AspNetCore.SEOHelper;
-using SaeedNA.Domain.Repository;
 
 namespace SaeedNA.Web
 {
@@ -44,6 +42,7 @@ namespace SaeedNA.Web
 
             services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
             services.AddScoped<IPasswordHelper, PasswordHelper>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             #endregion
 

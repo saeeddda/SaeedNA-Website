@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Implementations
 {
     public class SettingsService : ISettingService
     {
-        public readonly IGenericRepository<Setting> _settingRepository;
+        private readonly IGenericRepository<Setting> _settingRepository;
 
         public SettingsService(IGenericRepository<Setting> settingRepository)
         {

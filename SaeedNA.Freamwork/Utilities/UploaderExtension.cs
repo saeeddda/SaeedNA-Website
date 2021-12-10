@@ -7,40 +7,51 @@ using System.Threading.Tasks;
 
 namespace SaeedNA.Application.Utilities
 {
-    public class Uploader
+    public static class UploaderExtension
     {
-        public async Task<string> FileUpload(IFormFile file,string filePath, int fileSize = 2048000)
+        public static async Task<FileUploadResult> UploadToServer(this IFormFile file,string fileName, string originalPath, 
+            int? width, int? height, int fileSize = 2048000, string thumbPath = null, string deleteFileName = null)
         {
             try
             {
-                if(file == null || file.Length < 0)
-                    return "file invalid!";
+                if(file == null || file.Length < 0) return FileUploadResult.Invalid;
+                if(file.Length > fileSize) return FileUploadResult.ToLongFileSize;
+                if (!AllowedFileTypes().Contains(Path.GetExtension(file.FileName))) return FileUploadResult.NotSupport;
 
-                if(file.Length > fileSize)
-                    return $"file size to long, file size must be {double.Parse(FormatFileSize(fileSize,false,false))}";
+                if(!Directory.Exists(originalPath)) Directory.CreateDirectory(originalPath);
 
-                var ext = Path.GetExtension(file.FileName);
-
-                if(!AllowedFileTypes().Contains(ext))
-                    return "file type not support";
-
-                string randomFileName = Path.GetRandomFileName() + file.FileName;
-
-                if(!Directory.Exists(filePath))
-                    Directory.CreateDirectory(filePath);
-
-                string path = Path.Combine(filePath, randomFileName);
-
-                using(var stream = new FileStream(path,FileMode.Create))
+                if(!string.IsNullOrEmpty(deleteFileName))
                 {
-                    await file.CopyToAsync(stream);
+                    if(File.Exists(originalPath + deleteFileName)) File.Delete(originalPath + deleteFileName);
+
+                    if(!string.IsNullOrEmpty(thumbPath))
+                    {
+                        if(File.Exists(thumbPath + deleteFileName)) File.Delete(thumbPath + deleteFileName);
+                    }
                 }
 
-                return randomFileName;
+                string uploadPath = originalPath + fileName;
+
+                using(var stream = new FileStream(uploadPath, FileMode.Create))
+                {
+                    if(!Directory.Exists(uploadPath)) await file.CopyToAsync(stream);
+                }
+
+                if(!string.IsNullOrEmpty(thumbPath))
+                {
+                    if(!Directory.Exists(thumbPath)) Directory.CreateDirectory(thumbPath);
+
+                    ImageOptimizer resizer = new ImageOptimizer();
+
+                    if(width != null && height != null)
+                        resizer.ImageResizer(uploadPath + fileName, thumbPath + fileName, width, height);
+                }
+
+                return FileUploadResult.Success;
             }
-            catch(Exception ex)
+            catch
             {
-                return ex.Message;
+                return FileUploadResult.Error;
             }
         }
 
@@ -70,7 +81,7 @@ namespace SaeedNA.Application.Utilities
             };
         }
 
-        private List<string> AllowedFileTypes()
+        private static List<string> AllowedFileTypes()
         {
             var type = new List<string>();
             type.Add(".txt");
@@ -135,6 +146,15 @@ namespace SaeedNA.Application.Utilities
                 return ($"{num.ToString("N2", CultureInfo.InvariantCulture):#,#}" + str2);
             }
             return ($"{bytes.ToString("N2", CultureInfo.InvariantCulture):#,#}" + str4);
+        }
+        
+        public enum FileUploadResult
+        {
+            Success,
+            Error,
+            NotSupport,
+            ToLongFileSize,
+            Invalid
         }
     }
 }
