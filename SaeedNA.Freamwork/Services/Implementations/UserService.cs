@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SaeedNA.Data.DTOs.Authentication;
+using Microsoft.Extensions.Configuration;
+using SaeedNA.Data.DTOs.Account;
 using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.Entities.Account;
 using SaeedNA.Domain.Repository;
@@ -68,7 +69,7 @@ namespace SaeedNA.Service.Implementations
             }
         }
 
-        public async Task<ServiceResult> ForgotPassword(ForgotUserDTO forgot)
+        public async Task<ServiceResult> ForgotPassword(ForgotUserDTO forgot,IConfiguration configuration)
         {
             try
             {
@@ -81,7 +82,13 @@ namespace SaeedNA.Service.Implementations
                 var result =  _userRepository.EditEntity(entity);
                 await _userRepository.SaveChanges();
 
-                await _emailSender.SendEmail("بازیابی کلمه عبور", $"کد بازیابی رمز عبور شما : {token}", forgot.Email);
+                var username = configuration.GetSection("MailServer")["Username"];
+                var password = configuration.GetSection("MailServer")["Password"];
+                var host = configuration.GetSection("MailServer")["Server"];
+                var port = configuration.GetSection("MailServer")["Port"];
+                var fromEmail = configuration.GetSection("MailServer")["Email"];
+
+                await _emailSender.SendEmail("بازیابی کلمه عبور", $"کد بازیابی رمز عبور شما : {token}", forgot.Email,fromEmail,host,int.Parse(port),username,password);
 
                 return result ? ServiceResult.Success : ServiceResult.Error;
 
@@ -136,6 +143,11 @@ namespace SaeedNA.Service.Implementations
             {
                 return ServiceResult.Error;
             }
+        }
+
+        public async Task<User> GetUserByUserName(string userName)
+        {
+            return await _userRepository.GetQuery().AsQueryable().SingleOrDefaultAsync(s => s.UserName == userName);
         }
     }
 }

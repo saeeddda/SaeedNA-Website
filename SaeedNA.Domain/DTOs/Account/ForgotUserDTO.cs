@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SaeedNA.Data.DTOs.Authentication
+namespace SaeedNA.Data.DTOs.Account
 {
     public class ForgotUserDTO
     {

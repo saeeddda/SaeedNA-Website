@@ -1,6 +1,8 @@
-﻿@model SiteSettingViewModel
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var personalInfo = ViewBag.PersonalInfo as PersonalInfo;
+    var socialMedia = ViewBag.SocialMedia as SocialMediaFilterDTO;
 }
 
 <!-- Page Title Starts -->
@@ -19,32 +21,23 @@
                 <p class="open-sans-font mb-3">در صورت تمایل با من در تماس باشید. من همیشه در مورد بحث درباره پروژه های جدید ، ایده های خلاقانه یا فرصت هایی که بخشی از دیدگاه های شما باشد ، آماده هستم.</p>
                 <p class="open-sans-font custom-span-contact position-relative">
                     <i class="fa fa-envelope-open position-absolute"></i>
-                    <span class="d-block">ایمیل من</span>@ViewBag.Email
+                    <span class="d-block">ایمیل من</span>@personalInfo.Email
                 </p>
                 <p class="open-sans-font custom-span-contact position-relative">
                     <i class="fa fa-phone-square position-absolute"></i>
-                    <span class="d-block">تلفن من</span>@ViewBag.Mobile
+                    <span class="d-block">تلفن من</span>@personalInfo.Mobile
                 </p>
-                <ul class="social list-unstyled pt-1 mb-5">
-                    <li class="telegram">
-                        <a title="Telegram" href="@(ViewBag.Telegram)"><i class="fa fa-telegram"></i></a>
-                    </li>
-                    <li class="instagram">
-                        <a title="Instagram" href="@(ViewBag.Instagram)"><i class="fa fa-instagram"></i></a>
-                    </li>
-                    <li class="facebook">
-                        <a title="Facebook" href="@(ViewBag.Facebook)"><i class="fa fa-facebook"></i></a>
-                    </li>
-                    <li class="twitter">
-                        <a title="Twitter" href="@(ViewBag.Twitter)"><i class="fa fa-twitter"></i></a>
-                    </li>
-                    <li class="youtube">
-                        <a title="Youtube" href="@(ViewBag.Youtube)"><i class="fa fa-youtube"></i></a>
-                    </li>
-                    <li class="linkedin">
-                        <a title="Linkedin" href="@(ViewBag.Linkedin)"><i class="fa fa-linkedin"></i></a>
-                    </li>
-                </ul>
+                @if (socialMedia.SocialMediae != null && socialMedia.SocialMediae.Any())
+                {
+                    <ul class="social list-unstyled pt-1 mb-5">
+                        @foreach(var social in socialMedia.SocialMediae)
+                        {
+                            <li class="@social.MediaName.ToLower()">
+                                <a title="Telegram" href="@social.MediaLink"><i class="@social.MediaIcon"></i></a>
+                            </li>
+                        }
+                    </ul>
+                }
             </div>
             <!-- Left Side Ends -->
             <!-- Contact Form Starts -->
@@ -102,11 +95,11 @@
 
                 }).done(function (result) {
                     if (result.status === "success") {
-                        $(".output_message").text("پیام شما ارسال شد.");
+                        $(".output_message").text(result.data);
                         $(".contactform").find(".output_message").addClass("success");
 
                     } else {
-                        $(".output_message").text("ارسال پیام با خطا مواجه شد.");
+                        $(".output_message").text(result.data);
                         $(".contactform").find(".output_message").addClass("error");
                         console.log(result.msg);
                     }
@@ -114,4 +107,4 @@
             });
         });
     </script>
- }
+}

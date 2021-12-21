@@ -1,4 +1,4 @@
-﻿@model LoginViewModel
+﻿@model LoginUserDTO
 @{
     ViewData["Title"] = "ورود";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -18,7 +18,8 @@
                 <h4 class="card-title text-dark mb-0">ورود به حساب کاربری</h4>
             </div>
             <div class="card-body">
-                <form asp-action="Login" asp-controller="Account" asp-route-returnUrl="@ViewData["returnUrl"]">
+                <form asp-action="Login" asp-controller="Account">
+                    <input type="hidden" asp-for="ReturnUrl"/>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text"><i class="fa fa-user"></i></span>

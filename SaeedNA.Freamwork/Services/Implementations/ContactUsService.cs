@@ -33,6 +33,7 @@ namespace SaeedNA.Service.Implementations
                     FullName = contactUs.FullName,
                     Email = contactUs.Email,
                     Mobile = contactUs.Mobile,
+                    Subject = contactUs.Subject,
                     Text = contactUs.Text
                 };
 

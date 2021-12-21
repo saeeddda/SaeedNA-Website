@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SaeedNA.Data.DTOs.Authentication
+namespace SaeedNA.Data.DTOs.Account
 {
     public class LoginUserDTO
     {
@@ -16,5 +16,7 @@ namespace SaeedNA.Data.DTOs.Authentication
 
         [Display(Name = "مرا به خاطر بسپار")]
         public bool RememberMe { get; set; }
+
+        public string ReturnUrl { get; set; }
     }
 }

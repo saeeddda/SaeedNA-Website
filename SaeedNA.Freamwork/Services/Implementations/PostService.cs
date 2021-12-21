@@ -126,5 +126,10 @@ namespace SaeedNA.Service.Implementations
 
             return filter.SetPost(allEntities).SetPaging(pager);
         }
+
+        public async Task<Post> GetPost(long postId)
+        {
+            return await _postRepository.GetEntityById(postId);
+        }
     }
 }

@@ -1,189 +1,129 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Service.ViewModels;
 using System.Threading.Tasks;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Data.DTOs.Account;
+using SaeedNA.Service.Interfaces;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using SaeedNA.Data.DTOs.Common;
 
 namespace SaeedNA.Web.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SettingManager _settingManager;
+        #region constractor
 
-        public AccountController(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager, ISettingService siteSettings)
+        private readonly IUserService _userService;
+
+        public AccountController(IUserService userService)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
-            _settingManager =new SettingManager(siteSettings);
+            _userService = userService;
         }
 
-        [HttpGet]
+        #endregion
+
+        #region login action
+
+        [HttpGet("login/{returnUrl?}")]
         public IActionResult Login(string returnUrl = null)
         {
-            var set = _settingManager.GetAllSettings();
+            if(User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
 
-            //Site Settings
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteColor = set.SiteColor;
-            ViewBag.SiteMode = set.SiteMode;
-            ViewBag.SiteTitle = set.SiteTitle;
-            ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags.Split(',');
-            ViewBag.MetaDescription = set.MetaDescription;
-            ViewBag.GoogleAnalytics = set.GoogleAnalytics;
-            ViewBag.MainMenu = set.MainMenu;
-            ViewBag.PortfolioMenu = set.PortfolioMenu;
-            ViewBag.BlogMenu = set.BlogMenu;
-            ViewBag.ContactMeMenu = set.ContactMeMenu;
-            ViewBag.AboutMeMenu = set.AboutMeMenu;
-
-            if(_signInManager.IsSignedIn(User))
-                return RedirectToAction("Index", "Home");
-
-            var loginView = new LoginViewModel()
-            {
-                ReturnUrl = returnUrl
-            };
-
-            ViewData["ReturnUrl"] = returnUrl;
+            var loginView = new LoginUserDTO() { ReturnUrl = returnUrl };
 
             return View(loginView);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel login, string returnUrl = null)
+        [HttpPost("login/{returnUrl?}"), ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginUserDTO login)
         {
-            if(_signInManager.IsSignedIn(User))
-                return RedirectToAction("Index", "Home");
-
-            login.ReturnUrl = returnUrl;
-            ViewData["ReturnUrl"] = returnUrl;
+            if(User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
 
             if(ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(login.UserName, login.Password, login.RememberMe, true);
+                var result = await _userService.GetUserForLogin(login);
 
-                if(result.Succeeded)
+                switch (result)
                 {
-                    if(!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    return RedirectToAction("Index", "Home");
-                }
+                    case ServiceResult.Success:
+                        var userData = await _userService.GetUserByUserName(login.UserName);
+                        var claims = new List<Claim>
+                        {
+                            new Claim(ClaimTypes.Name,userData.UserName),
+                            new Claim(ClaimTypes.NameIdentifier,userData.Id.ToString())
+                        };
+                        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                        var principal = new ClaimsPrincipal(identity);
+                        var properties = new AuthenticationProperties
+                        {
+                            IsPersistent = login.RememberMe
+                        };
 
-                if(result.IsLockedOut)
-                {
-                    ViewData["LoginError"] = "حساب کاربری شما به دلیل تلاش ناموفق در ورود قفل شده است. بعداً مجدد تلاش کنید.";
-                    return View(login);
-                }
+                        await HttpContext.SignInAsync(principal, properties);
 
-                ModelState.Clear();
-                ModelState.AddModelError("", "نام کاربری و یا کلمه عبور شما صحیح نیست");
+                        if(!string.IsNullOrEmpty(login.ReturnUrl) && Url.IsLocalUrl(login.ReturnUrl)) return Redirect(login.ReturnUrl);
+
+                        return RedirectToAction("Index", "Home");
+
+                    case ServiceResult.NotFond:
+                        ViewData["LoginError"] = "نام کاربری و یا کلمه عبور شما صحیح نیست";
+                        return View(login);
+
+                    case ServiceResult.NotMatch:
+                        ViewData["LoginError"] = "نام کاربری و یا کلمه عبور شما صحیح نیست";
+                        return View(login);
+                }
             }
 
             return View(login);
         }
 
-        [HttpGet]
-        [Authorize]
+        #endregion
+
+        #region register action
+
+        [HttpGet("register")]
         public IActionResult Register()
         {
-            var set = _settingManager.GetAllSettings();
-
-            //Site Settings
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteColor = set.SiteColor;
-            ViewBag.SiteMode = set.SiteMode;
-            ViewBag.SiteTitle = set.SiteTitle;
-            ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags.Split(',');
-            ViewBag.MetaDescription = set.MetaDescription;
-            ViewBag.GoogleAnalytics = set.GoogleAnalytics;
-            ViewBag.MainMenu = set.MainMenu;
-            ViewBag.PortfolioMenu = set.PortfolioMenu;
-            ViewBag.BlogMenu = set.BlogMenu;
-            ViewBag.ContactMeMenu = set.ContactMeMenu;
-            ViewBag.AboutMeMenu = set.AboutMeMenu;
+            if(User.Identity.IsAuthenticated) return RedirectToAction("Index", "Home");
 
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> Register(RegisterViewModel register)
+        [HttpPost("register"),ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterUserDTO register)
         {
             if(ModelState.IsValid)
             {
-                var user = new IdentityUser()
+                var result = await _userService.RegisterUser(register);
+
+                switch (result)
                 {
-                    UserName = register.UserName,
-                    Email = register.Email,
-                    EmailConfirmed = true
-                };
-
-                var result = await _userManager.CreateAsync(user, register.Password);
-
-                if(result.Succeeded)
-                {
-                    return RedirectToAction("Login", "Account");
-                }
-
-                ModelState.Clear();
-
-                foreach(var error in result.Errors)
-                {
-                    ModelState.AddModelError("account", error.Description);
+                    case ServiceResult.Success:
+                        return RedirectToAction("Login");
+                    case ServiceResult.Exist:
+                        ViewData["RegisterError"] = "نام کاربری و یا ایمیل قبلا استفاده شده است.";
+                        return View(register);
                 }
             }
 
             return View(register);
         }
 
-        [HttpGet]
+        #endregion
+
+        #region log out
+
+        [HttpGet("log-out")]
         public async Task<IActionResult> LogOut()
         {
-            await _signInManager.SignOutAsync();
+            await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> IsEmailInUse(string email)
-        {
-            var user = await _userManager.FindByEmailAsync(email);
-
-            if(user == null)
-            {
-                return Json(true);
-            }
-
-            return Json("ایمیل وارد شده قبلا استفاده شده است.");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
-        public async Task<IActionResult> IsUserNameInUse(string username)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-
-            if(username == null)
-            {
-                return Json(true);
-            }
-
-            return Json("نام کاربری وارد شده از قبل استفاده شده!");
-        }
+        #endregion
     }
 }

@@ -7,7 +7,7 @@ namespace SaeedNA.Data.DTOs.Resume
     public class HistoryFilterDTO : BasePaging
     {
         public string Title { get; set; }
-
+        public bool IsDescending { get; set; }
         public List<History> Histories { get; set; }
 
         public HistoryFilterDTO SetHistory(List<History> histories)

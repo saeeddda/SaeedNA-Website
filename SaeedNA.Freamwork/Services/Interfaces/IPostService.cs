@@ -2,6 +2,7 @@
 using SaeedNA.Data.DTOs.Pages;
 using System;
 using System.Threading.Tasks;
+using SaeedNA.Data.Entities.Pages;
 
 namespace SaeedNA.Service.Interfaces
 {
@@ -11,5 +12,6 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> EditPost(PostEditDTO post);
         Task<ServiceResult> DeletePost(long postId);
         Task<PostFilterDTO> FilterPost(PostFilterDTO filter);
+        Task<Post> GetPost(long postId);
     }
 }

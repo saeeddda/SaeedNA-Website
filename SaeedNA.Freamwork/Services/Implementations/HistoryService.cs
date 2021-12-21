@@ -92,6 +92,9 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _historyRepository.GetQuery().AsQueryable();
 
+            if(filter.IsDescending)
+                query = query.OrderByDescending(s => s.Date);
+
             if (!string.IsNullOrEmpty(filter.Title))
                 query = query.Where(s => EF.Functions.Like(s.Title, $"%{filter.Title}%"));
 

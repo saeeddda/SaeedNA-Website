@@ -1,60 +1,30 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Application.Configuration;
 using SaeedNA.Service.Interfaces;
 using SaeedNA.Web.Models;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace SaeedNA.Web.Controllers
 {
     public class HomeController : Controller
     {
-        #region Ctor
+        #region constractor
 
-        private readonly SettingManager _settingManager;
+        private readonly IPersonalService _personalService;
 
-        public HomeController(ISettingService siteSettings)
+        public HomeController(IPersonalService personalService)
         {
-            _settingManager = new SettingManager(siteSettings);
+            _personalService = personalService;
         }
 
         #endregion
 
-        #region HomeActions
+        #region actions
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var set = _settingManager.GetAllSettings();
-
-            //Site Settings
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteColor = set.SiteColor;
-            ViewBag.SiteMode = set.SiteMode;
-            ViewBag.SiteTitle = set.SiteTitle;
-            ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags.Split(',');
-            ViewBag.MetaDescription = set.MetaDescription;
-            ViewBag.GoogleAnalytics = set.GoogleAnalytics;
-            ViewBag.MainMenu = set.MainMenu;
-            ViewBag.PortfolioMenu = set.PortfolioMenu;
-            ViewBag.BlogMenu = set.BlogMenu;
-            ViewBag.ContactMeMenu = set.ContactMeMenu;
-            ViewBag.AboutMeMenu = set.AboutMeMenu;
-
-            //Profile Settings
-            ViewBag.FullName = set.FullName;
-            ViewBag.Birthday = set.Birthday;
-            ViewBag.Mobile = set.Mobile;
-            ViewBag.AboutMe = set.AboutMe;
-            ViewBag.Slogans = set.Slogans;
-            ViewBag.Address = set.Address;
-            ViewBag.PhoneNumber = set.PhoneNumber;
-            ViewBag.Email = set.Email;
-            ViewBag.ResumeImage = set.ResumeImage;
-            ViewBag.AvatarImage = set.AvatarImage;
-            ViewBag.ResumeFile = set.ResumeFile;
-
-            return View("Index");
+            var data = await _personalService.GetDefaultInfo();
+            return View("Index",data);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

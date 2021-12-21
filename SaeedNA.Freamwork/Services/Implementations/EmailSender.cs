@@ -15,7 +15,7 @@ namespace SaeedNA.Service.Implementations
             _configuration = configuration;
         }
 
-        public async Task<bool> SendEmail(string subject,  string text, string email)
+        public async Task<bool> SendEmail(string subject, string text, string toEmail, string fromEmail, string host, int port, string userName, string password)
         {
             try
             {
@@ -23,19 +23,19 @@ namespace SaeedNA.Service.Implementations
                 {
                     var credential = new NetworkCredential()
                     {
-                        UserName = _configuration.GetSection("MailServer")["Username"],
-                        Password = _configuration.GetSection("MailServer")["Password"]
+                        UserName = userName,
+                        Password = password
                     };
 
                     client.Credentials = credential;
-                    client.Host = _configuration.GetSection("MailServer")["Server"];
-                    client.Port = int.Parse(_configuration.GetSection("MailServer")["Port"]);
+                    client.Host = host;
+                    client.Port = port;
                     client.EnableSsl = true;
 
                     using var emailMessage = new MailMessage()
                     {
-                        To = { new MailAddress(email) },
-                        From = new MailAddress(_configuration.GetSection("MailServer")["Email"]),
+                        To = { new MailAddress(toEmail) },
+                        From = new MailAddress(fromEmail),
                         Subject = subject,
                         Body = text,
                         IsBodyHtml = true

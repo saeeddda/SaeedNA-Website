@@ -1,19 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SaeedNA.Data.DTOs.Authentication
+namespace SaeedNA.Data.DTOs.Account
 {
-    public class RegisterUserDTO
+    public class RecoveryPasswordDTO
     {
-        [Display(Name = "نام کاربری")]
-        [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
-        [MaxLength(100, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
-        public string UserName { get; set; }
-
-        [Display(Name = "ایمیل")]
-        [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
-        [MaxLength(200, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
-        public string Email { get; set; }
-
         [Display(Name = "کلمه عبور")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         [MaxLength(64, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
@@ -24,5 +14,9 @@ namespace SaeedNA.Data.DTOs.Authentication
         [MaxLength(64, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
         [Compare(nameof(Password))]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "کد بازیابی")]
+        [MaxLength(64, ErrorMessage = "{0} نمی تواند بیشتر از {1} کاراکتر باشد")]
+        public string ForgotToken { get; set; }
     }
 }

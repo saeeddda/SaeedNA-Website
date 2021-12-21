@@ -1,0 +1,20 @@
+﻿@model BasePaging
+
+<div class="col-12 mt-4">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center mb-0">
+            @if(Model.StartPage < Model.PageId)
+            {
+                <li class="page-item"><a class="page-link" href="/Blog?page=@(Model.PageId - 1)"><i class="fa fa-arrow-right"></i></a></li>
+            }
+            @for(int i = Model.StartPage; i <= Model.EndPage; i++)
+            {
+                <li class="page-item @(Model.PageId == i ? "active" : "")"><a class="page-link" href="/Blog?page=@i">@i</a></li>
+            }
+            @if(Model.EndPage > Model.PageId)
+            {
+                <li class="page-item"><a class="page-link" href="/Blog?page=@(Model.PageId + 1)"><i class="fa fa-arrow-left"></i></a></li>
+            }
+        </ul>
+    </nav>
+</div>

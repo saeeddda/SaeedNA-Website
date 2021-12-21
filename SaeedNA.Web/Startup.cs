@@ -1,6 +1,7 @@
 ﻿using AspNetCore.ReCaptcha;
 using AspNetCore.SEOHelper;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,7 +11,9 @@ using SaeedNA.Data.Context;
 using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Implementations;
 using SaeedNA.Service.Interfaces;
+using System;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 
 namespace SaeedNA.Web
@@ -35,6 +38,15 @@ namespace SaeedNA.Web
             {
                 options.UseSqlServer(Configuration.GetSection("connectionString")["SqlServer"]);
             });
+
+            #endregion
+
+            #region Data Protection
+
+            services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(Directory.GetCurrentDirectory() + "\\wwwroot\\auth\\"))
+                .SetApplicationName("")
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(7));
 
             #endregion
 
@@ -95,6 +107,7 @@ namespace SaeedNA.Web
                     .Split(',')
                     .Select(code => new CultureInfo(code))
                     .ToList();
+
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
                 SupportedCultures = supportedLocales,
@@ -112,8 +125,9 @@ namespace SaeedNA.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
-                  name: "admin",
-                  pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
 
                 endpoints.MapControllerRoute(
                     name: "default",

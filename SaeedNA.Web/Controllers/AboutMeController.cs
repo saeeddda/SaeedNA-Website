@@ -1,62 +1,46 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
-using SaeedNA.Service.ViewModels;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using SaeedNA.Data.DTOs.MService;
+using SaeedNA.Data.DTOs.Resume;
+using SaeedNA.Service.Interfaces;
 
 namespace SaeedNA.Web.Controllers
 {
     public class AboutMeController : Controller
     {
-        private readonly IHistory _history;
-        private readonly ISkillService _skill;
-        private readonly ICounterService _serviceCounter;
+        #region constractor
+
+        private readonly IHistoryService _historyService;
+        private readonly ISkillService _skillService;
+        private readonly ICounterService _counterService;
         private readonly IMSService _myService;
-        private readonly SettingManager _settingManager;
+        private readonly IPersonalService _personalService;
 
-        public AboutMeController(
-            IHistory history,
-            ISkillService skill,
-            ICounterService serviceCounter,
-            IMSService myService,
-            ISettingService siteSettings)
+        public AboutMeController(IHistoryService historyService, ISkillService skillService, ICounterService counterService, IMSService myService, IPersonalService personalService)
         {
-            _history = history;
-            _skill = skill;
-            _serviceCounter = serviceCounter;
+            _historyService = historyService;
+            _skillService = skillService;
+            _counterService = counterService;
             _myService = myService;
-            _settingManager = new SettingManager(siteSettings);
+            _personalService = personalService;
         }
 
-        public IActionResult Index()
+        #endregion
+
+        #region actions
+
+        [HttpGet("about-me")]
+        public async Task<IActionResult> Index()
         {
-            var set = _settingManager.GetAllSettings();
+            ViewBag.Histories = await _historyService.FilterHistory(new HistoryFilterDTO{IsDescending = true});
+            ViewBag.Skills = await _skillService.FilterSkill(new SkillFilterDTO());
+            ViewBag.Counters = await _counterService.FilterCounter(new CounterFilterDTO());
+            ViewBag.MyServices = await _myService.FilterService(new MyServiceFilterDTO());
+            ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
 
-            //Site Settings
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteColor = set.SiteColor;
-            ViewBag.SiteMode = set.SiteMode;
-            ViewBag.SiteTitle = set.SiteTitle;
-            ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags.Split(',');
-            ViewBag.MetaDescription = set.MetaDescription;
-            ViewBag.GoogleAnalytics = set.GoogleAnalytics;
-            ViewBag.MainMenu = set.MainMenu;
-            ViewBag.PortfolioMenu = set.PortfolioMenu;
-            ViewBag.BlogMenu = set.BlogMenu;
-            ViewBag.ContactMeMenu = set.ContactMeMenu;
-            ViewBag.AboutMeMenu = set.AboutMeMenu;
-
-            AboutMeViewModel aboutMeViewModel = new AboutMeViewModel()
-            {
-                History = _history.GetAllHistory(),
-                Skill = _skill.GetAllSkill(),
-                ServiceCounter = _serviceCounter.GetAllServiceCounter(),
-                MyService = _myService.GetAllMyService(),
-                SiteSettings = set
-            };
-
-            return View("Index",aboutMeViewModel);
+            return View("Index");
         }
+
+        #endregion
     }
 }

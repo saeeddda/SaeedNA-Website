@@ -30,7 +30,7 @@ namespace SaeedNA.Service.Implementations
             {
                 var entity = new SocialMedia
                 {
-                    MedialName = socialMedia.MedialName,
+                    MediaName = socialMedia.MediaName,
                     MediaIcon = socialMedia.MediaIcon,
                     MediaLink = socialMedia.MediaLink
                 };
@@ -53,7 +53,7 @@ namespace SaeedNA.Service.Implementations
                 var entity = await _socialMediaRepository.GetEntityById(socialMedia.SocialMediaId);
                 if (entity == null) return ServiceResult.NotFond;
 
-                entity.MedialName = socialMedia.MedialName;
+                entity.MediaName = socialMedia.MediaName;
                 entity.MediaIcon = socialMedia.MediaIcon;
                 entity.MediaLink = socialMedia.MediaLink;
 

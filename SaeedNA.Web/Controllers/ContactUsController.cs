@@ -1,130 +1,76 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using SaeedNA.Domain.Models.Email;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Framework.Email;
-using SaeedNA.Service.Repositories;
+﻿using AspNetCore.ReCaptcha;
+using Microsoft.AspNetCore.Mvc;
+using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Data.DTOs.Contact;
+using SaeedNA.Data.DTOs.Site;
+using SaeedNA.Service.Interfaces;
+using System;
 using System.Threading.Tasks;
-using AspNetCore.ReCaptcha;
 
 namespace SaeedNA.Web.Controllers
 {
     public class ContactUsController : Controller
     {
-        private readonly SettingManager _settingManager;
-        private readonly IEmailSender _emailSender;
-        private readonly IConfiguration _configuration;
-        private readonly IEmail _email;
+        #region constractor
 
-        public ContactUsController(
-            ISettingService siteSettings,
-            IEmailSender emailSender,
-            IConfiguration configuration,
-            IEmail email)
+        private readonly IPersonalService _personalInfoService;
+        private readonly IContactUsService _contactUsService;
+        private readonly ISocialMediaService _socialMediaService;
+
+        public ContactUsController(IPersonalService personalInfoService, IContactUsService contactUsService, ISocialMediaService socialMediaService)
         {
-            _settingManager = new SettingManager(siteSettings);
-            _emailSender = emailSender;
-            _configuration = configuration;
-            _email = email;
+            _personalInfoService = personalInfoService;
+            _contactUsService = contactUsService;
+            _socialMediaService = socialMediaService;
         }
 
-        public IActionResult Index()
+        #endregion
+
+        #region actions
+
+        [HttpGet("contact-us")]
+        public async Task<IActionResult> Index()
         {
-            var set = _settingManager.GetAllSettings();
+            ViewBag.PersonalInfo = await _personalInfoService.GetDefaultInfo();
+            ViewBag.SocialMedia = await _socialMediaService.FilterSocialMedia(new SocialMediaFilterDTO());
 
-            //Site Settings
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteColor = set.SiteColor;
-            ViewBag.SiteMode = set.SiteMode;
-            ViewBag.SiteTitle = set.SiteTitle;
-            ViewBag.SiteUrl = set.SiteUrl;
-            ViewBag.MetaTags = set.MetaTags.Split(',');
-            ViewBag.MetaDescription = set.MetaDescription;
-            ViewBag.GoogleAnalytics = set.GoogleAnalytics;
-            ViewBag.MainMenu = set.MainMenu;
-            ViewBag.PortfolioMenu = set.PortfolioMenu;
-            ViewBag.BlogMenu = set.BlogMenu;
-            ViewBag.ContactMeMenu = set.ContactMeMenu;
-            ViewBag.AboutMeMenu = set.AboutMeMenu;
-
-            //Profile Settings
-            ViewBag.FullName = set.FullName;
-            ViewBag.Birthday = set.Birthday;
-            ViewBag.Mobile = set.Mobile;
-            ViewBag.AboutMe = set.AboutMe;
-            ViewBag.Slogans = set.Slogans;
-            ViewBag.Address = set.Address;
-            ViewBag.PhoneNumber = set.PhoneNumber;
-            ViewBag.Email = set.Email;
-            ViewBag.ResumeImage = set.ResumeImage;
-            ViewBag.AvatarImage = set.AvatarImage;
-            ViewBag.ResumeFile = set.ResumeFile;
-
-            //Social Icons
-            ViewBag.Telegram = set.Telegram;
-            ViewBag.Instagram = set.Instagram;
-            ViewBag.Twitter = set.Twitter;
-            ViewBag.Facebook = set.Facebook;
-            ViewBag.Youtube = set.Youtube;
-            ViewBag.Linkedin = set.Linkedin;
-
-            ViewData["SiteUrl"] = $"{this.Request.Scheme}://{this.Request.Host.Value}";
-
-            return View("Index", set);
+            return View("Index");
         }
 
-        [HttpPost]
-        [ValidateReCaptcha]
-        [ValidateAntiForgeryToken]
+        [HttpPost("contact-us"),ValidateAntiForgeryToken,ValidateReCaptcha]
         public async Task<IActionResult> SendMail(string name, string tel, string email, string subject, string message)
         {
             try
             {
-                if(!ModelState.IsValid)
-                    return RedirectToAction("Index");
-
-                var auth = new EmailAuth()
+                if (ModelState.IsValid)
                 {
-                    UserName = _configuration.GetSection("MailServer")["Username"],
-                    Password = _configuration.GetSection("MailServer")["Password"]
-                };
+                    var contact = new ContactUsCreateDTO
+                    {
+                        Email = email,
+                        FullName = name,
+                        Mobile = tel,
+                        Subject = subject,
+                        Text = message
+                    };
 
-                var provider = new EmailProvider()
-                {
-                    HostName = _configuration.GetSection("MailServer")["Server"],
-                    HostPort = _configuration.GetSection("MailServer")["Port"],
-                    HostUsername = _configuration.GetSection("MailServer")["Username"],
-                    HostPassword = _configuration.GetSection("MailServer")["Password"],
-                    Sender = email
-                };
+                    var result = await _contactUsService.AddContactUs(contact);
 
-                var content = new EmailContent()
-                {
-                    ToEmail = _configuration.GetSection("MailServer")["Email"],
-                    Subject = subject,
-                    Message = $"<b>Sender Name : {name}</b> <br><hr><br> {message}",
-                    IsHtml = true
-                };
-
-                await _emailSender.SendEmailAsync(auth, provider, content,true);
-
-                var mail = new Email()
-                {
-                    EmailName = name,
-                    EmailPhone = tel,
-                    EmailEmail = email,
-                    EmailText = message
-                };
-
-                _email.AddEmail(mail);
-
-                return Json(new { status = "success" });
+                    switch (result)
+                    {
+                        case ServiceResult.Success:
+                            return Json(new { status = "success" ,data = "پیام شما با موفقیت ارسال شد."});
+                        case ServiceResult.Error:
+                            return Json(new { status = "error", data = "مشکلی پیش آمده. پیام شما ارسال نشد." });
+                    }
+                }
+                return Json(new { status = "error",data ="مشکلی پیش آمده. مجدد تلاش کنید." });
             }
-            catch(System.Exception ex)
+            catch(Exception ex)
             {
                 return Json(new { status = "error", msg = ex.Message });
             }
         }
+
+        #endregion
     }
 }

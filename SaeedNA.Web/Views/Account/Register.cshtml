@@ -1,61 +1,55 @@
-﻿@model RegisterViewModel
+﻿@model RegisterUserDTO
 @{
     ViewData["Title"] = "ثبت نام";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="art-content">
-
-    <div class="art-curtain"></div>
-
-    <div class="art-top-bg" style="background-image: url('https://@(Context.Request.Host.Value)/site/img/bg.jpg')">
-        <div class="art-top-bg-overlay"></div>
-    </div>
-
-    <div class="transition-fade" id="swup">
-        <div id="scrollbar" class="art-scroll-frame">
-            <div class="container-fluid">
-                <div class="row p-30-0">
-
-                    <div class="col-lg-12">
-                        <div class="art-section-title">
-                            <div class="art-title-frame">
-                                <h4 class="aviny-font">ثبت نام حساب کاربری</h4>
-                            </div>
+<section class="container-fluid main-container p-0 revealator-slideup revealator-once revealator-delay1">
+    <div class="color-block d-none d-lg-block"></div>
+    <div class="row d-flex align-content-center justify-content-center vh-100">
+        @if(ViewData["RegisterError"] != null)
+        {
+            <div class="alert alert-danger">
+                @ViewData["RegisterError"]
+            </div>
+        }
+        <div class="card" style="width:400px;">
+            <div class="card-header d-flex justify-content-center">
+                <h4 class="card-title text-dark mb-0">ورود به حساب کاربری</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Register" asp-controller="Account">
+                    @Html.AntiForgeryToken()
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-user"></i></span>
                         </div>
-                        <div class="art-a art-card">
-                           
-                            <form asp-action="Register" asp-controller="Account" class="art-contact-form">
-                                @Html.AntiForgeryToken()
-                                <div asp-validation-summary="All" class="text-danger"></div>
-                                <div class="art-form-field">
-                                    <input asp-for="UserName" class="art-input">
-                                    <label asp-for="UserName"><i class="fas fa-user"></i></label>
-                                    <span asp-validation-for="UserName" class="text-danger"></span>
-                                </div>
-                                <div class="art-form-field">
-                                    <input asp-for="Email" class="art-input">
-                                    <label asp-for="Email"><i class="fas fa-envelope"></i></label>
-                                    <span asp-validation-for="Email" class="text-danger"></span>
-                                </div>
-                                <div class="art-form-field">
-                                    <input asp-for="Password" class="art-input">
-                                    <label asp-for="Password"><i class="fas fa-key"></i></label>
-                                    <span asp-validation-for="Password" class="text-danger"></span>
-                                </div>
-                                <div class="art-form-field">
-                                    <label asp-for="ConfirmPassword"><i class="fas fa-key"></i></label>
-                                    <input asp-for="ConfirmPassword" class="art-input">
-                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                                </div>
-                                <div class="art-submit-frame">
-                                    <button class="art-btn art-btn-md art-submit" type="submit"><span>ثبت نام</span></button>
-                                </div>
-                            </form>
-                        </div>
+                        <input asp-for="UserName" class="form-control">
                     </div>
-                </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-envelope"></i></span>
+                        </div>
+                        <input asp-for="Email" class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-key"></i></span>
+                        </div>
+                        <input asp-for="Password" class="form-control">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-key"></i></span>
+                        </div>
+                        <input asp-for="ConfirmPassword" class="form-control">
+                    </div>
+                    <button class="btn btn-outline-primary" type="submit">
+                        <i class="fa fa-unlock mr-2"></i>
+                        <span>ثبت نام</span>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
-</div>
+</section>
