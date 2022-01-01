@@ -7,6 +7,7 @@ using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace SaeedNA.Service.Implementations
 {
@@ -103,5 +104,22 @@ namespace SaeedNA.Service.Implementations
 
             return filter.SetHistory(allEntities).SetPaging(pager);
         }
+
+        public async Task<HistoryEditDTO> GetHistoryById(long historyId)
+        {
+            var query = await _historyRepository.GetQuery()
+                .SingleOrDefaultAsync(s => s.Id == historyId && !s.IsDelete);
+
+            if (query == null) return null;
+
+            return new HistoryEditDTO
+            {
+                Title = query.Title,
+                Date = query.Date,
+                Description = query.Description,
+                WorkPlace = query.WorkPlace
+            };
+        }
+
     }
 }

@@ -29,9 +29,9 @@ namespace SaeedNA.Web.Controllers
         }
 
         [HttpGet("post/{id}/{title}")]
-        public async Task<IActionResult> Single(string id, string title)
+        public async Task<IActionResult> Single(long id, string title)
         {
-            var post = await _postService.GetPost(Convert.ToInt64(id));
+            var post = await _postService.GetPost(id);
             return View("ArticleSingle",post);
         }
 

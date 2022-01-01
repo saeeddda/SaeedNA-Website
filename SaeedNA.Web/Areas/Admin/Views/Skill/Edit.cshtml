@@ -1,4 +1,4 @@
-﻿@model Skill
+﻿@model SkillEditDTO
 
 <form asp-action="Edit" asp-controller="Skill" asp-area="Admin" method="post">
     @Html.AntiForgeryToken()
@@ -6,16 +6,16 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="SkillTitle">عنوان</label>
-            <input type="text" class="form-control" asp-for="SkillTitle">
-            <span asp-validation-for="SkillTitle" class="text-danger"></span>
+            <label asp-for="Title">عنوان</label>
+            <input type="text" class="form-control" asp-for="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="SkillProgress">مقدار</label>
-            <input type="text" class="form-control" asp-for="SkillProgress">
-            <span asp-validation-for="SkillProgress" class="text-danger"></span>
+            <label asp-for="Progress">مقدار</label>
+            <input type="text" class="form-control" asp-for="Progress">
+            <span asp-validation-for="Progress" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">

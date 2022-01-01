@@ -98,5 +98,20 @@ namespace SaeedNA.Service.Implementations
 
             return filter.SetMyService(allEntities).SetPaging(pager);
         }
+
+        public async Task<MyServiceEditDTO> GetMyServiceById(long myServiceId)
+        {
+            var query = await _myServiceRepository.GetQuery()
+                .SingleOrDefaultAsync(s => s.Id == myServiceId && !s.IsDelete);
+
+            if (query == null) return null;
+
+            return new MyServiceEditDTO
+            {
+                Title = query.Title,
+                Text = query.Text,
+                Icon = query.Icon
+            };
+        }
     }
 }

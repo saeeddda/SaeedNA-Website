@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Domain.Models.MService;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Data.DTOs.MService;
+using SaeedNA.Service.Interfaces;
+using System.Threading.Tasks;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -12,30 +13,20 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Cotr
 
-        private readonly ICounterService _serviceCounter;
-        private readonly SettingManager _settingManager;
+        private readonly ICounterService _counterService;
 
-        public ServiceCounterController( ICounterService serviceCounter,ISettingService siteSettings)
+        public ServiceCounterController(ICounterService counterService)
         {
-            _serviceCounter = serviceCounter;
-            _settingManager = new SettingManager(siteSettings);
+            _counterService = counterService;
         }
 
         #endregion
 
         #region ServiceCounter
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(CounterFilterDTO filter)
         {
-            var set = _settingManager.GetAllSettings();
-
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.FullName = set.FullName;
-            ViewBag.AvatarImage = set.AvatarImage;
-
-            var serviceCounter = _serviceCounter.GetAllServiceCounter();
-            return View("Index", serviceCounter);
+            return View("Index", await _counterService.FilterCounter(filter));
         }
 
         public IActionResult Add()
@@ -43,64 +34,60 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Add(ServiceCounter serviceCounter)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(CounterCreateDTO counter)
         {
             if(ModelState.IsValid)
             {
-                _serviceCounter.AddServiceCounter(serviceCounter);
+                await _counterService.AddNewCounter(counter);
                 return RedirectToAction("Index");
             }
 
             ModelState.Clear();
             ModelState.AddModelError("counterservice", "مشکلی در ثبت اطلاعات به وجود آمده!");
 
-            return PartialView("Add", serviceCounter);
+            return PartialView("Add", counter);
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(long id)
         {
-            if(string.IsNullOrEmpty(id))
-                return BadRequest();
+            var serviceCounter = await _counterService.GetCounterById(id);
 
-            var serviceCounter = _serviceCounter.GetServiceCounterById(int.Parse(id));
-
-            if(serviceCounter == null)
-                return NotFound();
+            if(serviceCounter == null) return NotFound();
 
             return PartialView("Edit", serviceCounter);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(ServiceCounter serviceCounter)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CounterEditDTO counter)
         {
             if(ModelState.IsValid)
             {
-                _serviceCounter.UpdateServiceCounter(serviceCounter);
+                await _counterService.EditCounter(counter);
                 return RedirectToAction("Index");
             }
 
             ModelState.Clear();
             ModelState.AddModelError("counterservice", "مشکلی در ثبت اطلاعات به وجود آمده!");
 
-            return PartialView("Edit", serviceCounter);
+            return PartialView("Edit", counter);
         }
 
-        public JsonResult Delete(string id)
+        public async Task<JsonResult> Delete(long id)
         {
-            if(id == "" || string.IsNullOrEmpty(id))
-                return Json(new { status = "error", msg = "شناسه نامعتبر است!" });
+            var result = await _counterService.DeleteCounter(id);
 
-            var serviceCounter = _serviceCounter.GetServiceCounterById(int.Parse(id));
-
-            if(serviceCounter == null)
-                return Json(new { status = "error", msg = "تجربه پیدا نشد!" });
-
-            _serviceCounter.DeleteServiceCounter(serviceCounter.ServiceCounterId);
-
-            return Json(new { status = "ok", msg = "مورد پاک شد." });
+            switch(result)
+            {
+                case ServiceResult.NotFond:
+                    return Json(new { status = "error", msg = "Counter not found!" });
+                case ServiceResult.Error:
+                    return Json(new { status = "error", msg = "ID not valid!" });
+                case ServiceResult.Success:
+                    return Json(new { status = "ok", msg = "Counter deleted" });
+                default:
+                    return Json(new { status = "", msg = "" });
+            }
         }
 
         #endregion

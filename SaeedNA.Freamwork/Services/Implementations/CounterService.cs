@@ -98,5 +98,20 @@ namespace SaeedNA.Service.Implementations
 
             return filter.SetCounter(allEntities).SetPaging(pager);
         }
+
+        public async Task<CounterEditDTO> GetCounterById(long counterId)
+        {
+            var query = await _counterRepository.GetQuery()
+                .SingleOrDefaultAsync(s => s.Id == counterId && !s.IsDelete);
+
+            if (query == null) return null;
+
+            return new CounterEditDTO
+            {
+                Title = query.Title,
+                Number = query.Number,
+                Icon = query.Icon
+            };
+        }
     }
 }

@@ -64,5 +64,11 @@ namespace SaeedNA.Service.Implementations
 
             return filter.SetContactUs(allEntities).SetPaging(pager);
         }
+
+        public async Task<ContactUs> GetContactUs(long id)
+        {
+            return await _contactUsRepository.GetEntityById(id);
+        }
+
     }
 }

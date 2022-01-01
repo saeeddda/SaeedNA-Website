@@ -1,21 +1,21 @@
-﻿@model ServiceCounter
+﻿@model CounterEditDTO
 
 <form asp-action="Edit" asp-controller="ServiceCounter" asp-area="Admin" method="post">
     @Html.AntiForgeryToken()
-    <input type="hidden" asp-for="ServiceCounterId" />
+    <input type="hidden" asp-for="CounterId" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="ServiceCounterTitle">عنوان</label>
-            <input type="text" class="form-control" asp-for="ServiceCounterTitle">
-            <span asp-validation-for="ServiceCounterTitle" class="text-danger"></span>
+            <label asp-for="Title">عنوان</label>
+            <input type="text" class="form-control" asp-for="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="ServiceCounterCount">متن خدمت</label>
-            <input type="text" class="form-control" asp-for="ServiceCounterCount">
-            <span asp-validation-for="ServiceCounterCount" class="text-danger"></span>
+            <label asp-for="Number">متن خدمت</label>
+            <input type="text" class="form-control" asp-for="Number">
+            <span asp-validation-for="Number" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">

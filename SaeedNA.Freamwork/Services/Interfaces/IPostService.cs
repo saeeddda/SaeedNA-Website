@@ -12,6 +12,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> EditPost(PostEditDTO post);
         Task<ServiceResult> DeletePost(long postId);
         Task<PostFilterDTO> FilterPost(PostFilterDTO filter);
+        Task<PostEditDTO> GetPostForEdit(long postId);
         Task<Post> GetPost(long postId);
     }
 }

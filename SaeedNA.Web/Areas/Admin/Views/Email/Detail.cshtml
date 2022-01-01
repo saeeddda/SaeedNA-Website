@@ -1,27 +1,27 @@
-﻿@model Email
+﻿@model SaeedNA.Data.Entities.Contact.ContactUs
 
 <div class="col-12">
     <div class="form-group">
-        <label asp-for="EmailName"></label>
-        <input type="text" class="form-control" asp-for="EmailName" readonly>
+        <label asp-for="FullName"></label>
+        <input type="text" class="form-control" asp-for="FullName" readonly>
     </div>
 </div>
 <div class="col-12">
     <div class="form-group">
-        <label asp-for="EmailPhone"></label>
-        <input type="tel" class="form-control" asp-for="EmailPhone" dir="ltr" readonly>
+        <label asp-for="Mobile"></label>
+        <input type="tel" class="form-control" asp-for="Mobile" dir="ltr" readonly>
     </div>
 </div>
 <div class="col-12">
     <div class="form-group">
-        <label asp-for="EmailEmail"></label>
-        <input type="email" class="form-control" asp-for="EmailEmail" dir="ltr" readonly>
+        <label asp-for="Email"></label>
+        <input type="email" class="form-control" asp-for="Email" dir="ltr" readonly>
     </div>
 </div>
 <div class="col-12">
     <div class="form-group">
-        <label asp-for="EmailText"></label>
-        <textarea class="form-control" rows="5" asp-for="EmailText" readonly></textarea>
+        <label asp-for="Text"></label>
+        <textarea class="form-control" rows="5" asp-for="Text" readonly></textarea>
     </div>
 </div>
 <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>

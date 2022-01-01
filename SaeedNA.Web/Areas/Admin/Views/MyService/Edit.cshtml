@@ -1,4 +1,4 @@
-﻿@model MyService
+﻿@model MyServiceEditDTO
 
 <form asp-action="Edit" asp-controller="MyService" asp-area="Admin" method="post">
     @Html.AntiForgeryToken()
@@ -6,16 +6,16 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="MyServiceTitle">عنوان</label>
-            <input type="text" class="form-control" asp-for="MyServiceTitle">
-            <span asp-validation-for="MyServiceTitle" class="text-danger"></span>
+            <label asp-for="Title">عنوان</label>
+            <input type="text" class="form-control" asp-for="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="MyServiceText">متن خدمت</label>
-            <textarea class="form-control" asp-for="MyServiceText" rows="5"></textarea>
-            <span asp-validation-for="MyServiceText" class="text-danger"></span>
+            <label asp-for="Text">متن خدمت</label>
+            <textarea class="form-control" asp-for="Text" rows="5"></textarea>
+            <span asp-validation-for="Text" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">

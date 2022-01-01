@@ -10,6 +10,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> AddNewService(MyServiceCreateDTO myService);
         Task<ServiceResult> EditService(MyServiceEditDTO myService);
         Task<ServiceResult> DeleteService(long myServiceId);
+        Task<MyServiceEditDTO> GetMyServiceById(long myServiceId);
         Task<MyServiceFilterDTO> FilterService(MyServiceFilterDTO filter);
     }
 }

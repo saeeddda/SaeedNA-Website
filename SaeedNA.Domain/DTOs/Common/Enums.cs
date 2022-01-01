@@ -20,4 +20,10 @@ namespace SaeedNA.Data.DTOs.Common
         [Display(Name = "منتشر شده")]
         Published,
     }
+
+    public enum SiteMode
+    {
+        Dark,
+        Light
+    }
 }

@@ -1,4 +1,4 @@
-﻿@model Post
+﻿@model PostCreateDTO
 @{
     ViewData["Title"] = "افزودن نوشته";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -14,17 +14,17 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label asp-for="PostTitle"></label>
-                                    <input class="form-control" asp-for="PostTitle" type="text">
-                                    <span class="text-danger" asp-validation-for="PostTitle"></span>
+                                    <label asp-for="Title"></label>
+                                    <input class="form-control" asp-for="Title" type="text">
+                                    <span class="text-danger" asp-validation-for="Title"></span>
                                 </div>
                             </div>
                             <div class="col-12 mb-1">
-                                <label asp-for="PostShortDescription"></label>
-                                <textarea class="form-control" asp-for="PostShortDescription" rows="5"></textarea>
+                                <label asp-for="ShortDescription"></label>
+                                <textarea class="form-control" asp-for="ShortDescription" rows="5"></textarea>
                             </div>
                             <div class="col-12">
-                                <textarea asp-for="PostDescription" rows="10"></textarea>
+                                <textarea asp-for="Description" rows="10"></textarea>
                             </div>
                         </div>
                     </div>
@@ -33,8 +33,8 @@
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="post-image">تصویر یا ویدئو نوشته</label>
-                                        <input type="text" class="form-control" asp-for="PostFile" readonly>
+                                        <label for="post-image">تصویر نوشته</label>
+                                        <input type="text" class="form-control" asp-for="Image" readonly>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="media py-1">
@@ -60,46 +60,19 @@
                                     <select class="form-control" asp-for="CategoryId" asp-items="ViewBag.Categories"></select>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <label>نوع نوشته</label>
-                                <select class="form-control" asp-for="PostType">
-                                    <option value="article" selected>مقاله</option>
-                                    <option value="project">پروژه</option>
-                                </select>
-                            </div>
+                            
                             <div class="col-12 my-1">
                                 <div class="custom-control custom-switch custom-control-inline">
                                     <span class="switch-label w-100 ">منتشر شده ؟</span>
-                                    <input asp-for="IsPublished" type="checkbox" class="custom-control-input" checked>
+                                    <input asp-for="State" type="checkbox" class="custom-control-input" checked>
+                                    <select asp-for="State" asp-items="Html.GetEnumSelectList<PostPublishingState>()"></select>
                                     <label class="custom-control-label mr-1" for="IsPublished"></label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label asp-for="PostTags"></label>
-                                    <input class="form-control" asp-for="PostTags" placeholder="با کاما از هم جدا کنید" type="text">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="border rouded pb-1 px-1 mb-2">
-                                    <div class="mt-1 d-flex">
-                                        <i class="text-danger bx bx-info-circle"></i>
-                                        <small class="text-danger font-weight-light"> فقط برای پروژه میباشد.</small>
-                                    </div>
-                                    <fieldset>
-                                        <div class="form-group">
-                                            <label asp-for="ProjectCustomer"></label>
-                                            <input class="form-control" asp-for="ProjectCustomer" type="text">
-                                        </div>
-                                        <div class="form-group">
-                                            <label asp-for="ProjectLanguage"></label>
-                                            <input class="form-control" asp-for="ProjectLanguage" type="text">
-                                        </div>
-                                        <div class="form-group mb-0">
-                                            <label asp-for="ProjectAddress"></label>
-                                            <input class="form-control" asp-for="ProjectAddress" type="text">
-                                        </div>
-                                    </fieldset>
+                                    <label asp-for="Tags"></label>
+                                    <input class="form-control" asp-for="Tags" placeholder="با کاما از هم جدا کنید" type="text">
                                 </div>
                             </div>
                             <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">

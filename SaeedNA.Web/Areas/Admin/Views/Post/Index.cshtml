@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Post>
+﻿@model PostFilterDTO
 @{
     ViewData["Title"] = "بلاگ";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
@@ -21,7 +21,6 @@
                             <th scope="col">کد</th>
                             <th scope="col">عنوان نوشته</th>
                             <th scope="col">دسته بندی</th>
-                            <th scope="col">نوع نوشته</th>
                             <th scope="col">منتشر شده ؟</th>
                             <th scope="col">تاریخ ایجاد</th>
                             <th scope="col">بازدید</th>
@@ -29,42 +28,25 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var item in Model)
+                        @foreach(var item in Model.Posts)
                         {
                             <tr>
-                                <td scope="row">@item.PostId</td>
-                                <td>@item.PostTitle</td>
-                                <td>@item.Category.CategoryName</td>
+                                <td scope="row">@item.Id</td>
+                                <td>@item.Title</td>
+                                <td>@item.Category.Name</td>
                                 <td>
-                                    @if(item.PostType == "article")
-                                    {
-                                        <span>مقاله</span>
-                                    }
-                                    else if(item.PostType == "project")
-                                    {
-                                        <span>پروژه</span>
-                                    }
+                                    <span >@item.State.GetEnumName()</span>
                                 </td>
+                                <td>@item.CreateDate.ToShamsiDate()</td>
+                                <td>@item.Visit</td>
                                 <td>
-                                    @if(item.IsPublished)
-                                    {
-                                        <span class="text-success">بله</span>
-                                    }
-                                    else
-                                    {
-                                        <span class="text-danger">خیر</span>
-                                    }
-                                </td>
-                                <td>@item.PostCreateDate</td>
-                                <td>@item.PostVisit</td>
-                                <td>
-                                    <a class="pl-2" href="/post/@(item.PostId)/@(item.PostTitle)">
+                                    <a class="pl-2" href="/post/@(item.Id)/@(item.Title)">
                                         <i class="badge-circle badge-circle-light-secondary bx bx-show font-medium-1"></i>
                                     </a>
-                                    <a class="pl-2" asp-action="Edit" asp-controller="Post" asp-area="Admin" asp-route-id="@item.PostId">
+                                    <a class="pl-2" asp-action="Edit" asp-controller="Post" asp-area="Admin" asp-route-id="@item.Id">
                                         <i class="badge-circle badge-circle-light-secondary bx bx-edit font-medium-1"></i>
                                     </a>
-                                    <a class="pl-2" onclick="deletePost(@item.PostId)">
+                                    <a class="pl-2" onclick="deletePost(@item.Id)">
                                         <i class="badge-circle badge-circle-light-secondary bx bx-trash font-medium-1"></i>
                                     </a>
                                 </td>
@@ -106,7 +88,7 @@
                                 type: "error",
                                 confirmButtonText: "تائید",
                                 confirmButtonClass: "btn btn-success"
-                            })
+                            });
                         }
                     });
                 }
@@ -117,7 +99,7 @@
                         type: "error",
                         confirmButtonText: "تائید",
                         confirmButtonClass: "btn btn-success"
-                    })
+                    });
                 }
             });
         }

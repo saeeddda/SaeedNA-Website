@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Contact;
+using SaeedNA.Data.Entities.Contact;
 
 namespace SaeedNA.Service.Interfaces
 {
@@ -9,5 +10,6 @@ namespace SaeedNA.Service.Interfaces
     {
         Task<ServiceResult> AddContactUs(ContactUsCreateDTO contactUs);
         Task<ContactUsFilterDTO> FilterContactUs(ContactUsFilterDTO filter);
+        Task<ContactUs> GetContactUs(long id);
     }
 }

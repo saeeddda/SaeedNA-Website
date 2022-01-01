@@ -1,14 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Framework.Utilities;
-using SaeedNA.Service.Repositories;
-using SaeedNA.Service.ViewModels;
-using System.Collections.Generic;
-using System.IO;
+using SaeedNA.Application.Utilities;
+using System;
+using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
+using SaeedNA.Service.Interfaces;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -18,159 +15,91 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly SettingManager _settingManager;
-        private Uploader uploader;
+        private readonly IPersonalService _personalService;
+        private readonly ISeoService _seoService;
+        private readonly ISettingService _settingService;
+        private readonly ISocialMediaService _socialMediaService;
 
-        public SettingsController(ISettingService siteSettings)
+        public SettingsController(IPersonalService personalService, ISeoService seoService, ISettingService settingService, ISocialMediaService socialMediaService)
         {
-            _settingManager = new SettingManager(siteSettings);
+            _personalService = personalService;
+            _seoService = seoService;
+            _settingService = settingService;
+            _socialMediaService = socialMediaService;
         }
-
+        
         #endregion
 
         #region Actions
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var set = _settingManager.GetAllSettings();
-
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.FullName = set.FullName;
-            ViewBag.AvatarImage = set.AvatarImage;
-
-            List<SelectListItem> siteColor = new List<SelectListItem>() {
-                new SelectListItem()
-                {
-                    Text="آبی",
-                    Value="blue"
-                },
-                new SelectListItem()
-                {
-                    Text="نیلی",
-                    Value="blueviolet"
-                },
-                new SelectListItem()
-                {
-                    Text="سبز",
-                    Value="green"
-                },
-                new SelectListItem()
-                {
-                    Text="صورتی",
-                    Value="magenta"
-                },
-                new SelectListItem()
-                {
-                    Text="نارنجی",
-                    Value="orange"
-                },
-                new SelectListItem()
-                {
-                    Text="بنفش",
-                    Value="purple"
-                },
-                new SelectListItem()
-                {
-                    Text="قرمز",
-                    Value="red"
-                },
-                new SelectListItem()
-                {
-                    Text="زرد",
-                    Value="yellow"
-                },
-                new SelectListItem()
-                {
-                    Text="زرد - سبز",
-                    Value="yellogreen"
-                },
-                new SelectListItem()
-                {
-                    Text="طلایی",
-                    Value="goldenrod"
-                }
-            };
-
-            ViewBag.SiteColors = siteColor;
-
-            List<SelectListItem> siteMode = new List<SelectListItem>(){
-                new SelectListItem(){
-                    Text="تاریک",
-                    Value="dark"
-                },
-                new SelectListItem(){
-                    Text="روشن",
-                    Value="light"
-                }
-            };
-
-            ViewBag.SiteMode = siteMode;
-
-            return View("Index", set);
+            ViewBag.Settings = await _settingService.GetDefaultSetting();
+            ViewBag.PersonalInfos = await _personalService.GetDefaultInfo();
+            ViewBag.Seo = await _seoService.GetDefaultSeo();
+            
+            return View("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateSettings(SiteSettingViewModel setting,
+        public async Task<IActionResult> UpdateSettings(
             IFormFile logo, IFormFile fav,
             IFormFile resumeImage, IFormFile avatarImage,
             IFormFile resumeFile)
         {
             if(ModelState.IsValid)
             {
-                uploader = new Uploader();
-                string uploadFolder = "Uploads";
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", uploadFolder);
 
                 if(logo != null)
                 {
-                    string fileRandomName = await uploader.FileUpload(logo, path);
-                    string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
+                    string fileName = Guid.NewGuid().ToString();
+                    await logo.UploadToServer(fileName, PathExtension.UploadPathServer,null,null);
+                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
 
-                    setting.SiteLogo = fileUrl;
+                    //setting.SiteLogo = fileUrl;
                 }
 
                 if(fav != null)
                 {
-                    string fileRandomName = await uploader.FileUpload(fav, path);
-                    string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
+                    //string fileRandomName = await uploader.FileUpload(fav, path);
+                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
 
-                    setting.SiteFavIcon = fileUrl;
+                    //setting.SiteFavIcon = fileUrl;
                 }
 
                 if(resumeImage != null)
                 {
-                    string fileRandomName = await uploader.FileUpload(resumeImage, path);
-                    string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
+                    //string fileRandomName = await uploader.FileUpload(resumeImage, path);
+                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
 
-                    setting.ResumeImage = fileUrl;
+                    //setting.ResumeImage = fileUrl;
                 }
 
                 if(avatarImage != null)
                 {
-                    string fileRandomName = await uploader.FileUpload(avatarImage, path);
-                    string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
+                    //string fileRandomName = await uploader.FileUpload(avatarImage, path);
+                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
 
-                    setting.AvatarImage = fileUrl;
+                    //setting.AvatarImage = fileUrl;
                 }
 
                 if(resumeFile != null)
                 {
-                    string fileRandomName = await uploader.FileUpload(resumeFile, path);
-                    string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
+                    //string fileRandomName = await uploader.FileUpload(resumeFile, path);
+                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
 
-                    setting.ResumeFile = fileUrl;
+                    //setting.ResumeFile = fileUrl;
                 }
 
-                _settingManager.SetAllSetting(setting);
+                
 
                 return RedirectToAction("Index");
             }
 
             ModelState.AddModelError("sitestting", "مشکلی در ذخیره تنظیمات بوجود آمده!");
 
-            return View("Index", setting);
+            return View("Index");
         }
 
         #endregion

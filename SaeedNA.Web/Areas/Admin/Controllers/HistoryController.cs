@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Domain.Models.Resume;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Data.DTOs.Resume;
+using SaeedNA.Service.Interfaces;
+using System.Threading.Tasks;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -12,30 +13,20 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Cotr
 
-        private readonly IHistory _history;
-        private readonly SettingManager _settingManager;
+        private readonly IHistoryService _historyService;
 
-        public HistoryController(IHistory history, ISettingService settingManager)
+        public HistoryController(IHistoryService historyService)
         {
-            _history = history;
-            _settingManager = new SettingManager(settingManager);
+            _historyService = historyService;
         }
 
         #endregion
 
         #region History
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(HistoryFilterDTO filter)
         {
-            var set = _settingManager.GetAllSettings();
-
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.FullName = set.FullName;
-            ViewBag.AvatarImage = set.AvatarImage;
-
-            var history = _history.GetAllHistory();
-            return View("Index", history);
+            return View("Index",await _historyService.FilterHistory(filter) );
         }
 
         public IActionResult Add()
@@ -43,13 +34,12 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Add(History history)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(HistoryCreateDTO history)
         {
             if(ModelState.IsValid)
             {
-                _history.AddHistory(history);
+                await _historyService.AddNewHistory(history);
                 return RedirectToAction("Index");
             }
 
@@ -59,26 +49,21 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add", history);
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(long id)
         {
-            if(string.IsNullOrEmpty(id))
-                return BadRequest();
+            var history = await _historyService.GetHistoryById(id);
 
-            var history = _history.GetHistoryById(int.Parse(id));
-
-            if(history == null)
-                return NotFound();
+            if(history == null) return NotFound();
 
             return PartialView("Edit", history);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(History history)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(HistoryEditDTO history)
         {
             if(ModelState.IsValid)
             {
-                _history.UpdateHistory(history);
+                await _historyService.EditHistory(history);
                 return RedirectToAction("Index");
             }
 
@@ -88,19 +73,21 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", history);
         }
 
-        public JsonResult Delete(string id)
+        public async Task<JsonResult> Delete(long id)
         {
-            if(id == "" || string.IsNullOrEmpty(id))
-                return Json(new { status = "error", msg = "شناسه نامعتبر است!" });
+            var result = await _historyService.DeleteHistory(id);
 
-            var exp = _history.GetHistoryById(int.Parse(id));
-
-            if(exp == null)
-                return Json(new { status = "error", msg = "تجربه پیدا نشد!" });
-
-            _history.DeleteHistory(exp.HistoryId);
-
-            return Json(new { status = "ok", msg = "مورد پاک شد." });
+            switch(result)
+            {
+                case ServiceResult.NotFond:
+                    return Json(new { status = "error", msg = "History not found!" });
+                case ServiceResult.Error:
+                    return Json(new { status = "error", msg = "ID not valid!" });
+                case ServiceResult.Success:
+                    return Json(new { status = "ok", msg = "History deleted" });
+                default:
+                    return Json(new { status = "", msg = "" });
+            }
         }
 
         #endregion

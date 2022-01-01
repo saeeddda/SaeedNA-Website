@@ -93,5 +93,16 @@ namespace SaeedNA.Service.Implementations
 
             return filter.SetSkill(allEntities).SetPaging(pager);
         }
+
+        public async Task<SkillEditDTO> GetSkillById(long skillId)
+        {
+            var query = await _skillRepository.GetQuery()
+                .SingleOrDefaultAsync(s => s.Id == skillId && !s.IsDelete);
+            return new SkillEditDTO
+            {
+                Title = query.Title,
+                Progress = query.Progress
+            };
+        }
     }
 }

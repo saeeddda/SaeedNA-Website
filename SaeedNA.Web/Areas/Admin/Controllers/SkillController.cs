@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Domain.Models.Resume;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Data.DTOs.Resume;
+using SaeedNA.Service.Interfaces;
+using System.Threading.Tasks;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -12,30 +13,20 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly ISkillService _skill;
-        private readonly SettingManager _settingManager;
+        private readonly ISkillService _skillService;
 
-        public SkillController(ISkillService skill,ISettingService siteSettings)
+        public SkillController(ISkillService skillService)
         {
-            _skill = skill;
-            _settingManager = new SettingManager(siteSettings);
+            _skillService = skillService;
         }
 
         #endregion
 
         #region Skill Actions
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(SkillFilterDTO filter)
         {
-            var set = _settingManager.GetAllSettings();
-
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.FullName = set.FullName;
-            ViewBag.AvatarImage = set.AvatarImage;
-
-            var skill = _skill.GetAllSkill();
-            return View("Index",skill);
+            return View("Index", await _skillService.FilterSkill(filter));
         }
 
         public IActionResult Add()
@@ -43,16 +34,15 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Add(Skill skill)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(SkillCreateDTO skill)
         {
             if(ModelState.IsValid)
             {
                 if(skill == null)
                     return BadRequest();
 
-                _skill.AddSkill(skill);
+                await _skillService.AddNewSkill(skill);
                 return RedirectToAction("Index");
 
             }
@@ -63,12 +53,9 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add",skill);
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(long id)
         {
-            if(string.IsNullOrEmpty(id))
-                return BadRequest();
-
-            var skill = _skill.GetSkillById(int.Parse(id));
+            var skill = _skillService.GetSkillById(id);
 
             if(skill == null)
                 return NotFound();
@@ -76,16 +63,15 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit",skill);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(Skill skill)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(SkillEditDTO skill)
         {
             if(ModelState.IsValid)
             {
                 if(skill == null)
                     return BadRequest();
 
-                _skill.UpdateSkill(skill);
+                await _skillService.EditSkill(skill);
                 return RedirectToAction("Index");
             }
 
@@ -95,19 +81,21 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", skill);
         }
 
-        public JsonResult Delete(string id)
+        public async Task<JsonResult> Delete(long id)
         {
-            if(id == "" || string.IsNullOrEmpty(id))
-                return Json(new { status = "error", msg = "شناسه نامعتبر است!" });
+            var result = await _skillService.DeleteSkill(id);
 
-            var skill = _skill.GetSkillById(int.Parse(id));
-
-            if(skill == null)
-                return Json(new { status = "error", msg = "تجربه پیدا نشد!" });
-
-            _skill.DeleteSkill(skill.SkillId);
-
-            return Json(new { status = "ok", msg = "مورد پاک شد." });
+            switch(result)
+            {
+                case ServiceResult.NotFond:
+                    return Json(new { status = "error", msg = "Skill not found!" });
+                case ServiceResult.Error:
+                    return Json(new { status = "error", msg = "ID not valid!" });
+                case ServiceResult.Success:
+                    return Json(new { status = "ok", msg = "Skill deleted" });
+                default:
+                    return Json(new { status = "", msg = "" });
+            }
         }
 
         #endregion

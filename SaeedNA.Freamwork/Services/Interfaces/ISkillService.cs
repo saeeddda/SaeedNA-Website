@@ -10,6 +10,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> AddNewSkill(SkillCreateDTO skill);
         Task<ServiceResult> EditSkill(SkillEditDTO skill);
         Task<ServiceResult> DeleteSkill(long skillId);
+        Task<SkillEditDTO> GetSkillById(long skillId);
         Task<SkillFilterDTO> FilterSkill(SkillFilterDTO filter);
     }
 }

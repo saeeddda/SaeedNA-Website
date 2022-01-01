@@ -5,228 +5,39 @@
 
 <!DOCTYPE html>
 <html class="loading" lang="fa" data-textdirection="rtl">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>@ViewData["Title"]</title>
-    <link rel="shortcut icon" type="image/x-icon" href="@ViewBag.SiteFavIcon">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/vendors-rtl.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/bootstrap-extended.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/colors.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/components.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/themes/dark-layout.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/themes/semi-dark-layout.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/custom-rtl.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/fonts/dana/fontiran.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/vertical-menu.min.css">
-    <link rel="stylesheet" type="text/css" href="~/admin/css/style-rtl.css">
-    @RenderSection("Styles", required: false)
+    <head>
+        @await Component.InvokeAsync("AdminHeader")
+        <title>@ViewData["Title"]</title>
+        @await RenderSectionAsync("Styles", required: false)
+    </head>
 
-</head>
-
-<body class="vertical-layout vertical-menu-modern semi-dark-layout 2-columns  navbar-sticky footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="semi-dark-layout">
-    <div class="header-navbar-shadow"></div>
-    <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
-        <div class="navbar-wrapper">
-            <div class="navbar-container content">
-                <div class="navbar-collapse" id="navbar-mobile">
-                    <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
-                        <ul class="nav navbar-nav">
-                            <li class="nav-item mobile-menu d-xl-none mr-auto">
-                                <a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#!.">
-                                    <i class="ficon bx bx-menu"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <ul class="nav navbar-nav float-right">
-                        <li class="dropdown dropdown-user nav-item">
-                            <a class="dropdown-toggle nav-link dropdown-user-link" href="#!." data-toggle="dropdown">
-                                <div class="user-nav d-sm-flex d-none">
-                                    <span class="user-name">@ViewBag.FullName</span>
-                                </div>
-                                <span>
-                                    <img class="round" src="@ViewBag.AvatarImage" alt="avatar" height="40" width="40">
-                                </span>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right pb-0">
-                                <a class="dropdown-item" asp-action="Index" asp-controller="Settings" asp-area="Admin"><i class="bx bx-user mr-50"></i> ویرایش پروفایل </a>
-                                <a class="dropdown-item" asp-action="Index" asp-controller="Email" asp-area="Admin"><i class="bx bx-envelope mr-50"></i> صندوق ارتباط </a>
-                                <div class="dropdown-divider mb-0"></div>
-                                <a class="dropdown-item" href="/account/logout"><i class="bx bx-power-off mr-50"></i> خروج </a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
-        <div class="navbar-header">
-            <ul class="nav navbar-nav flex-row">
-                <li class="nav-item mr-auto">
-                    <a class="navbar-brand" href="/">
-                        <div class="brand-logo">
-                            <img class="logo" src="@ViewBag.AvatarImage" />
+    <body class="vertical-layout vertical-menu-modern semi-dark-layout 2-columns  navbar-sticky footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="semi-dark-layout">
+        @await Component.InvokeAsync("AdminMenuBar")
+        <div class="app-content content">
+            <div class="content-overlay"></div>
+            <div class="content-wrapper">
+                <div class="content-header row">
+                    <div class="content-header-left col-12 mb-2 mt-1">
+                        <div class="breadcrumbs-top">
+                            <h5 class="content-header-title float-left pr-1 mb-0">@ViewData["Title"]</h5>
                         </div>
-                        <h2 class="brand-text mb-0">@ViewBag.FullName</h2>
-                    </a>
-                </li>
-                <li class="nav-item nav-toggle">
-                    <a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse">
-                        <i class="bx bx-x d-block d-xl-none font-medium-4 primary"></i>
-                        <i class="toggle-icon bx bx-disc font-medium-4 d-none d-xl-block primary" data-ticon="bx-disc"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="shadow-bottom"></div>
-        <div class="main-menu-content">
-            <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
-                <li id="home-index" class="nav-item">
-                    <a asp-action="Index" asp-controller="Home" asp-area="Admin">
-                        <i class="menu-livicon" data-icon="desktop"></i>
-                        <span class="menu-title text-truncate">پیشخوان</span>
-                    </a>
-
-                </li>
-                <li class="navigation-header text-truncate">
-                    <span>مدیریت</span>
-                </li>
-                <li id="post" class="nav-item">
-                    <a asp-action="Index" asp-controller="Post" asp-area="Admin">
-                        <i class="menu-livicon" data-icon="notebook"></i>
-                        <span class="menu-title text-truncate">نوشته ها</span>
-                    </a>
-                    <ul class="menu-content">
-                        <li id="post-add" class="">
-                            <a class="d-flex align-items-center" asp-action="Add" asp-controller="Post" asp-area="Admin">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate">افزودن نوشته</span>
-                            </a>
-                        </li>
-                        <li id="category-index">
-                            <a class="d-flex align-items-center" asp-action="Index" asp-controller="Category" asp-area="Admin">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate">دسته بندی</span>
-                            </a>
-                        </li>
-                        <li id="post-index">
-                            <a class="d-flex align-items-center" asp-action="Index" asp-controller="Post" asp-area="Admin">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate">لیست نوشته ها</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li id="resume" class=" nav-item">
-                    <a href="#!.">
-                        <i class="menu-livicon" data-icon="trophy"></i>
-                        <span class="menu-title text-truncate">رزومه</span>
-                    </a>
-                    <ul class="menu-content">
-                        <li id="history-index" class="">
-                            <a class="d-flex align-items-center" asp-action="Index" asp-controller="History" asp-area="Admin">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate">تاریخچه</span>
-                            </a>
-                        </li>
-                        <li id="skill-index">
-                            <a class="d-flex align-items-center" asp-action="Index" asp-controller="Skill" asp-area="Admin">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate">مهارت</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li id="service" class=" nav-item">
-                    <a asp-action="Index" asp-controller="MyService" asp-area="Admin">
-                        <i class="menu-livicon" data-icon="morph-table-lamp"></i>
-                        <span class="menu-title text-truncate">خدمات</span>
-                    </a>
-                    <ul class="menu-content">
-                        <li id="servicecounter-index" class="">
-                            <a class="d-flex align-items-center" asp-action="Index" asp-controller="ServiceCounter" asp-area="Admin">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate">شمارنده</span>
-                            </a>
-                        </li>
-                        <li id="myservice-index">
-                            <a class="d-flex align-items-center" asp-action="Index" asp-controller="MyService" asp-area="Admin">
-                                <i class="bx bx-right-arrow-alt"></i>
-                                <span class="menu-item text-truncate">لیست خدمات</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-                <li id="email-index" class=" nav-item">
-                    <a asp-action="Index" asp-controller="Email" asp-area="Admin">
-                        <i class="menu-livicon" data-icon="envelope-put"></i>
-                        <span class="menu-title text-truncate">ارتباط با من</span>
-                    </a>
-                </li>
-                <li id="onlineuser-index" class=" nav-item">
-                    <a asp-action="Index" asp-controller="OnlineUser" asp-area="Admin">
-                        <i class="menu-livicon" data-icon="users"></i>
-                        <span class="menu-title text-truncate">بازدیدها</span>
-                    </a>
-                </li>
-                <li id="settings-index" class=" nav-item">
-                    <a asp-action="Index" asp-controller="Settings" asp-area="Admin">
-                        <i class="menu-livicon" data-icon="gears"></i>
-                        <span class="menu-title text-truncate">تنظیمات</span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="app-content content">
-        <div class="content-overlay"></div>
-        <div class="content-wrapper">
-            <div class="content-header row">
-                <div class="content-header-left col-12 mb-2 mt-1">
-                    <div class="breadcrumbs-top">
-                        <h5 class="content-header-title float-left pr-1 mb-0">@ViewData["Title"]</h5>
                     </div>
                 </div>
-            </div>
-            <div class="content-body">
-                @RenderBody()
+                <div class="content-body">
+                    @RenderBody()
+                </div>
             </div>
         </div>
-    </div>
+    @await Component.InvokeAsync("AdminFooter")
+        @await RenderSectionAsync("Scripts", required: false)
 
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
+    <script>
+            //$("#@controller").addClass("open");//select main menu of navbar
+        $("#@controller-@action").addClass("active");//select menu of selected navbar
+        //if ("@controller" === "serviceconter" || "@controller" === "myservice") {
+        //    $("#service").addClass("open");//select main menu of navbar
+        //}
+    </script>
 
-    <footer class="footer footer-static footer-light">
-        <p class="clearfix mb-0">
-            <span class="float-left d-inline-block">2021 &copy; saeedna.ir</span>
-        </p>
-    </footer>
-
-    <script src="~/admin/js/vendors.min.js"></script>
-    <script src="~/admin/fonts/LivIconsEvo/js/LivIconsEvo.tools.min.js"></script>
-    <script src="~/admin/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
-    <script src="~/admin/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
-    <script src="~/admin/js/sweetalert2.all.min.js"></script>
-    <script src="~/admin/js/scripts/configs/vertical-menu-dark.min.js"></script>
-    <script src="~/admin/js/app-menu.min.js"></script>
-    <script src="~/admin/js/app.min.js"></script>
-    <script src="~/admin/js/scripts/footer.min.js"></script>
-    @RenderSection("Scripts", required: false)
-
-<script>
-        //$("#@controller").addClass("open");//select main menu of navbar
-    $("#@controller-@action").addClass("active");//select menu of selected navbar
-    //if ("@controller" === "serviceconter" || "@controller" === "myservice") {
-    //    $("#service").addClass("open");//select main menu of navbar
-    //}
-</script>
-
-</body>
+    </body>
 </html>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using SaeedNA.Data.DTOs.Common;
 
 namespace SaeedNA.Data.DTOs.Site
 {
@@ -19,7 +20,7 @@ namespace SaeedNA.Data.DTOs.Site
         public string SiteTitle { get; set; }
 
         [Display(Name = "حالت سایت")]
-        public string SiteMode { get; set; }
+        public SiteMode SiteMode { get; set; }
 
         [Display(Name = "پیشفرض")]
         public bool IsDefault { get; set; }

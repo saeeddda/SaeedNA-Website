@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Domain.Models.MService;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Data.DTOs.MService;
+using SaeedNA.Service.Interfaces;
+using System.Threading.Tasks;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -13,29 +14,19 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         #region Cotr
 
         private readonly IMSService _myService;
-        private readonly SettingManager _settingManager;
 
-        public MyServiceController(IMSService myService,ISettingService siteSettings)
+        public MyServiceController(IMSService myService)
         {
             _myService = myService;
-            _settingManager = new SettingManager(siteSettings);
         }
 
         #endregion
 
         #region MyService
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(MyServiceFilterDTO filter)
         {
-            var set = _settingManager.GetAllSettings();
-
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.FullName = set.FullName;
-            ViewBag.AvatarImage = set.AvatarImage;
-
-            var myService = _myService.GetAllMyService();
-            return View("Index", myService);
+            return View("Index",await _myService.FilterService(filter));
         }
 
         public IActionResult Add()
@@ -43,13 +34,12 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Add(MyService myService)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Add(MyServiceCreateDTO myService)
         {
             if(ModelState.IsValid)
             {
-                _myService.AddMyService(myService);
+                await _myService.AddNewService(myService);
                 return RedirectToAction("Index");
             }
 
@@ -59,26 +49,21 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add", myService);
         }
 
-        public IActionResult Edit(string id)
+        public async Task<IActionResult> Edit(long id)
         {
-            if(string.IsNullOrEmpty(id))
-                return BadRequest();
+            var myService = await _myService.GetMyServiceById(id);
 
-            var myService = _myService.GetMyServiceById(int.Parse(id));
-
-            if(myService == null)
-                return NotFound();
+            if(myService == null) return NotFound();
 
             return PartialView("Edit", myService);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Edit(MyService myService)
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(MyServiceEditDTO myService)
         {
             if(ModelState.IsValid)
             {
-                _myService.UpdateMyService(myService);
+                await _myService.EditService(myService);
                 return RedirectToAction("Index");
             }
 
@@ -88,19 +73,21 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", myService);
         }
 
-        public JsonResult Delete(string id)
+        public async Task<JsonResult> Delete(long id)
         {
-            if(id == "" || string.IsNullOrEmpty(id))
-                return Json(new { status = "error", msg = "شناسه نامعتبر است!" });
+            var result = await _myService.DeleteService(id);
 
-            var myService = _myService.GetMyServiceById(int.Parse(id));
-
-            if(myService == null)
-                return Json(new { status = "error", msg = "تجربه پیدا نشد!" });
-
-            _myService.DeleteMyService(myService.MyServiceId);
-
-            return Json(new { status = "ok", msg = "مورد پاک شد." });
+            switch(result)
+            {
+                case ServiceResult.NotFond:
+                    return Json(new { status = "error", msg = "Service not found!" });
+                case ServiceResult.Error:
+                    return Json(new { status = "error", msg = "ID not valid!" });
+                case ServiceResult.Success:
+                    return Json(new { status = "ok", msg = "Service deleted" });
+                default:
+                    return Json(new { status = "", msg = "" });
+            }
         }
 
         #endregion

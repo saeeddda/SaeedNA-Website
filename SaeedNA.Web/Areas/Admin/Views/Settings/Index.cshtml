@@ -1,7 +1,10 @@
-﻿@model SiteSettingViewModel
-@{
+﻿@{
     ViewData["Title"] = "تنظیمات";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+
+    var settings = ViewBag.Settings as Setting;
+    var personalInfo = ViewBag.PersonalInfos as PersonalInfo;
+    var seoInfo = ViewBag.Seo as Seo;
 }
 
 <section id="page-account-settings">
@@ -71,7 +74,7 @@
                                         <h6>لوگو سایت</h6>
                                         <div class="media">
                                             <a href="#">
-                                                <img src="@(Model.SiteLogo)" class="rounded mr-75" alt="profile image" height="64" width="64">
+                                                <img src="@(settings.SiteLogo)" class="rounded mr-75" alt="profile image" height="64" width="64">
                                             </a>
                                             <div class="media-body mt-25">
                                                 <div class="col-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
@@ -82,7 +85,7 @@
                                                 </div>
                                                 <div class="text-muted ml-1 mt-50 d-flex flex-column">
                                                     <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
-                                                    <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@Model.SiteLogo</span>
+                                                    <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@settings.SiteLogo</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -90,7 +93,7 @@
                                         <h6>فاو آیکون</h6>
                                         <div class="media">
                                             <a href="#">
-                                                <img src="@(Model.SiteFavIcon)" class="rounded mr-75" alt="profile image" height="64" width="64">
+                                                <img src="@(settings.SiteFavIcon)" class="rounded mr-75" alt="profile image" height="64" width="64">
                                             </a>
                                             <div class="media-body mt-25">
                                                 <div class="col-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
@@ -101,7 +104,7 @@
                                                 </div>
                                                 <div class="text-muted ml-1 mt-50 d-flex flex-column">
                                                     <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
-                                                    <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@Model.SiteFavIcon</span>
+                                                    <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@settings.SiteFavIcon</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -110,7 +113,7 @@
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <div class="controls">
-                                                        <label asp-for="SiteTitle"></label>
+                                                        <label for="@settings.SiteTitle"></label>
                                                         <input type="text" class="form-control" asp-for="SiteTitle">
                                                     </div>
                                                 </div>
@@ -130,14 +133,8 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label asp-for="SiteColor"></label>
-                                                    <select class="form-control" asp-for="SiteColor" asp-items="ViewBag.SiteColors"></select>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <div class="form-group">
                                                     <label asp-for="SiteMode"></label>
-                                                    <select class="form-control" asp-for="SiteMode" asp-items="ViewBag.SiteMode"></select>
+                                                    <select class="form-control" asp-for="SiteMode" asp-items="@Html.GetEnumSelectList(SiteMode).ToList()"></select>
                                                 </div>
                                             </div>
                                         </div>

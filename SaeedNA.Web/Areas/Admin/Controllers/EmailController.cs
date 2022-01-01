@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SaeedNA.Framework.Configuration;
-using SaeedNA.Service.Repositories;
+using SaeedNA.Data.DTOs.Contact;
+using SaeedNA.Service.Interfaces;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -11,41 +12,26 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly IEmail _email;
-        private readonly SettingManager _settingManager;
+        private readonly IContactUsService _contactUsService;
 
-        public EmailController(IEmail email,ISettingService siteSetting)
+        public EmailController(IContactUsService contactUsService)
         {
-            _email = email;
-            _settingManager = new SettingManager(siteSetting);
+            _contactUsService = contactUsService;
         }
 
         #endregion
 
         #region Email Actions
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(ContactUsFilterDTO filter)
         {
-            var set = _settingManager.GetAllSettings();
-
-            ViewBag.SiteFavIcon = set.SiteFavIcon;
-            ViewBag.SiteLogo = set.SiteLogo;
-            ViewBag.FullName = set.FullName;
-            ViewBag.AvatarImage = set.AvatarImage;
-
-            var email = _email.GetAllEmail();
-            return View("Index",email);
+            return View("Index",await _contactUsService.FilterContactUs(filter));
         }
 
-        public IActionResult Detail(string id)
+        public async Task<IActionResult> Detail(long id)
         {
-            if(string.IsNullOrEmpty(id))
-                return BadRequest();
-
-            var email = _email.GetEmailById(int.Parse(id));
-
-            if(email == null)
-                return NotFound();
+            var email = await _contactUsService.GetContactUs(id);
+            if(email == null) return NotFound();
 
             return PartialView("Detail",email);
         }

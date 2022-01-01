@@ -127,6 +127,24 @@ namespace SaeedNA.Service.Implementations
             return filter.SetPost(allEntities).SetPaging(pager);
         }
 
+        public async Task<PostEditDTO> GetPostForEdit(long postId)
+        {
+            var query = await _postRepository.GetEntityById(postId);
+            if (query == null) return null;
+
+            return new PostEditDTO
+            {
+                Title = query.Title,
+                CategoryId = query.CategoryId,
+                Image = query.Image,
+                State = query.State,
+                Description = query.Description,
+                ShortDescription = query.ShortDescription,
+                Tags = query.Tags,
+                Visit = query.Visit
+            };
+        }
+
         public async Task<Post> GetPost(long postId)
         {
             return await _postRepository.GetEntityById(postId);

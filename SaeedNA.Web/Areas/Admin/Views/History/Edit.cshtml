@@ -1,4 +1,4 @@
-﻿@model History
+﻿@model HistoryEditDTO
 
 <form asp-action="Edit" asp-controller="History" asp-area="Admin" method="post">
     @Html.AntiForgeryToken()
@@ -6,30 +6,30 @@
     <input type="hidden" asp-for="HistoryId" />
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="HistoryTitle"></label>
-            <input type="text" class="form-control" asp-for="HistoryTitle">
-            <span asp-validation-for="HistoryTitle" class="text-danger"></span>
+            <label asp-for="Title"></label>
+            <input type="text" class="form-control" asp-for="Title">
+            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="HistoryDate"></label>
-            <input type="text" class="form-control" asp-for="HistoryDate">
-            <span asp-validation-for="HistoryDate" class="text-danger"></span>
+            <label asp-for="Date"></label>
+            <input type="text" class="form-control" asp-for="Date">
+            <span asp-validation-for="Date" class="text-danger"></span>
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="HistoryDescription"></label>
-            <input type="text" class="form-control" asp-for="HistoryDescription">
-            <span asp-validation-for="HistoryDescription" class="text-danger"></span>
+            <label asp-for="Description"></label>
+            <input type="text" class="form-control" asp-for="Description">
+            <span asp-validation-for="Description" class="text-danger"></span>
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="HistoryWorkPlace"></label>
-            <input type="text" class="form-control" asp-for="HistoryWorkPlace">
-            <span asp-validation-for="HistoryWorkPlace" class="text-danger"></span>
+            <label asp-for="WorkPlace"></label>
+            <input type="text" class="form-control" asp-for="WorkPlace">
+            <span asp-validation-for="WorkPlace" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">
