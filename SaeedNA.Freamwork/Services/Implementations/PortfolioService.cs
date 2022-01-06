@@ -129,5 +129,25 @@ namespace SaeedNA.Service.Implementations
 
             return filter.SetPortfolio(allEntities).SetPaging(pager);
         }
+
+        public async Task<PortfolioEditDTO> GetPortfolioForEdit(long portfolioId)
+        {
+            var query = await _portfolioRepository.GetEntityById(portfolioId);
+
+            if (query == null) return null;
+
+            return new PortfolioEditDTO
+            {
+                Image = query.Image,
+                CategoryId = query.CategoryId,
+                ProjectAddress = query.ProjectAddress,
+                ProjectCustomer = query.ProjectCustomer,
+                ProjectLanguage= query.ProjectLanguage, 
+                ShortDescription = query.ShortDescription,
+                State = query.State,
+                Tags = query.Tags,
+                Title = query.Title
+            };
+        }
     }
 }

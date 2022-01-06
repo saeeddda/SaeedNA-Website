@@ -1,4 +1,4 @@
-﻿@model SaeedNA.Data.Entities.Contact.ContactUs
+﻿@model ContactUsShowDTO
 
 <div class="col-12">
     <div class="form-group">
@@ -25,3 +25,7 @@
     </div>
 </div>
 <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+@if (!Model.IsRead)
+{
+    <a class="btn btn-warning" onclick="markAsRead(@Model.ContactUsId)">علامت به عنوان خوانده شده</a>
+}

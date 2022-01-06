@@ -4,6 +4,8 @@ using SaeedNA.Data.Entities.Pages;
 using SaeedNA.Data.Entities.Resume;
 using SaeedNA.Data.Entities.MService;
 using SaeedNA.Data.Entities.Settings;
+using SaeedNA.Data.Entities.Contact;
+using SaeedNA.Data.Entities.Account;
 
 namespace SaeedNA.Data.Context
 {
@@ -35,5 +37,7 @@ namespace SaeedNA.Data.Context
         public DbSet<Seo> Seos { get; set; }
         public DbSet<SocialMedia> SocialMediaes { get; set; }
         public DbSet<Setting> Settings { get; set; }
+        public DbSet<ContactUs> ContactUs { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -10,9 +10,9 @@ namespace SaeedNA.Web.Controllers
     {
         #region constractor
 
-        private readonly IPersonalService _personalService;
+        private readonly IPersonalInfoService _personalService;
 
-        public HomeController(IPersonalService personalService)
+        public HomeController(IPersonalInfoService personalService)
         {
             _personalService = personalService;
         }
@@ -24,7 +24,7 @@ namespace SaeedNA.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var data = await _personalService.GetDefaultInfo();
-            return View("Index",data);
+            return View("Index", data);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

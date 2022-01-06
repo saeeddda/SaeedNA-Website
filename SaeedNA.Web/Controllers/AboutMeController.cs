@@ -14,9 +14,9 @@ namespace SaeedNA.Web.Controllers
         private readonly ISkillService _skillService;
         private readonly ICounterService _counterService;
         private readonly IMSService _myService;
-        private readonly IPersonalService _personalService;
+        private readonly IPersonalInfoService _personalService;
 
-        public AboutMeController(IHistoryService historyService, ISkillService skillService, ICounterService counterService, IMSService myService, IPersonalService personalService)
+        public AboutMeController(IHistoryService historyService, ISkillService skillService, ICounterService counterService, IMSService myService, IPersonalInfoService personalService)
         {
             _historyService = historyService;
             _skillService = skillService;

@@ -15,12 +15,12 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly IPersonalService _personalService;
+        private readonly IPersonalInfoService _personalService;
         private readonly ISeoService _seoService;
-        private readonly ISettingService _settingService;
+        private readonly ISiteSettingService _settingService;
         private readonly ISocialMediaService _socialMediaService;
 
-        public SettingsController(IPersonalService personalService, ISeoService seoService, ISettingService settingService, ISocialMediaService socialMediaService)
+        public SettingsController(IPersonalInfoService personalService, ISeoService seoService, ISiteSettingService settingService, ISocialMediaService socialMediaService)
         {
             _personalService = personalService;
             _seoService = seoService;

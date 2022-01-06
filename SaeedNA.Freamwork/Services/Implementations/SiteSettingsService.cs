@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Implementations
 {
-    public class SettingsService : ISettingService
+    public class SiteSettingsService : ISiteSettingService
     {
         private readonly IGenericRepository<Setting> _settingRepository;
 
-        public SettingsService(IGenericRepository<Setting> settingRepository)
+        public SiteSettingsService(IGenericRepository<Setting> settingRepository)
         {
             _settingRepository = settingRepository;
         }
@@ -102,11 +102,10 @@ namespace SaeedNA.Service.Implementations
             return filter.SetSetting(allEntities).SetPaging(pager);
         }
 
-        public async Task<SettingEditDTO> GetDefaultSetting()
+        public async Task<Setting> GetDefaultSetting()
         {
-            return await _settingRepository.GetQuery()
-                .Select(s => new SettingEditDTO())
-                .SingleOrDefaultAsync(s => s.IsDefault);
+            return await _settingRepository.GetQuery().AsQueryable()
+                .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
         }
     }
 }

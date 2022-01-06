@@ -90,6 +90,8 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _myServiceRepository.GetQuery().AsQueryable();
 
+            query= query.Where(s=>s.IsDelete == filter.IsDelete); 
+
             if (!string.IsNullOrEmpty(filter.Title))
                 query = query.Where(s => EF.Functions.Like(s.Title,$"%{filter.Title}%"));
 
@@ -108,6 +110,7 @@ namespace SaeedNA.Service.Implementations
 
             return new MyServiceEditDTO
             {
+                MyServiceId = query.Id,
                 Title = query.Title,
                 Text = query.Text,
                 Icon = query.Icon

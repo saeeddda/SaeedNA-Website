@@ -13,7 +13,6 @@
             <div class="card-body">
                 <p>لیست تمامی نوشته های ثبت شده در سایت.</p>
             </div>
-            <!-- table hover -->
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead>
@@ -40,7 +39,7 @@
                                 <td>@item.CreateDate.ToShamsiDate()</td>
                                 <td>@item.Visit</td>
                                 <td>
-                                    <a class="pl-2" href="/post/@(item.Id)/@(item.Title)">
+                                    <a class="pl-2" href="/post/@(item.Id)/@(item.Title.Replace(" ","-"))">
                                         <i class="badge-circle badge-circle-light-secondary bx bx-show font-medium-1"></i>
                                     </a>
                                     <a class="pl-2" asp-action="Edit" asp-controller="Post" asp-area="Admin" asp-route-id="@item.Id">
@@ -56,6 +55,7 @@
                 </table>
             </div>
         </div>
+        <partial name="_Pagination" model="Model.GetCurrentPage()"/>
     </div>
 </div>
 

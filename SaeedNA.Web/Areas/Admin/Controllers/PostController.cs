@@ -33,11 +33,13 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         #region Post Actions
 
+        [HttpGet]
         public async Task<IActionResult> Index(PostFilterDTO filter)
         {
             return View("Index", await _post.FilterPost(filter));
         }
 
+        [HttpGet]
         public async Task<IActionResult> Add()
         {
 
@@ -94,6 +96,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return View("Add", post);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
 
@@ -154,6 +157,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return View("Edit", post);
         }
 
+        [HttpPost]
         public async Task<JsonResult> Delete(long id)
         {
             var result = await _post.DeletePost(id);

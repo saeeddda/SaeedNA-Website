@@ -24,11 +24,13 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         #region ServiceCounter
 
+        [HttpGet]
         public async Task<IActionResult> Index(CounterFilterDTO filter)
         {
             return View("Index", await _counterService.FilterCounter(filter));
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
             return PartialView();
@@ -49,6 +51,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add", counter);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
             var serviceCounter = await _counterService.GetCounterById(id);
@@ -73,6 +76,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", counter);
         }
 
+        [HttpGet]
         public async Task<JsonResult> Delete(long id)
         {
             var result = await _counterService.DeleteCounter(id);

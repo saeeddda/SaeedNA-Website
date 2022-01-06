@@ -16,13 +16,13 @@
                 <div class="col-12 col-md-6 col-lg-6 col-xl-4 mb-30">
                     <article class="post-container">
                         <div class="post-thumb">
-                            <a href="/post/@item.Id/@item.Title" class="d-block position-relative overflow-hidden">
-                                <img src="@item.Image" class="img-fluid" alt="@item.Title">
+                            <a href="/post/@item.Id/@item.Title.Replace(" ","-")" class="d-block position-relative overflow-hidden">
+                                <img src="@(PathExtension.UploadPath + item.Image)" class="img-fluid" alt="@item.Title">
                             </a>
                         </div>
                         <div class="post-content">
                             <div class="entry-header">
-                                <h3><a href="/post/@item.Id/@item.Title">@item.Title</a></h3>
+                                <h3><a href="/post/@item.Id/@item.Title.Replace(" ","-")">@item.Title</a></h3>
                             </div>
                             <div class="entry-content open-sans-font">
                                 <p>@item.ShortDescription</p>

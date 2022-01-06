@@ -1,5 +1,6 @@
 ﻿using AspNetCore.ReCaptcha;
 using AspNetCore.SEOHelper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +33,29 @@ namespace SaeedNA.Web
         {
             services.AddControllersWithViews();
 
+            #region IoC
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IContactUsService, ContactUsService>();
+            services.AddScoped<ICounterService, CounterService>();
+            services.AddScoped<IHistoryService, HistoryService>();
+            services.AddScoped<IMSService, MyServiceService>();
+            services.AddScoped<IPersonalInfoService, PersonalInfoService>();
+            services.AddScoped<IPortfolioService, PortfolioService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ISeoService, SeoService>();
+            services.AddScoped<ISiteSettingService, SiteSettingsService>();
+            services.AddScoped<ISkillService, SkillService>();
+            services.AddScoped<ISocialMediaService, SocialMediaService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPasswordHelper, PasswordHelper>();
+            services.AddScoped<IEmailSender, EmailSender>();
+
+            services.AddHttpContextAccessor();
+
+            #endregion
+
             #region DBContext
 
             services.AddDbContext<SaeedNAContext>(options =>
@@ -50,11 +74,19 @@ namespace SaeedNA.Web
 
             #endregion
 
-            #region IoC
+            #region Authentication
 
-            services.AddScoped(typeof(IGenericRepository<>),typeof(GenericRepository<>));
-            services.AddScoped<IPasswordHelper, PasswordHelper>();
-            services.AddScoped<IEmailSender, EmailSender>();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignInScheme= CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/login";
+                options.LogoutPath = "/log-out";
+                options.ExpireTimeSpan = TimeSpan.FromDays(7);
+            });
 
             #endregion
 
@@ -89,7 +121,7 @@ namespace SaeedNA.Web
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if(env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

@@ -7,7 +7,7 @@ namespace SaeedNA.Data.DTOs.Resume
     public class SkillFilterDTO : BasePaging
     {
         public string Title { get; set; }
-
+        public bool IsDelete { get; set; }
         public List<Skill> Skills { get; set; }
 
         public SkillFilterDTO SetSkill(List<Skill> skills)

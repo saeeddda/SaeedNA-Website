@@ -93,7 +93,9 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _historyRepository.GetQuery().AsQueryable();
 
-            if(filter.IsDescending)
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
+
+            if (filter.IsDescending)
                 query = query.OrderByDescending(s => s.Date);
 
             if (!string.IsNullOrEmpty(filter.Title))
@@ -117,7 +119,8 @@ namespace SaeedNA.Service.Implementations
                 Title = query.Title,
                 Date = query.Date,
                 Description = query.Description,
-                WorkPlace = query.WorkPlace
+                WorkPlace = query.WorkPlace,
+                HistoryId = query.Id
             };
         }
 

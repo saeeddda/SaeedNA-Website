@@ -26,5 +26,8 @@ namespace SaeedNA.Data.DTOs.Contact
         [Display(Name = "پیام")]
         [Required(ErrorMessage = "لطفاً {0} را وارد کنید")]
         public string Text { get; set; }
+
+        [Display(Name = "خوانده شده؟")]
+        public bool IsRead { get; set; }
     }
 }

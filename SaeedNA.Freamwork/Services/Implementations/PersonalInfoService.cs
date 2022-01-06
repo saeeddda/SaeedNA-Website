@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Implementations
 {
-    public class PersonalService : IPersonalService
+    public class PersonalInfoService : IPersonalInfoService
     {
         private readonly IGenericRepository<PersonalInfo> _personalInfoRepository;
 
-        public PersonalService(IGenericRepository<PersonalInfo> personalInfoRepository)
+        public PersonalInfoService(IGenericRepository<PersonalInfo> personalInfoRepository)
         {
             _personalInfoRepository = personalInfoRepository;
         }
@@ -119,11 +119,10 @@ namespace SaeedNA.Service.Implementations
             return filter.SetPersonalInfo(allEntities).SetPaging(pager);
         }
 
-        public async Task<PersonalInfoEditDTO> GetDefaultInfo()
+        public async Task<PersonalInfo> GetDefaultInfo()
         {
-            return await _personalInfoRepository.GetQuery()
-                .Select(s => new PersonalInfoEditDTO())
-                .SingleOrDefaultAsync(s => s.IsDefault);
+            return await _personalInfoRepository.GetQuery().AsQueryable()
+                .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
         }
     }
 }

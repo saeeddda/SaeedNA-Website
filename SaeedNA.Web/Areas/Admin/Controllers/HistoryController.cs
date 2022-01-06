@@ -24,11 +24,13 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         #region History
 
+        [HttpGet]
         public async Task<IActionResult> Index(HistoryFilterDTO filter)
         {
             return View("Index",await _historyService.FilterHistory(filter) );
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
             return PartialView();
@@ -49,6 +51,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add", history);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
             var history = await _historyService.GetHistoryById(id);
@@ -73,6 +76,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", history);
         }
 
+        [HttpPost]
         public async Task<JsonResult> Delete(long id)
         {
             var result = await _historyService.DeleteHistory(id);

@@ -73,7 +73,7 @@ namespace SaeedNA.Service.Implementations
             try
             {
                 var entity = await _counterRepository.GetEntityById(counterId);
-                if(entity == null) return ServiceResult.NotFond;
+                if (entity == null) return ServiceResult.NotFond;
 
                 var result = _counterRepository.DeleteEntity(entity);
                 await _counterRepository.SaveChanges();
@@ -90,24 +90,27 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _counterRepository.GetQuery().AsQueryable();
 
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
+
             if (!string.IsNullOrEmpty(filter.Title))
                 query = query.Where(s => EF.Functions.Like(s.Title, $"%{filter.Title}%"));
 
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
-            var allEntities =  await query.Paging(pager).ToListAsync();
+            var allEntities = await query.Paging(pager).ToListAsync();
 
             return filter.SetCounter(allEntities).SetPaging(pager);
         }
 
         public async Task<CounterEditDTO> GetCounterById(long counterId)
         {
-            var query = await _counterRepository.GetQuery()
+            var query = await _counterRepository.GetQuery().AsQueryable()
                 .SingleOrDefaultAsync(s => s.Id == counterId && !s.IsDelete);
 
             if (query == null) return null;
 
             return new CounterEditDTO
             {
+                CounterId = query.Id,
                 Title = query.Title,
                 Number = query.Number,
                 Icon = query.Icon

@@ -97,18 +97,19 @@ namespace SaeedNA.Service.Implementations
 
         public async Task<PostFilterDTO> FilterPost(PostFilterDTO filter)
         {
-            var query = _postRepository.GetQuery().AsQueryable();
+            var query = _postRepository.GetQuery().Include(s=>s.Category).AsQueryable();
+
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
 
             switch (filter.State)
             {
                 case PagesPublishState.All:
-                    query = query.Where(s =>  s.IsDelete == filter.IsDelete);
                     break;
                 case PagesPublishState.Draft:
-                    query = query.Where(s => s.State == PostPublishingState.Draft && s.IsDelete == filter.IsDelete);
+                    query = query.Where(s => s.State == PostPublishingState.Draft);
                     break;
                 case PagesPublishState.Published:
-                    query = query.Where(s => s.State == PostPublishingState.Published && s.IsDelete == filter.IsDelete);
+                    query = query.Where(s => s.State == PostPublishingState.Published);
                     break;
             }
 
@@ -118,7 +119,7 @@ namespace SaeedNA.Service.Implementations
             if (!string.IsNullOrEmpty(filter.Title))
                 query = query.Where(s => EF.Functions.Like(s.Title, $"%{filter.Title}%"));
 
-            if (filter.CategoryId >= 0)
+            if (filter.CategoryId != 0)
                 query = query.Where(s => s.CategoryId == filter.CategoryId);
 
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
@@ -141,13 +142,36 @@ namespace SaeedNA.Service.Implementations
                 Description = query.Description,
                 ShortDescription = query.ShortDescription,
                 Tags = query.Tags,
-                Visit = query.Visit
+                Visit = query.Visit,
+                PostId = query.Id
             };
         }
 
-        public async Task<Post> GetPost(long postId)
+        public async Task<PostShowDTO> GetPostShow(long postId)
         {
-            return await _postRepository.GetEntityById(postId);
+            var query = await _postRepository.GetQuery()
+                .Include(s => s.Category).AsQueryable()
+                .SingleOrDefaultAsync(s=>s.Id == postId && !s.IsDelete);
+
+            if(query == null) return null;
+
+            query.Visit += 1;
+
+            _postRepository.EditEntity(query);
+            await _postRepository.SaveChanges();
+
+            return new PostShowDTO {
+                PostId = query.Id,
+                Title = query.Title,
+                CategoryName = query.Category.Name,
+                Image = query.Image,
+                ShortDescription = query.ShortDescription,
+                Description = query.Description,
+                Tags = query.Tags,
+                Visit = query.Visit,
+                CreateDate = query.CreateDate,
+                LastUpdateDate = query.LastUpdateDate
+            };
         }
     }
 }

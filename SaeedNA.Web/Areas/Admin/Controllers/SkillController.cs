@@ -24,11 +24,13 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         #region Skill Actions
 
+        [HttpGet]
         public async Task<IActionResult> Index(SkillFilterDTO filter)
         {
             return View("Index", await _skillService.FilterSkill(filter));
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
             return PartialView();
@@ -53,12 +55,12 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add",skill);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
-            var skill = _skillService.GetSkillById(id);
+            var skill = await _skillService.GetSkillById(id);
 
-            if(skill == null)
-                return NotFound();
+            if(skill == null) return NotFound();
 
             return PartialView("Edit",skill);
         }
@@ -81,6 +83,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", skill);
         }
 
+        [HttpPost]
         public async Task<JsonResult> Delete(long id)
         {
             var result = await _skillService.DeleteSkill(id);

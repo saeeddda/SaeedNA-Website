@@ -2,15 +2,16 @@
 using System.Threading.Tasks;
 using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Site;
+using SaeedNA.Data.Entities.Settings;
 
 namespace SaeedNA.Service.Interfaces
 {
-    public interface IPersonalService:IAsyncDisposable
+    public interface IPersonalInfoService:IAsyncDisposable
     {
         Task<ServiceResult> AddNewInfo(PersonalInfoCreateDTO info);
         Task<ServiceResult> EditInfo(PersonalInfoEditDTO info);
         Task<ServiceResult> DeleteInfo(long infoId);
         Task<PersonalInfoFilterDTO> FilterInfo(PersonalInfoFilterDTO filter);
-        Task<PersonalInfoEditDTO> GetDefaultInfo();
+        Task<PersonalInfo> GetDefaultInfo();
     }
 }

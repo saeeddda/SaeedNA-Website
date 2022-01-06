@@ -88,6 +88,11 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _skillRepository.GetQuery().AsQueryable();
 
+            query = query.Where(s =>s.IsDelete == filter.IsDelete);
+
+            if (!string.IsNullOrEmpty(filter.Title))
+                query = query.Where(s => EF.Functions.Like(s.Title, $"%{filter.Title}%"));
+
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
             var allEntities = await query.Paging(pager).ToListAsync();
 
@@ -96,10 +101,11 @@ namespace SaeedNA.Service.Implementations
 
         public async Task<SkillEditDTO> GetSkillById(long skillId)
         {
-            var query = await _skillRepository.GetQuery()
+            var query = await _skillRepository.GetQuery().AsQueryable()
                 .SingleOrDefaultAsync(s => s.Id == skillId && !s.IsDelete);
             return new SkillEditDTO
             {
+                SkillId = query.Id,
                 Title = query.Title,
                 Progress = query.Progress
             };

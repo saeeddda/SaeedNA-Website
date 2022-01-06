@@ -13,11 +13,11 @@ namespace SaeedNA.Web.Controllers
     {
         #region constractor
 
-        private readonly IPersonalService _personalInfoService;
+        private readonly IPersonalInfoService _personalInfoService;
         private readonly IContactUsService _contactUsService;
         private readonly ISocialMediaService _socialMediaService;
 
-        public ContactUsController(IPersonalService personalInfoService, IContactUsService contactUsService, ISocialMediaService socialMediaService)
+        public ContactUsController(IPersonalInfoService personalInfoService, IContactUsService contactUsService, ISocialMediaService socialMediaService)
         {
             _personalInfoService = personalInfoService;
             _contactUsService = contactUsService;

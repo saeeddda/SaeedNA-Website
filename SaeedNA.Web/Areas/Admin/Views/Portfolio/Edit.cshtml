@@ -1,33 +1,28 @@
-﻿@model Post
+﻿@model PortfolioEditDTO
 @{
-    ViewData["Title"] = "ویرایش نوشته";
+    ViewData["Title"] = "ویرایش نمونه کار";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <section id="post-new">
     <div class="card">
         <div class="card-body">
-            <form asp-action="Edit" asp-controller="Post" asp-area="Admin" method="post" enctype="multipart/form-data">
+            <form asp-action="Edit" asp-controller="Portfolio" asp-area="Admin" method="post" enctype="multipart/form-data">
                 @Html.AntiForgeryToken()
-                <input type="hidden" asp-for="PostId" />
-                <input type="hidden" asp-for="PostCreateDate" />
-                <input type="hidden" asp-for="PostVisit" />
+                <input type="hidden" asp-for="PortfolioId" />
                 <div class="row">
                     <div class="col-xl-9">
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label asp-for="PostTitle"></label>
-                                    <input class="form-control" asp-for="PostTitle" type="text">
-                                    <span class="text-danger" asp-validation-for="PostTitle"></span>
+                                    <label asp-for="Title"></label>
+                                    <input class="form-control" asp-for="Title" type="text">
+                                    <span class="text-danger" asp-validation-for="Title"></span>
                                 </div>
                             </div>
                             <div class="col-12 mb-1">
-                                <label asp-for="PostShortDescription"></label>
-                                <textarea class="form-control" asp-for="PostShortDescription" rows="5"></textarea>
-                            </div>
-                            <div class="col-12">
-                                <textarea asp-for="PostDescription" rows="10"></textarea>
+                                <label asp-for="ShortDescription"></label>
+                                <textarea class="form-control" asp-for="ShortDescription" rows="5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -36,8 +31,8 @@
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <label for="post-image">تصویر یا ویدئو نوشته</label>
-                                        <input type="text" class="form-control" asp-for="PostFile" readonly>
+                                        <label for="post-image">تصویر نوشته</label>
+                                        <input type="text" class="form-control" asp-for="Image" readonly>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="media py-1">
@@ -63,24 +58,19 @@
                                     <select class="form-control" asp-for="CategoryId" asp-items="ViewBag.Categories"></select>
                                 </div>
                             </div>
-                            <div class="col-12">
-                                <label>نوع نوشته</label>
-                                <select class="form-control" asp-for="PostType">
-                                    <option value="article">مقاله</option>
-                                    <option value="project">پروژه</option>
-                                </select>
-                            </div>
+                            
                             <div class="col-12 my-1">
                                 <div class="custom-control custom-switch custom-control-inline">
                                     <span class="switch-label w-100 ">منتشر شده ؟</span>
-                                    <input asp-for="IsPublished" type="checkbox" class="custom-control-input" checked>
+                                    <input asp-for="State" type="checkbox" class="custom-control-input" checked>
+                                    <select asp-for="State" asp-items="Html.GetEnumSelectList<PostPublishingState>()"></select>
                                     <label class="custom-control-label mr-1" for="IsPublished"></label>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label asp-for="PostTags"></label>
-                                    <input class="form-control" asp-for="PostTags" placeholder="با کاما از هم جدا کنید" type="text">
+                                    <label asp-for="Tags"></label>
+                                    <input class="form-control" asp-for="Tags" placeholder="با کاما از هم جدا کنید" type="text">
                                 </div>
                             </div>
                             <div class="col-12">

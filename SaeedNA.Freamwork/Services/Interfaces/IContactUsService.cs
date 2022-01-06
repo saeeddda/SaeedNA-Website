@@ -9,7 +9,8 @@ namespace SaeedNA.Service.Interfaces
     public interface IContactUsService:IAsyncDisposable
     {
         Task<ServiceResult> AddContactUs(ContactUsCreateDTO contactUs);
+        Task<ServiceResult> MarkAsRead(long contactUsId);
         Task<ContactUsFilterDTO> FilterContactUs(ContactUsFilterDTO filter);
-        Task<ContactUs> GetContactUs(long id);
+        Task<ContactUsShowDTO> GetContactUs(long contactUsId);
     }
 }

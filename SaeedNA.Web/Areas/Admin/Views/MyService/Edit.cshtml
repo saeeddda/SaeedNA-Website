@@ -6,16 +6,23 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="Title">عنوان</label>
+            <label asp-for="Title"></label>
             <input type="text" class="form-control" asp-for="Title">
             <span asp-validation-for="Title" class="text-danger"></span>
         </div>
     </div>
     <div class="col-12">
         <div class="form-group">
-            <label asp-for="Text">متن خدمت</label>
+            <label asp-for="Text"></label>
             <textarea class="form-control" asp-for="Text" rows="5"></textarea>
             <span asp-validation-for="Text" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="Icon"></label>
+            <input type="text" class="form-control" asp-for="Icon"> 
+            <span asp-validation-for="Icon" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">

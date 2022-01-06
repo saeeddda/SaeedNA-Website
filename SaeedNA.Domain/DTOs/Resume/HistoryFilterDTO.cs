@@ -8,6 +8,7 @@ namespace SaeedNA.Data.DTOs.Resume
     {
         public string Title { get; set; }
         public bool IsDescending { get; set; }
+        public bool IsDelete { get; set; }
         public List<History> Histories { get; set; }
 
         public HistoryFilterDTO SetHistory(List<History> histories)

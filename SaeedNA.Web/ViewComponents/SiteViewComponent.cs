@@ -8,11 +8,11 @@ namespace SaeedNA.Web.ViewComponents
 
     public class SiteHeaderViewComponent:ViewComponent
     {
-        private readonly ISettingService _settingService;
+        private readonly ISiteSettingService _settingService;
         private readonly ISeoService _seoService;
-        private readonly IPersonalService _personalService;
+        private readonly IPersonalInfoService _personalService;
 
-        public SiteHeaderViewComponent(ISettingService settingService, ISeoService seoService, IPersonalService personalService)
+        public SiteHeaderViewComponent(ISiteSettingService settingService, ISeoService seoService, IPersonalInfoService personalService)
         {
             _settingService = settingService;
             _seoService = seoService;

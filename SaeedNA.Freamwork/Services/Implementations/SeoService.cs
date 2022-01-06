@@ -108,11 +108,10 @@ namespace SaeedNA.Service.Implementations
             return filter.SetSeo(allEntities).SetPaging(pager);
         }
 
-        public async Task<SeoEditDTO> GetDefaultSeo()
+        public async Task<Seo> GetDefaultSeo()
         {
-            return await _seoRepository.GetQuery()
-                .Select(s => new SeoEditDTO())
-                .SingleOrDefaultAsync(s => s.IsDefault);
+            return await _seoRepository.GetQuery().AsQueryable()
+                .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
         }
     }
 }

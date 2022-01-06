@@ -100,6 +100,8 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _categoryRepository.GetQuery().AsQueryable();
 
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
+
             if (!string.IsNullOrEmpty(filter.Name))
                 query = query.Where(s => EF.Functions.Like(s.Name, $"%{filter.Name}%"));
 

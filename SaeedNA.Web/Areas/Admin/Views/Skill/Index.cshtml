@@ -22,14 +22,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var item in Model.Skills)
+                        @foreach (var item in Model.Skills)
                         {
                             <tr>
                                 <td scope="row">@item.Id</td>
                                 <td>@item.Title</td>
                                 <td>
                                     <div class="progress progress-bg progress-bar-primary">
-                                        <div class="progress-bar progress-label" role="progressbar" aria-valuenow="@item.SkillProgress" aria-valuemin="0" aria-valuemax="100" style="width:@(item.SkillProgress)%;">@(item.SkillProgress)%</div>
+                                        <div class="progress-bar progress-label" role="progressbar" aria-valuenow="@item.Progress" aria-valuemin="0" aria-valuemax="100" style="width:@(item.Progress)%;">@(item.Progress)%</div>
                                     </div>
                                 </td>
                                 <td>
@@ -46,6 +46,7 @@
                 </table>
             </div>
         </div>
+        <partial name="_Pagination" model="Model.GetCurrentPage()" />
     </div>
 </div>
 
@@ -60,70 +61,68 @@
                 </button>
             </div>
             <div class="modal-body" id="modal-body">
-
             </div>
         </div>
     </div>
 </div>
 <!-- modal -->
-
 @section Scripts{
-    <script>
-        function addNewSkill() {
-            $.get("/Admin/Skill/Add", function (result) {
-                $("#modal-title").html("افزودن مهارت");
-                $("#modal-body").html(result);
-                $("#skill-modal").modal();
-            });
-        }
-        function editSkill(id) {
-            $.get("/Admin/Skill/Edit/" + id, function (result) {
-                $("#modal-title").html("ویرایش مهارت");
-                $("#modal-body").html(result);
-                $("#skill-modal").modal();
-            });
-        }
-        function deleteSkill(id) {
-            Swal.fire({
-                title: "آیا شما مطمئن هستید ؟",
-                text: "درصورت حذف شدن قابل برگشت نیست!",
-                type: "warning",
-                showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "بله! مطمئن هستم.",
-                confirmButtonClass: "btn btn-primary",
-                cancelButtonText: "لغو کن",
-                cancelButtonClass: "btn btn-danger ml-1",
-                buttonsStyling: !1
-            }).then(function (t) {
-                if (t.value) {
-                    $.post("/Admin/Skill/Delete/" + id, function (result) {
-                        if (result.status === "ok") {
-                            setTimeout(function () {
-                                location.reload();
-                            }, 300);
-                        } else if (result.status === "error") {
-                            Swal.fire({
-                                title: "اشکال در حذف!",
-                                text: "در هنگام حذف با خطایی مواجه شدیم.",
-                                type: "error",
-                                confirmButtonText: "تائید",
-                                confirmButtonClass: "btn btn-success"
-                            })
-                        }
-                    });
-                }
-                else if (t.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "لغو شد",
-                        text: "درخواست لغو شد. اطلاعات شما ایمن است",
-                        type: "error",
-                        confirmButtonText: "تائید",
-                        confirmButtonClass: "btn btn-success"
-                    })
-                }
-            });
-        }
-    </script>
+<script>
+    function addNewSkill() {
+        $.get("/Admin/Skill/Add", function (result) {
+            $("#modal-title").html("افزودن مهارت");
+            $("#modal-body").html(result);
+            $("#skill-modal").modal();
+        });
+    }
+    function editSkill(id) {
+        $.get("/Admin/Skill/Edit/" + id, function (result) {
+            $("#modal-title").html("ویرایش مهارت");
+            $("#modal-body").html(result);
+            $("#skill-modal").modal();
+        });
+    }
+    function deleteSkill(id) {
+        Swal.fire({
+            title: "آیا شما مطمئن هستید ؟",
+            text: "درصورت حذف شدن قابل برگشت نیست!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "بله! مطمئن هستم.",
+            confirmButtonClass: "btn btn-primary",
+            cancelButtonText: "لغو کن",
+            cancelButtonClass: "btn btn-danger ml-1",
+            buttonsStyling: !1
+        }).then(function (t) {
+            if (t.value) {
+                $.post("/Admin/Skill/Delete/" + id, function (result) {
+                    if (result.status === "ok") {
+                        setTimeout(function () {
+                            location.reload();
+                        }, 300);
+                    } else if (result.status === "error") {
+                        Swal.fire({
+                            title: "اشکال در حذف!",
+                            text: "در هنگام حذف با خطایی مواجه شدیم.",
+                            type: "error",
+                            confirmButtonText: "تائید",
+                            confirmButtonClass: "btn btn-success"
+                        })
+                    }
+                });
+            }
+            else if (t.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: "لغو شد",
+                    text: "درخواست لغو شد. اطلاعات شما ایمن است",
+                    type: "error",
+                    confirmButtonText: "تائید",
+                    confirmButtonClass: "btn btn-success"
+                })
+            }
+        });
+    }
+</script>
 }

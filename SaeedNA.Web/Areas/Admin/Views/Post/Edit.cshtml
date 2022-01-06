@@ -36,6 +36,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label for="post-image">تصویر نوشته</label>
+                                        <img src="@(PathExtension.UploadPath + Model.Image)" class="d-block mw-100" />
                                         <input type="text" class="form-control" asp-for="Image" readonly>
                                     </div>
                                     <div class="col-md-12">
@@ -44,12 +45,8 @@
                                                 <fieldset id="upload-field">
                                                     <label for="file" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
                                                         <span>بارگذاری فایل</span>
-                                                        <input id="file" name="file" type="file" hidden>
+                                                        <input id="file" name="file" type="file" onchange="getImage(this)" hidden>
                                                     </label>
-                                                    <button id="resetUpload" class="ml-1 btn btn-sm btn-light-secondary">بازنشانی</button>
-                                                    <div id="loader" class="ml-1">
-
-                                                    </div>
                                                 </fieldset>
                                             </div>
                                         </div>
@@ -62,13 +59,10 @@
                                     <select class="form-control" asp-for="CategoryId" asp-items="ViewBag.Categories"></select>
                                 </div>
                             </div>
-
-                            <div class="col-12 my-1">
-                                <div class="custom-control custom-switch custom-control-inline">
-                                    <span class="switch-label w-100 ">منتشر شده ؟</span>
-                                    <input asp-for="State" type="checkbox" class="custom-control-input" checked>
-                                    <select asp-for="State" asp-items="Html.GetEnumSelectList<PostPublishingState>()"></select>
-                                    <label class="custom-control-label mr-1" for="IsPublished"></label>
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label asp-for="State">وضعیت</label>
+                                    <select class="form-control" asp-for="State" asp-items="Html.GetEnumSelectList<PostPublishingState>()"></select>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -93,7 +87,7 @@
 @section Scripts{
     <script src="~/admin/js/ckeditor/ckeditor.js"></script>
     <script>
-        CKEDITOR.replace('PostDescription', {
+        CKEDITOR.replace('Description', {
             language: 'fa'
         });
 
@@ -127,6 +121,18 @@
         function removeFile() {
             document.getElementById("PostFile").value = "";
             document.getElementById("select-files").value = "";
+        }
+
+        function getImage(input){
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                  $('#post_image').attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
         }
     </script>
 }

@@ -7,6 +7,7 @@ namespace SaeedNA.Data.DTOs.Pages
     public class CategoryFilterDTO : BasePaging
     {
         public string Name { get; set; }
+        public bool IsDelete { get; set; }
 
         public List<Category> Categories { get; set; }
 

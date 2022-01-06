@@ -10,7 +10,6 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize]
-    [Route("category")]
     public class CategoryController : Controller
     {
         #region Ctor
@@ -26,22 +25,23 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         #region Category Actions
 
-        [HttpGet("list")]
+        [HttpGet]
         public async Task<IActionResult> Index(CategoryFilterDTO filter)
         {
+            //filter.IsDelete = false;
             return View("Index", await _categoryService.FilterCategory(filter));
         }
 
-        [HttpGet("add")]
+        [HttpGet]
         public IActionResult Add()
         {
             return PartialView();
         }
 
-        [HttpPost("add"), ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(CategoryCreateDTO category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _categoryService.AddNewCategory(category);
                 return RedirectToAction("Index");
@@ -53,20 +53,20 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add", category);
         }
 
-        [HttpGet("edit")]
+        [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
-            var cat = await _categoryService.EditCategoryById(Convert.ToInt64(id));
+            var cat = await _categoryService.EditCategoryById(id);
 
-            if(cat == null) return NotFound();
+            if (cat == null) return NotFound();
 
             return PartialView("Edit", cat);
         }
 
-        [HttpPost("edit"), ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CategoryEditDTO category)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 await _categoryService.EditCategory(category);
                 return RedirectToAction("Index");
@@ -78,12 +78,12 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", category);
         }
 
-        [HttpPost("delete")]
+        [HttpPost]
         public async Task<JsonResult> Delete(long id)
         {
             var result = await _categoryService.DeleteCategory(id);
 
-            switch(result)
+            switch (result)
             {
                 case ServiceResult.NotFond:
                     return Json(new { status = "error", msg = "Category not found!" });

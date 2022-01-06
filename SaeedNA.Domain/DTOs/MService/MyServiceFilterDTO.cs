@@ -7,6 +7,7 @@ namespace SaeedNA.Data.DTOs.MService
     public class MyServiceFilterDTO : BasePaging
     {
         public string Title { get; set; }
+        public bool  IsDelete { get; set; }
 
         public List<MyService> MyServices { get; set; }
 

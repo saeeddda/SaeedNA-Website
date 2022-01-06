@@ -22,7 +22,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var item in Model.MyServices)
+                        @foreach (var item in Model.MyServices)
                         {
                             <tr>
                                 <td scope="row">@item.Id</td>
@@ -42,6 +42,7 @@
                 </table>
             </div>
         </div>
+        <partial name="_Pagination" model="Model.GetCurrentPage()" />
     </div>
 </div>
 
@@ -56,70 +57,68 @@
                 </button>
             </div>
             <div class="modal-body" id="modal-body">
-
             </div>
         </div>
     </div>
 </div>
 <!-- modal -->
-
 @section Scripts{
-    <script>
-        function addNewMyService() {
-            $.get("/Admin/MyService/Add", function (result) {
-                $("#modal-title").html("افزودن تاریخچه");
-                $("#modal-body").html(result);
-                $("#myservice-modal").modal();
-            });
-        }
-        function editMyService(id) {
-            $.get("/Admin/MyService/Edit/" + id, function (result) {
-                $("#modal-title").html("ویرایش تاریخچه");
-                $("#modal-body").html(result);
-                $("#myservice-modal").modal();
-            });
-        }
-        function deleteMyService(id) {
-            Swal.fire({
-                title: "آیا شما مطمئن هستید ؟",
-                text: "درصورت حذف شدن قابل برگشت نیست!",
-                type: "warning",
-                showCancelButton: !0,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "بله! مطمئن هستم.",
-                confirmButtonClass: "btn btn-primary",
-                cancelButtonText: "لغو کن",
-                cancelButtonClass: "btn btn-danger ml-1",
-                buttonsStyling: !1
-            }).then(function (t) {
-                if (t.value) {
-                    $.post("/Admin/MyService/Delete/" + id, function (result) {
-                        if (result.status === "ok") {
-                            setTimeout(function () {
-                                location.reload();
-                            }, 300);
-                        } else if (result.status === "error") {
-                            Swal.fire({
-                                title: "اشکال در حذف!",
-                                text: "در هنگام حذف با خطایی مواجه شدیم.",
-                                type: "error",
-                                confirmButtonText: "تائید",
-                                confirmButtonClass: "btn btn-success"
-                            })
-                        }
-                    });
-                }
-                else if (t.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: "لغو شد",
-                        text: "درخواست لغو شد. اطلاعات شما ایمن است",
-                        type: "error",
-                        confirmButtonText: "تائید",
-                        confirmButtonClass: "btn btn-success"
-                    })
-                }
-            });
-        }
-    </script>
+<script>
+    function addNewMyService() {
+        $.get("/Admin/MyService/Add", function (result) {
+            $("#modal-title").html("افزودن تاریخچه");
+            $("#modal-body").html(result);
+            $("#myservice-modal").modal();
+        });
+    }
+    function editMyService(id) {
+        $.get("/Admin/MyService/Edit/" + id, function (result) {
+            $("#modal-title").html("ویرایش تاریخچه");
+            $("#modal-body").html(result);
+            $("#myservice-modal").modal();
+        });
+    }
+    function deleteMyService(id) {
+        Swal.fire({
+            title: "آیا شما مطمئن هستید ؟",
+            text: "درصورت حذف شدن قابل برگشت نیست!",
+            type: "warning",
+            showCancelButton: !0,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "بله! مطمئن هستم.",
+            confirmButtonClass: "btn btn-primary",
+            cancelButtonText: "لغو کن",
+            cancelButtonClass: "btn btn-danger ml-1",
+            buttonsStyling: !1
+        }).then(function (t) {
+            if (t.value) {
+                $.post("/Admin/MyService/Delete/" + id, function (result) {
+                    if (result.status === "ok") {
+                        setTimeout(function () {
+                            location.reload();
+                        }, 300);
+                    } else if (result.status === "error") {
+                        Swal.fire({
+                            title: "اشکال در حذف!",
+                            text: "در هنگام حذف با خطایی مواجه شدیم.",
+                            type: "error",
+                            confirmButtonText: "تائید",
+                            confirmButtonClass: "btn btn-success"
+                        })
+                    }
+                });
+            }
+            else if (t.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: "لغو شد",
+                    text: "درخواست لغو شد. اطلاعات شما ایمن است",
+                    type: "error",
+                    confirmButtonText: "تائید",
+                    confirmButtonClass: "btn btn-success"
+                })
+            }
+        });
+    }
+</script>
 }

@@ -24,11 +24,13 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         #region MyService
 
+        [HttpGet]
         public async Task<IActionResult> Index(MyServiceFilterDTO filter)
         {
             return View("Index",await _myService.FilterService(filter));
         }
 
+        [HttpGet]
         public IActionResult Add()
         {
             return PartialView();
@@ -49,6 +51,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Add", myService);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Edit(long id)
         {
             var myService = await _myService.GetMyServiceById(id);
@@ -73,6 +76,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             return PartialView("Edit", myService);
         }
 
+        [HttpPost]
         public async Task<JsonResult> Delete(long id)
         {
             var result = await _myService.DeleteService(id);

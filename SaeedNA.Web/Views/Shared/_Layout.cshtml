@@ -1,5 +1,5 @@
 ﻿@{
-    var settings = ViewBag.SiteSettings as Setting;
+    //var settings = ViewBag.SiteSettings as Setting;
     var controller = ViewContext.RouteData.Values["Controller"].ToString().ToLower();
     var action = ViewContext.RouteData.Values["Action"].ToString().ToLower();
 
@@ -13,7 +13,7 @@
     <head>
         @await Component.InvokeAsync("SiteHeader")
     </head>
-    <body class="@controller @(settings.SiteMode)">
+    <body class="@controller light">
         @await Component.InvokeAsync("SiteMenu")
         @RenderBody()
         @await Component.InvokeAsync("SiteFooter")

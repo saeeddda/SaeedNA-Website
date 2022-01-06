@@ -11,5 +11,6 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> EditPortfolio(PortfolioEditDTO portfolio);
         Task<ServiceResult> DeletePortfolio(long portfolioId);
         Task<PortfolioFilterDTO> FilterPortfolio(PortfolioFilterDTO filter);
+        Task<PortfolioEditDTO> GetPortfolioForEdit(long portfolioId);
     }
 }

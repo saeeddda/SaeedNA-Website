@@ -9,6 +9,8 @@ namespace SaeedNA.Data.DTOs.Contact
         public string FullName { get; set; }
         public string Email { get; set; }
         public string Mobile { get; set; }
+        public bool IsDelete { get; set; }
+        public bool IsRead { get; set; }
 
         public List<ContactUs> ContactUs { get; set; }
 
