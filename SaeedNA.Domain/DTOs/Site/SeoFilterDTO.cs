@@ -6,6 +6,8 @@ namespace SaeedNA.Data.DTOs.Site
 {
     public class SeoFilterDTO:BasePaging
     {
+        public bool IsDelete { get; set; }
+        
         public List<Seo> Seos { get; set; }
 
         public SeoFilterDTO SetSeo(List<Seo> seo)

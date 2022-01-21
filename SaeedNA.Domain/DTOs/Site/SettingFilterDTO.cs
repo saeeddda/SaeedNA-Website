@@ -6,6 +6,7 @@ namespace SaeedNA.Data.DTOs.Site
 {
     public class SettingFilterDTO : BasePaging
     {
+        public bool IsDelete { get; set; }
         public List<Setting> Settings { get; set; }
 
         public SettingFilterDTO SetSetting(List<Setting> setting)

@@ -1,5 +1,5 @@
 ﻿@{
-    var infos = ViewBag.PersonalInfo as PersonalInfo;
+    var infos = ViewBag.PersonalInfo as PersonalInfoGetSetDTO;
 }
 
 <div class="header-navbar-shadow"></div>
@@ -23,7 +23,7 @@
                                 <span class="user-name">@infos.FullName</span>
                             </div>
                             <span>
-                                <img class="round" src="@infos.AvatarImage" alt="@infos.FullName" height="40" width="40">
+                                <img class="round" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" height="40" width="40">
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right pb-0">
@@ -45,7 +45,7 @@
             <li class="nav-item mr-auto">
                 <a class="navbar-brand" href="/">
                     <div class="brand-logo">
-                        <img class="logo" src="@infos.AvatarImage" alt="@infos.FullName" />
+                        <img class="logo" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" />
                     </div>
                     <h2 class="brand-text mb-0">@infos.FullName</h2>
                 </a>
@@ -77,16 +77,10 @@
                     <span class="menu-title text-truncate">نوشته ها</span>
                 </a>
                 <ul class="menu-content">
-                    <li id="post-add" class="">
+                    <li id="post-add">
                         <a class="d-flex align-items-center" asp-action="Add" asp-controller="Post" asp-area="Admin">
                             <i class="bx bx-right-arrow-alt"></i>
                             <span class="menu-item text-truncate">افزودن نوشته</span>
-                        </a>
-                    </li>
-                    <li id="category-index">
-                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="Category" asp-area="Admin">
-                            <i class="bx bx-right-arrow-alt"></i>
-                            <span class="menu-item text-truncate">دسته بندی</span>
                         </a>
                     </li>
                     <li id="post-index">
@@ -95,6 +89,25 @@
                             <span class="menu-item text-truncate">لیست نوشته ها</span>
                         </a>
                     </li>
+                    <li id="portfolio-add">
+                        <a class="d-flex align-items-center" asp-action="Add" asp-controller="Portfolio" asp-area="Admin">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item text-truncate">افزودن نمومه کار</span>
+                        </a>
+                    </li>
+                    <li id="portfolio-index">
+                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="Portfolio" asp-area="Admin">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item text-truncate">لیست نمومه کار ها</span>
+                        </a>
+                    </li>
+                    <li id="category-index">
+                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="Category" asp-area="Admin">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item text-truncate">دسته بندی ها</span>
+                        </a>
+                    </li>
+                    
                 </ul>
             </li>
             <li id="resume" class=" nav-item">
@@ -148,6 +161,20 @@
                     <i class="menu-livicon" data-icon="gears"></i>
                     <span class="menu-title text-truncate">تنظیمات</span>
                 </a>
+                <ul class="menu-content">
+                    <li id="servicecounter-index" class="">
+                        <a class="d-flex align-items-center" asp-action="SocialMedia" asp-controller="Settings" asp-area="Admin">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item text-truncate">شبکه های اجتماعی</span>
+                        </a>
+                    </li>
+                    <li id="myservice-index">
+                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="Settings" asp-area="Admin">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item text-truncate">تنظیمات سایت</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
     </div>

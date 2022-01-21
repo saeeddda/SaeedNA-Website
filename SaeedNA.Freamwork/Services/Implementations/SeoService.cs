@@ -52,7 +52,7 @@ namespace SaeedNA.Service.Implementations
             }
         }
 
-        public async Task<ServiceResult> EditSeo(SeoEditDTO seo)
+        public async Task<ServiceResult> EditSeo(SeoGetSetDTO seo)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace SaeedNA.Service.Implementations
                 entity.SiteMap = seo.SiteMap;
                 entity.RobotsTxt = seo.RobotsTxt;
                 entity.IsDefault = seo.IsDefault;
-                
+
                 var result = _seoRepository.EditEntity(entity);
                 await _seoRepository.SaveChanges();
 
@@ -85,7 +85,7 @@ namespace SaeedNA.Service.Implementations
             try
             {
                 var entity = await _seoRepository.GetEntityById(seoId);
-                if(entity == null) return ServiceResult.NotFond;
+                if (entity == null) return ServiceResult.NotFond;
 
                 var result = _seoRepository.DeleteEntity(entity);
                 await _seoRepository.SaveChanges();
@@ -102,16 +102,87 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _seoRepository.GetQuery().AsQueryable();
 
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
+
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
             var allEntities = await query.Paging(pager).ToListAsync();
 
             return filter.SetSeo(allEntities).SetPaging(pager);
         }
 
-        public async Task<Seo> GetDefaultSeo()
+        public async Task<SeoGetSetDTO> GetDefaultSeo()
         {
-            return await _seoRepository.GetQuery().AsQueryable()
+            var query = await _seoRepository.GetQuery().AsQueryable()
                 .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
+
+            if (query == null) return null;
+
+            return new SeoGetSetDTO
+            {
+                Author = query.Author,
+                Canonical = query.Canonical,
+                GoogleAnalytics = query.GoogleAnalytics,
+                IsDefault = query.IsDefault,
+                MetaDescription = query.MetaDescription,
+                MetaTags = query.MetaTags,
+                Publisher = query.Publisher,
+                RobotsTxt = query.RobotsTxt,
+                SeoId = query.Id,
+                SiteMap = query.SiteMap
+            };
+        }
+
+        public async Task<ServiceResult> SetDefaultSeo(SeoGetSetDTO seo)
+        {
+            try
+            {
+                #region Delete Old Data
+
+                var seoData = await _seoRepository.GetQuery().AsQueryable()
+                    .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == seo.SeoId);
+
+                var oldSeo = new SeoGetSetDTO
+                {
+                    SeoId = seoData.Id,
+                    IsDefault = false,
+                    Author = seoData.Author,
+                    Canonical = seoData.Canonical,
+                    GoogleAnalytics = seoData.GoogleAnalytics,
+                    MetaDescription = seoData.MetaDescription,
+                    MetaTags = seoData.MetaTags,
+                    Publisher = seoData.Publisher,
+                    RobotsTxt = seoData.RobotsTxt,
+                    SiteMap = seoData.SiteMap
+                };
+
+                var editResult = await EditSeo(oldSeo);
+                var deleteResult = await DeleteSeo(seo.SeoId);
+
+                #endregion
+
+                #region Add New Data
+
+                var data = new SeoCreateDTO
+                {
+                    Author = string.IsNullOrEmpty(seo.Author) ? seoData.Author : seo.Author,
+                    Canonical = string.IsNullOrEmpty(seo.Canonical) ? seoData.Canonical : seo.Canonical,
+                    GoogleAnalytics = string.IsNullOrEmpty(seo.GoogleAnalytics) ? seoData.GoogleAnalytics : seo.GoogleAnalytics,
+                    MetaDescription = string.IsNullOrEmpty(seo.MetaDescription) ? seoData.MetaDescription : seo.MetaDescription,
+                    MetaTags = string.IsNullOrEmpty(seo.MetaTags) ? seoData.MetaTags : seo.MetaTags,
+                    Publisher = string.IsNullOrEmpty(seo.Publisher) ? seoData.Publisher : seo.Publisher,
+                    IsDefault = true
+                };
+
+                var addResult = await AddNewSeo(data);
+
+                #endregion
+
+                return (editResult == ServiceResult.Success && deleteResult == ServiceResult.Success && addResult == ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+            }
+            catch
+            {
+                return ServiceResult.Error;
+            }
         }
     }
 }

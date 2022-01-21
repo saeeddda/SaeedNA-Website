@@ -6,6 +6,8 @@ namespace SaeedNA.Data.DTOs.Site
 {
     public class SocialMediaFilterDTO : BasePaging
     {
+        public bool IsDelete { get; set; }
+
         public List<SocialMedia> SocialMediae { get; set; }
 
         public SocialMediaFilterDTO SetSocialMedia(List<SocialMedia> socialMedia)

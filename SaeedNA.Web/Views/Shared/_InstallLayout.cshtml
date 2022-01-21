@@ -1,0 +1,11 @@
+﻿<!DOCTYPE html>
+<html lang="fa">
+    <head>
+        @await Component.InvokeAsync("InstallHeader")
+    </head>
+    <body class="">
+        @RenderBody()
+        @await Component.InvokeAsync("InstallFooter")
+        @await RenderSectionAsync("Scripts", required: false)
+    </body>
+</html>

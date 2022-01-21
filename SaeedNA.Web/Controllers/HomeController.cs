@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using SaeedNA.Service.Interfaces;
 using SaeedNA.Web.Models;
 using System.Diagnostics;
@@ -11,10 +12,12 @@ namespace SaeedNA.Web.Controllers
         #region constractor
 
         private readonly IPersonalInfoService _personalService;
+        private readonly IConfiguration _configuration;
 
-        public HomeController(IPersonalInfoService personalService)
+        public HomeController(IPersonalInfoService personalService, IConfiguration configuration)
         {
             _personalService = personalService;
+            _configuration = configuration;
         }
 
         #endregion
@@ -23,6 +26,9 @@ namespace SaeedNA.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var IsSiteInstall = bool.Parse(_configuration.GetSection("SiteInstall").Value);
+            if (!IsSiteInstall) return RedirectToAction("Index", "Install");
+
             var data = await _personalService.GetDefaultInfo();
             return View("Index", data);
         }

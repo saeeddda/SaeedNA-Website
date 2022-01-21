@@ -1,19 +1,44 @@
 /*-------------------------------------------------------------*/
+*{
+    margin: 0;
+    padding: 0;
+}
 body{
     font-family: dana,'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #F5F5F5;
-    background: url('../img/BG.png') no-repeat;
+    background-color: #4e4e4e;
+    background: url('../img/BG.png') no-repeat; 
     background-size: 100%;
-    background-position: top left;
-    height: 100vh;
+    background-position: center center;
+    height: 100vh !important;
+    width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 a{
     text-decoration: none;
 }
 /*------------------------------------Components-------------------------------------------------*/
+.container{
+    width: 100%;
+    max-width: 1240px;
+    margin: auto;
+    display: flex;
+    position: relative;
+}
+.mt-15{
+    margin-top: 15px !important;
+}
+.mb-15{
+    margin-bottom: 15px !important;
+}
+.f-wrap{
+    flex-wrap: wrap;
+}
+.jc-between{
+    justify-content: space-between;
+}
 .title{
     margin-bottom: 20px;
     display: flex;
@@ -46,6 +71,16 @@ nav.menu{
     left: -30px;
     overflow: hidden;
     box-shadow: 0px 0px 6px rgb(0 0 0 / 15%);
+    z-index: 9999;
+}
+nav.menu ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 nav.menu .menu-item{
     padding: 20px;
@@ -84,25 +119,19 @@ nav.menu .menu-item a img{
 }
 /*------------------------------------Styles-------------------------------------------------*/
 /*------------------------------------Main Page----------------------------------------------*/
-main{
-    width: 1600px;
-    height: 90%;
-    padding-right:250px ;
-    position: relative;
-}
 
-main .profile-side{
+.profile-side{
+    width: 300px;
+    height: 700px;
     background-color: #fff;
     border-radius: 70px;
-    width: 300px;
-    height: 90%;
-    position: absolute;
-    top: 40px;
-    right: 60px;
     overflow: hidden;
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0px 0px 6px rgb(0 0 0 / 15%);
+    position: absolute;
+    right: -100px;
+    top: 45px;
 }
-main .profile-side .avatar-holder{
+.profile-side .avatar-holder{
     width: 100%;
     padding: 30px 0;
     background: linear-gradient(270deg,#1fb3ed 0%, #116ac5 100%);
@@ -110,7 +139,7 @@ main .profile-side .avatar-holder{
     flex-direction: column;
     align-items: center;
 }
-main .profile-side .avatar-holder .avatar{
+.profile-side .avatar-holder .avatar{
     width: 120px;
     height: 120px;
     margin-bottom: 20px;
@@ -120,96 +149,156 @@ main .profile-side .avatar-holder .avatar{
     justify-content: center;
     align-items: center;
 }
-main .profile-side .avatar-holder .avatar img{
+.profile-side .avatar-holder .avatar img{
     height: 100%;
 }
-main .profile-side .avatar-holder h1{
+.profile-side .avatar-holder h1{
     color: #fff;
     font-size: 30px;
     font-weight: 500;
 }
-main .profile-side .avatar-holder h3{
+.profile-side .avatar-holder h3{
     color: #fff;
     font-size: 20px;
     font-weight: normal;
 }
-main .profile-side .content{
+.profile-side .content{
     padding: 10px;
     text-align: center;
 }
-main .profile-side .content .download-resume{
+.profile-side .content .download-resume{
+    margin: 30px 0;
     padding: 20px 0;
 }
-main .profile-side .content .social-icons{
+.profile-side .content .social-icons{
     padding: 5px 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-main .profile-side .content .social-icons a{
+.profile-side .content .social-icons a{
     text-decoration: none;
 }
-main .profile-side .content .social-icons a img.icon{
+.profile-side .content .social-icons a img.icon{
     width: 16px;
     height: 16px;
 }
-
-
-
-main .main-side{
-    height: 100%;
-    padding: 20px 150px 20px 100px ;
+.main-side{
+    width: 100%;
+    height: calc(100vh - 200px);
+    margin-right: 160px;
+    padding: 30px 70px 30px 50px;
     background-color: #fff;
     border-radius: 70px;
     box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
 }
-main .main-side .about-me{
+.main-side .main-content{
+    height: 100%;
+    /* overflow: hidden scroll; */
+}
+.main-side .main-content .about-me{
     padding: 10px;
 }
-main .main-side .about-me .content{
+.main-side .main-content .about-me .content{
     margin-right: 20px;
 }
-main .main-side .about-me .content p{
+.main-side .main-content .about-me .content p{
     font-weight: normal;
     font-size: 16px;
     line-height: 35px;
 }
-main .main-side .skills .content{
+.main-side .main-content .skills .content{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     padding-right: 30px;
     justify-content: space-between;
 }
-main .main-side .skills .content .skill{
+.main-side .main-content .skills .content .skill{
     width: 100%;
     max-width: 400px;
     margin: 10px 0 10px 0;
     display: flex;
     flex-direction: column;
 }
-main .main-side .skills .content .skill .skill-title{
+.main-side .main-content .skills .content .skill .skill-title{
     font-size: 15px;
     font-weight: normal;
     margin-bottom: 5px;
 }
-main .main-side .skills .content .skill .skill-progress{
+.main-side .main-content .skills .content .skill .skill-progress{
     display: flex;
     justify-content: space-between;
 }
-main .main-side .skills .content .skill .skill-progress .skill-bar{
+.main-side .main-content .skills .content .skill .skill-progress .skill-bar{
     background-color: #ddd;
     border-radius: 8px;
     width: 100%;
     height: 12px;
     overflow: hidden;
 }
-main .main-side .skills .content .skill .skill-progress .skill-bar .skill-bar-status{
+.main-side .main-content .skills .content .skill .skill-progress .skill-bar .skill-bar-status{
     background: linear-gradient(270deg,#1fb3ed 0%, #116ac5 100%);
     height: 15px;
 }
-main .main-side .skills .content .skill .skill-progress .skill-bar-percentage{
+.main-side .main-content .skills .content .skill .skill-progress .skill-bar-percentage{
     font-weight: 300;
     font-size: 10px;
     margin-right: 10px;
+}
+table.table{
+    margin: 0 auto;
+    padding: 10px;
+    text-align: right;
+}
+table.table tbody tr td{
+    padding: 5px;
+}
+table.table tbody tr td span{
+    width: 10px;
+    height: 10px;
+    background-color: #237AEC;
+    display: inline-block;
+    margin-left: 10px;
+    border-radius: 50%;
+}
+.portfolio .content{
+    display: flex;
+}
+.portfolio .content .portfolio-item{
+    margin: 10px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0px 0px 6px rgba(0,0,0,0.15);
+}
+.portfolio .content .portfolio-item .image{
+    width: 280px;
+    height: 200px;
+    border-radius: 20px;
+}
+.portfolio .content .portfolio-item .image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+.portfolio .content .portfolio-item .image-title{
+    padding: 10px 15px;
+    background-color: #383838;
+    color: #fff;
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    justify-content: space-between;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    bottom: -30px;
+    right: 0;
+    left: 0;
+    transition: all 250ms ease-in-out;
+}
+.portfolio .content  .portfolio-item:hover div.image-title{
+    bottom: 0 !important;
+    opacity: 0.95 !important;
+    visibility: visible !important;
 }

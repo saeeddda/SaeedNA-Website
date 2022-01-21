@@ -1,0 +1,303 @@
+﻿@model SiteSettingsViewModel
+@{
+    ViewData["Title"] = "تنظیمات";
+}
+
+<section id="page-account-settings">
+    <form asp-action="Index" asp-controller="Settings" asp-area="Admin" method="post" enctype="multipart/form-data">
+        <input hidden="hidden" asp-for="PersonalInfo.PersonalInfoId" />
+        <input hidden="hidden" asp-for="Setting.SettingId" />
+        <input hidden="hidden" asp-for="Seo.SeoId" />
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-header">عمومی</h4>
+                            </div>
+                            <div class="card-body">
+                                <h6>لوگو سایت</h6>
+                                <div class="media">
+                                    <a href="#">
+                                        <img src="@(PathExtension.UploadPath + Model.Setting.SiteLogo)" class="rounded mr-75" alt="profile image" height="64" width="64">
+                                    </a>
+                                    <div class="media-body mt-25">
+                                        <div class="col-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
+                                            <label for="logo" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
+                                                <span>بارگذاری تصویر</span>
+                                                <input id="logo" name="logo" type="file" hidden>
+                                            </label>
+                                        </div>
+                                        <div class="text-muted ml-1 mt-50 d-flex flex-column">
+                                            <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                                            <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@Model.Setting.SiteLogo</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h6>فاو آیکون</h6>
+                                <div class="media">
+                                    <a href="#">
+                                        <img src="@(PathExtension.UploadPath + Model.Setting.SiteFavIcon)" class="rounded mr-75" alt="profile image" height="64" width="64">
+                                    </a>
+                                    <div class="media-body mt-25">
+                                        <div class="col-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
+                                            <label for="fav" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
+                                                <span>بارگذاری تصویر</span>
+                                                <input id="fav" name="fav" type="file" hidden>
+                                            </label>
+                                        </div>
+                                        <div class="text-muted ml-1 mt-50 d-flex flex-column">
+                                            <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                                            <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@Model.Setting.SiteFavIcon</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="Setting.SiteTitle"></label>
+                                                <input type="text" class="form-control" asp-for="Setting.SiteTitle">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="Setting.SiteUrl"></label>
+                                                <input type="text" class="form-control" dir="ltr" placeholder="https://..." asp-for="Setting.SiteUrl">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Setting.SiteMode"></label>
+                                            <select class="form-control" asp-for="Setting.SiteMode" asp-items="@Html.GetEnumSelectList<SiteMode>()"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-header">تصویر پروفایل</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h6>تصویر من</h6>
+                                        <div class="media">
+                                            <a href="#">
+                                                <img src="@(PathExtension.UploadPath + Model.PersonalInfo.ResumeImage)" class="rounded mr-75" alt="profile image" height="64" width="64">
+                                            </a>
+                                            <div class="media-body mt-25">
+                                                <div class="col-xl-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
+                                                    <label for="resumeImage" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
+                                                        <span>بارگذاری تصویر</span>
+                                                        <input id="resumeImage" name="resumeImage" type="file" hidden>
+                                                    </label>
+                                                </div>
+                                                <div class="text-muted ml-1 mt-50 d-flex flex-column">
+                                                    <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                                                    <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@Model.PersonalInfo.ResumeImage</span>
+                                                    <div class="mt-1 d-flex justify-items-center align-items-center">
+                                                        <i class="bx bx-info-circle text-danger font-weight-light mr-1 border border-danger rounded uploaded-file"></i>
+                                                        <small class="text-danger">در اسلایدر اصلی قرار میگیرد</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        <h6>تصویر آواتار</h6>
+                                        <div class="media">
+                                            <a href="#">
+                                                <img src="@(PathExtension.UploadPath + Model.PersonalInfo.AvatarImage)" class="rounded mr-75" alt="profile image" height="64" width="64">
+                                            </a>
+                                            <div class="media-body mt-25">
+                                                <div class="col-xl-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
+                                                    <label for="avatarImage" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
+                                                        <span>بارگذاری تصویر</span>
+                                                        <input id="avatarImage" name="avatarImage" type="file" hidden>
+                                                    </label>
+                                                </div>
+                                                <div class="text-muted ml-1 mt-50 d-flex flex-column">
+                                                    <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                                                    <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@Model.PersonalInfo.AvatarImage</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="media">
+                                            <div class="media-body mt-25">
+                                                <div class="col-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
+                                                    <label for="resumeFile" class="btn btn-sm btn-light-primary ml-50 mb-50 mb-sm-0">
+                                                        <span>بارگذاری فایل</span>
+                                                        <input id="resumeFile" name="resumeFile" type="file" hidden>
+                                                    </label>
+                                                </div>
+                                                <div class="text-muted ml-1 mt-50 d-flex flex-column">
+                                                    <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                                                    <span class="mt-2 d-flex justify-items-center align-items-center"><i class="bx bx-image border border-primary rounded text-primary mr-1 uploaded-file"></i>@Model.PersonalInfo.ResumeFile</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-header">اطلاعات شخصی</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.FullName"></label>
+                                                <input type="text" class="form-control" asp-for="PersonalInfo.FullName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.PhoneNumber"></label>
+                                                <input type="tel" class="form-control" asp-for="PersonalInfo.PhoneNumber">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.Mobile"></label>
+                                                <input type="tel" class="form-control" asp-for="PersonalInfo.Mobile">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.Email"></label>
+                                                <input type="email" class="form-control" asp-for="PersonalInfo.Email">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.Birthday"></label>
+                                                <input type="text" class="form-control" asp-for="PersonalInfo.Birthday">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.Age"></label>
+                                                <input type="text" class="form-control" asp-for="PersonalInfo.Age">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.Language"></label>
+                                                <input type="text" class="form-control" asp-for="PersonalInfo.Language">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.Nationality"></label>
+                                                <input type="text" class="form-control" asp-for="PersonalInfo.Nationality">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <div class="controls">
+                                                <label asp-for="PersonalInfo.Address"></label>
+                                                <input type="text" class="form-control" asp-for="PersonalInfo.Address">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label asp-for="PersonalInfo.AboutMe"></label>
+                                            <textarea class="form-control" asp-for="PersonalInfo.AboutMe" rows="5"></textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-header">سئو سایت</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label asp-for="Seo.MetaDescription"></label>
+                                            <input type="text" class="form-control" asp-for="Seo.MetaDescription">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Seo.MetaTags"></label>
+                                            <input type="text" class="form-control" asp-for="Seo.MetaTags">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Seo.Author"></label>
+                                            <input type="text" class="form-control" asp-for="Seo.Author">
+                                        </div>
+                                        @*<div class="form-group">
+                                            <label asp-for="Seo.Canonical"></label>
+                                            <input type="text" class="form-control" asp-for="Seo.Canonical">
+                                        </div>*@
+                                        <div class="form-group">
+                                            <label asp-for="Seo.Publisher"></label>
+                                            <input type="text" class="form-control" asp-for="Seo.Publisher">
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Seo.RobotsTxt"></label>
+                                            <input type="text" class="form-control" asp-for="Seo.RobotsTxt" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Seo.SiteMap"></label>
+                                            <input type="text" class="form-control" asp-for="Seo.SiteMap" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Seo.GoogleAnalytics"></label>
+                                            <textarea class="form-control" asp-for="Seo.GoogleAnalytics" rows="10" dir="ltr"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 d-flex flex-sm-row flex-column justify-content-end">
+                    <button type="submit" class="btn btn-primary glow mr-sm-1 mb-1">ذخیره تغییرات</button>
+                    <button type="reset" class="btn btn-light mb-1">لغو</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>

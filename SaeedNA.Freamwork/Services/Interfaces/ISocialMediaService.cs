@@ -11,5 +11,6 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> EditSocialMedia(SocialMediaEditDTO socialMedia);
         Task<ServiceResult> DeleteSocialMedia(long socialMediaId);
         Task<SocialMediaFilterDTO> FilterSocialMedia(SocialMediaFilterDTO filter);
+        Task<SocialMediaEditDTO> GetSocialMediaForEdit(long socialMediaId);    
     }
 }

@@ -1,0 +1,31 @@
+﻿@model SocialMediaCreateDTO
+
+<form asp-action="AddSocialMedia" asp-controller="Settings" asp-area="Admin" method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="MediaIcon"></label>
+            <input type="text" class="form-control" asp-for="MediaIcon">
+            <span asp-validation-for="MediaIcon" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="MediaName"></label>
+            <input type="text" class="form-control" asp-for="MediaName">
+            <span asp-validation-for="MediaName" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="form-group">
+            <label asp-for="MediaLink"></label>
+            <input type="text" class="form-control" asp-for="MediaLink">
+            <span asp-validation-for="MediaLink" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">ثبت</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+    </div>
+</form>

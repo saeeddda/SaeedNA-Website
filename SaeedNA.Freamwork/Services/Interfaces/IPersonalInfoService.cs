@@ -9,9 +9,10 @@ namespace SaeedNA.Service.Interfaces
     public interface IPersonalInfoService:IAsyncDisposable
     {
         Task<ServiceResult> AddNewInfo(PersonalInfoCreateDTO info);
-        Task<ServiceResult> EditInfo(PersonalInfoEditDTO info);
+        Task<ServiceResult> EditInfo(PersonalInfoGetSetDTO info);
         Task<ServiceResult> DeleteInfo(long infoId);
         Task<PersonalInfoFilterDTO> FilterInfo(PersonalInfoFilterDTO filter);
-        Task<PersonalInfo> GetDefaultInfo();
+        Task<PersonalInfoGetSetDTO> GetDefaultInfo();
+        Task<ServiceResult> SetDefaultPersonalInfo(PersonalInfoGetSetDTO personalInfo);
     }
 }

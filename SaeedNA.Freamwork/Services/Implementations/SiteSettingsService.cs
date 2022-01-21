@@ -49,7 +49,7 @@ namespace SaeedNA.Service.Implementations
             }
         }
 
-        public async Task<ServiceResult> EditSetting(SettingEditDTO setting)
+        public async Task<ServiceResult> EditSetting(SettingGetSetDTO setting)
         {
             try
             {
@@ -62,7 +62,7 @@ namespace SaeedNA.Service.Implementations
                 entity.SiteFavIcon = setting.SiteFavIcon;
                 entity.SiteMode = setting.SiteMode;
                 entity.IsDefault = setting.IsDefault;
-             
+
                 var result = _settingRepository.EditEntity(entity);
                 await _settingRepository.SaveChanges();
 
@@ -79,7 +79,7 @@ namespace SaeedNA.Service.Implementations
             try
             {
                 var entity = await _settingRepository.GetEntityById(settingId);
-                if(entity == null) return ServiceResult.NotFond;
+                if (entity == null) return ServiceResult.NotFond;
 
                 var result = _settingRepository.DeleteEntity(entity);
                 await _settingRepository.SaveChanges();
@@ -96,16 +96,80 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _settingRepository.GetQuery().AsQueryable();
 
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
+
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
             var allEntities = await query.Paging(pager).ToListAsync();
 
             return filter.SetSetting(allEntities).SetPaging(pager);
         }
 
-        public async Task<Setting> GetDefaultSetting()
+        public async Task<SettingGetSetDTO> GetDefaultSetting()
         {
-            return await _settingRepository.GetQuery().AsQueryable()
+            var query = await _settingRepository.GetQuery().AsQueryable()
                 .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
+
+            if (query == null) return null;
+
+            return new SettingGetSetDTO
+            {
+                IsDefault = query.IsDefault,
+                SettingId = query.Id,
+                SiteFavIcon = query.SiteFavIcon,
+                SiteLogo = query.SiteLogo,
+                SiteMode = query.SiteMode,
+                SiteTitle = query.SiteTitle,
+                SiteUrl = query.SiteUrl
+            };
+        }
+
+        public async Task<ServiceResult> SetDefaultSetting(SettingGetSetDTO setting)
+        {
+            try
+            {
+                #region Delete Old Data
+
+                var settingData = await _settingRepository.GetQuery().AsQueryable()
+                    .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == setting.SettingId);
+
+                var oldSetting = new SettingGetSetDTO
+                {
+                    SettingId = settingData.Id,
+                    IsDefault = false,
+                    SiteFavIcon = settingData.SiteFavIcon,
+                    SiteLogo = settingData.SiteLogo,
+                    SiteMode = settingData.SiteMode,
+                    SiteTitle = settingData.SiteTitle,
+                    SiteUrl = settingData.SiteUrl
+                };
+
+                var editResult = await EditSetting(oldSetting);
+                var deleteResult = await DeleteSetting(setting.SettingId);
+
+                #endregion
+
+                #region Add New Data
+
+                var data = new SettingCreateDTO
+                {
+                    IsDefault = true,
+                    SiteFavIcon = string.IsNullOrEmpty(setting.SiteFavIcon) ? settingData.SiteFavIcon : setting.SiteFavIcon,
+                    SiteLogo = string.IsNullOrEmpty(setting.SiteLogo) ? settingData.SiteLogo : setting.SiteLogo,
+                    SiteMode = setting.SiteMode,
+                    SiteTitle = string.IsNullOrEmpty(setting.SiteTitle) ? settingData.SiteTitle : setting.SiteTitle,
+                    SiteUrl = string.IsNullOrEmpty(setting.SiteUrl) ? settingData.SiteUrl : setting.SiteUrl
+                };
+
+                var addResult = await AddNewSetting(data);
+
+                #endregion
+
+                return (editResult == ServiceResult.Success && deleteResult == ServiceResult.Success && addResult == ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+            }
+            catch
+            {
+                return ServiceResult.Error;
+            }
         }
     }
 }

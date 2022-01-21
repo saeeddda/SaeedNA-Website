@@ -23,7 +23,9 @@ namespace SaeedNA.Data.DTOs.Common
 
     public enum SiteMode
     {
+        [Display(Name = "تاریک")]
         Dark,
+        [Display(Name = "روشن")]
         Light
     }
 }

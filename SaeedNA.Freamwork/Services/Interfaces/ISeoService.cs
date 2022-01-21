@@ -6,12 +6,13 @@ using SaeedNA.Data.Entities.Settings;
 
 namespace SaeedNA.Service.Interfaces
 {
-    public interface ISeoService:IAsyncDisposable
+    public interface ISeoService : IAsyncDisposable
     {
         Task<ServiceResult> AddNewSeo(SeoCreateDTO seo);
-        Task<ServiceResult> EditSeo(SeoEditDTO seo);
+        Task<ServiceResult> EditSeo(SeoGetSetDTO seo);
         Task<ServiceResult> DeleteSeo(long seoId);
         Task<SeoFilterDTO> FilterSeo(SeoFilterDTO filter);
-        Task<Seo> GetDefaultSeo();
+        Task<SeoGetSetDTO> GetDefaultSeo();
+        Task<ServiceResult> SetDefaultSeo(SeoGetSetDTO seo);
     }
 }

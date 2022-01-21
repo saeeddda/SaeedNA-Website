@@ -6,6 +6,7 @@ namespace SaeedNA.Data.DTOs.Site
 {
     public class PersonalInfoFilterDTO:BasePaging
     {
+        public bool IsDelete { get; set; }
         public List<PersonalInfo> PersonalInfos { get; set; }
 
         public PersonalInfoFilterDTO SetPersonalInfo(List<PersonalInfo> info)

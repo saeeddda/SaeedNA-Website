@@ -6,6 +6,10 @@ using System;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using SaeedNA.Service.Interfaces;
+using SaeedNA.Data.DTOs.Site;
+using SaeedNA.Data.DTOs.Common;
+using SaeedNA.Application.ViewModels;
+using System.IO;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -27,79 +31,144 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
             _settingService = settingService;
             _socialMediaService = socialMediaService;
         }
-        
+
         #endregion
 
-        #region Actions
+        #region Social Media Actions
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> SocialMedia(SocialMediaFilterDTO filter)
         {
-            ViewBag.Settings = await _settingService.GetDefaultSetting();
-            ViewBag.PersonalInfos = await _personalService.GetDefaultInfo();
-            ViewBag.Seo = await _seoService.GetDefaultSeo();
-            
-            return View("Index");
+            return View("SocialMedia", await _socialMediaService.FilterSocialMedia(filter));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddSocialMedia()
+        {
+            return PartialView();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateSettings(
-            IFormFile logo, IFormFile fav,
-            IFormFile resumeImage, IFormFile avatarImage,
-            IFormFile resumeFile)
+        public async Task<IActionResult> AddSocialMedia(SocialMediaCreateDTO socialMedia)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
+                await _socialMediaService.AddNewSocialMedia(socialMedia);
+                return RedirectToAction("SocialMedia");
+            }
 
-                if(logo != null)
+            return PartialView(socialMedia);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditSocialMedia(long id)
+        {
+            var data = await _socialMediaService.GetSocialMediaForEdit(id);
+
+            return PartialView(data);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditSocialMedia(SocialMediaEditDTO socialMedia)
+        {
+            if (ModelState.IsValid)
+            {
+                await _socialMediaService.EditSocialMedia(socialMedia);
+                return RedirectToAction("SocialMedia");
+            }
+
+            return PartialView(socialMedia);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteSocialMedia(long id)
+        {
+            var result = await _socialMediaService.DeleteSocialMedia(id);
+
+            switch (result)
+            {
+                case ServiceResult.NotFond:
+                    return Json(new { status = "error", msg = "SocialMedia not found!" });
+                case ServiceResult.Error:
+                    return Json(new { status = "error", msg = "ID not valid!" });
+                case ServiceResult.Success:
+                    return Json(new { status = "ok", msg = "SocialMedia deleted" });
+                default:
+                    return Json(new { status = "", msg = "" });
+            }
+        }
+
+        #endregion
+
+        #region Site Settings Actions
+
+        [HttpGet]
+        public async Task<IActionResult> Index()
+        {
+            var setting = await _settingService.GetDefaultSetting();
+            var personalInfo = await _personalService.GetDefaultInfo();
+            var seo = await _seoService.GetDefaultSeo();
+
+            var settings = new SiteSettingsViewModel
+            {
+                Setting = setting,
+                PersonalInfo = personalInfo,
+                Seo = seo
+            };
+
+            return View("SiteSettings",settings);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Index(SiteSettingsViewModel settings, IFormFile logo, IFormFile fav, IFormFile resumeImage, IFormFile avatarImage, IFormFile resumeFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (logo != null)
                 {
-                    string fileName = Guid.NewGuid().ToString();
-                    await logo.UploadToServer(fileName, PathExtension.UploadPathServer,null,null);
-                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
-
-                    //setting.SiteLogo = fileUrl;
+                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(logo.FileName);
+                    var result = await logo.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
+                    if (result == UploaderExtension.FileUploadResult.Success) settings.Setting.SiteLogo = fileName;
                 }
 
-                if(fav != null)
+                if (fav != null)
                 {
-                    //string fileRandomName = await uploader.FileUpload(fav, path);
-                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
-
-                    //setting.SiteFavIcon = fileUrl;
+                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(fav.FileName);
+                    var result = await fav.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
+                    if (result == UploaderExtension.FileUploadResult.Success) settings.Setting.SiteFavIcon = fileName;
                 }
 
-                if(resumeImage != null)
+                if (resumeImage != null)
                 {
-                    //string fileRandomName = await uploader.FileUpload(resumeImage, path);
-                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
-
-                    //setting.ResumeImage = fileUrl;
+                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(resumeImage.FileName);
+                    var result = await resumeImage.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
+                    if (result == UploaderExtension.FileUploadResult.Success) settings.PersonalInfo.ResumeImage = fileName;
                 }
 
-                if(avatarImage != null)
+                if (avatarImage != null)
                 {
-                    //string fileRandomName = await uploader.FileUpload(avatarImage, path);
-                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
-
-                    //setting.AvatarImage = fileUrl;
+                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(avatarImage.FileName);
+                    var result = await avatarImage.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
+                    if (result == UploaderExtension.FileUploadResult.Success) settings.PersonalInfo.AvatarImage = fileName;
                 }
 
-                if(resumeFile != null)
+                if (resumeFile != null)
                 {
-                    //string fileRandomName = await uploader.FileUpload(resumeFile, path);
-                    //string fileUrl = Url.Content("~/" + uploadFolder + "/" + fileRandomName);
-
-                    //setting.ResumeFile = fileUrl;
+                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(resumeFile.FileName);
+                    var result = await resumeFile.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
+                    if (result == UploaderExtension.FileUploadResult.Success) settings.PersonalInfo.ResumeFile = fileName;
                 }
 
-                
+                await _personalService.SetDefaultPersonalInfo(settings.PersonalInfo);
+                await _settingService.SetDefaultSetting(settings.Setting);
+                await _seoService.SetDefaultSeo(settings.Seo);
 
                 return RedirectToAction("Index");
             }
 
             ModelState.AddModelError("sitestting", "مشکلی در ذخیره تنظیمات بوجود آمده!");
 
-            return View("Index");
+            return View("SiteSettings", settings);
         }
 
         #endregion

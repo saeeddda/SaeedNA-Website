@@ -5,7 +5,7 @@
     var skills = ViewBag.Skills as SkillFilterDTO;
     var counters = ViewBag.Counters as CounterFilterDTO;
     var myService = ViewBag.MyServices as MyServiceFilterDTO;
-    var personalInfo = ViewBag.PersonalInfo as PersonalInfo;
+    var personalInfo = ViewBag.PersonalInfo as PersonalInfoGetSetDTO;
 }
 
 <section class="title-section text-left text-sm-center revealator-slideup revealator-once revealator-delay1">
@@ -21,7 +21,7 @@
                         <h3 class="text-uppercase custom-title mb-0 ft-wt-600">اطلاعات شخصی</h3>
                     </div>
                     <div class="col-12 d-block d-sm-none">
-                        <img src="@(personalInfo.AvatarImage)" class="img-fluid main-img-mobile" alt="@(personalInfo.FullName)" />
+                        <img src="@(PathExtension.UploadPath + personalInfo.AvatarImage)" class="img-fluid main-img-mobile" alt="@(personalInfo.FullName)" />
                     </div>
                     <div class="col-6">
                         <ul class="about-list list-unstyled open-sans-font">

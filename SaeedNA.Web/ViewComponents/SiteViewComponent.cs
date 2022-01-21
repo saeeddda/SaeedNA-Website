@@ -4,9 +4,11 @@ using SaeedNA.Service.Interfaces;
 
 namespace SaeedNA.Web.ViewComponents
 {
+    #region Site
+
     #region site header
 
-    public class SiteHeaderViewComponent:ViewComponent
+    public class SiteHeaderViewComponent : ViewComponent
     {
         private readonly ISiteSettingService _settingService;
         private readonly ISeoService _seoService;
@@ -52,6 +54,36 @@ namespace SaeedNA.Web.ViewComponents
             return View("SiteMenu");
         }
     }
+
+    #endregion
+
+    #endregion
+
+    #region Install
+
+    #region Install Header
+
+    public class InstallHeaderViewComponent : ViewComponent
+    {
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            return View("InstallHeader");
+        }
+    }
+
+    #endregion
+
+    #region Install Footer
+
+    public class InstallFooterViewComponent : ViewComponent
+    {
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            return View("InstallFooter");
+        }
+    }
+
+    #endregion
 
     #endregion
 }

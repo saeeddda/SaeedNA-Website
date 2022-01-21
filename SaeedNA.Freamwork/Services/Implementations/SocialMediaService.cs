@@ -73,7 +73,7 @@ namespace SaeedNA.Service.Implementations
             try
             {
                 var entity = await _socialMediaRepository.GetEntityById(socialMediaId);
-                if(entity == null) return ServiceResult.NotFond;
+                if (entity == null) return ServiceResult.NotFond;
 
                 var result = _socialMediaRepository.DeleteEntity(entity);
                 await _socialMediaRepository.SaveChanges();
@@ -90,10 +90,27 @@ namespace SaeedNA.Service.Implementations
         {
             var query = _socialMediaRepository.GetQuery().AsQueryable();
 
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
+
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
             var allEntities = await query.Paging(pager).ToListAsync();
 
             return filter.SetSocialMedia(allEntities).SetPaging(pager);
+        }
+
+        public async Task<SocialMediaEditDTO> GetSocialMediaForEdit(long socialMediaId)
+        {
+            var query = await _socialMediaRepository.GetEntityById(socialMediaId);
+
+            if (query == null) return null;
+
+            return new SocialMediaEditDTO
+            {
+                SocialMediaId = query.Id,
+                MediaIcon = query.MediaIcon,
+                MediaName = query.MediaName,
+                MediaLink   = query.MediaLink
+            };
         }
     }
 }

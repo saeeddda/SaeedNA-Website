@@ -15,7 +15,7 @@
                 {
                     <li>
                         <figure>
-                            <img src="@item.Image" alt="@item.Title" />
+                            <img src="@(PathExtension.UploadPath + item.Image)" alt="@item.Title" />
                             <div><span>@item.Title</span></div>
                         </figure>
                     </li>
@@ -45,7 +45,7 @@
                                     </div>
                                 </div>
                             </figcaption>
-                            <img src="@item.Image" alt="@item.Title" />
+                            <img src="@(PathExtension.UploadPath + item.Image)" alt="@item.Title" />
                         </figure>
                     </li>
                 }
@@ -56,5 +56,7 @@
                 <span class="nav-close"><img src="~/site/img/projects/navigation/close-button.png" alt="close"> </span>
             </nav>
         </section>
+        <partial name="_Pagination" model="Model.GetCurrentPage()"/>
+
     </div>
 </section>

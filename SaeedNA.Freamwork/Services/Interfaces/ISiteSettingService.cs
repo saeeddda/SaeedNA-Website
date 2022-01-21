@@ -9,9 +9,10 @@ namespace SaeedNA.Service.Interfaces
     public interface ISiteSettingService:IAsyncDisposable
     {
         Task<ServiceResult> AddNewSetting(SettingCreateDTO setting);
-        Task<ServiceResult> EditSetting(SettingEditDTO setting);
+        Task<ServiceResult> EditSetting(SettingGetSetDTO setting);
         Task<ServiceResult> DeleteSetting(long settingId);
         Task<SettingFilterDTO> FilterSetting(SettingFilterDTO filter);
-        Task<Setting> GetDefaultSetting();
+        Task<SettingGetSetDTO> GetDefaultSetting();
+        Task<ServiceResult> SetDefaultSetting(SettingGetSetDTO setting);
     }
 }

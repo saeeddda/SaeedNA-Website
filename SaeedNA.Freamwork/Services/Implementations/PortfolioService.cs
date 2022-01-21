@@ -100,18 +100,19 @@ namespace SaeedNA.Service.Implementations
 
         public async Task<PortfolioFilterDTO> FilterPortfolio(PortfolioFilterDTO filter)
         {
-            var query = _portfolioRepository.GetQuery().AsQueryable();
+            var query = _portfolioRepository.GetQuery().Include(s=>s.Category).AsQueryable();
+
+            query = query.Where(s => s.IsDelete == filter.IsDelete);
 
             switch(filter.State)
             {
                 case PagesPublishState.All:
-                    query = query.Where(s => s.IsDelete == filter.IsDelete);
                     break;
                 case PagesPublishState.Draft:
-                    query = query.Where(s => s.State == PortfolioPublishingState.Draft && s.IsDelete == filter.IsDelete);
+                    query = query.Where(s => s.State == PortfolioPublishingState.Draft);
                     break;
                 case PagesPublishState.Published:
-                    query = query.Where(s => s.State == PortfolioPublishingState.Published && s.IsDelete == filter.IsDelete);
+                    query = query.Where(s => s.State == PortfolioPublishingState.Published);
                     break;
             }
 
@@ -121,7 +122,7 @@ namespace SaeedNA.Service.Implementations
             if(!string.IsNullOrEmpty(filter.Title))
                 query = query.Where(s => EF.Functions.Like(s.Title, $"%{filter.Title}%"));
 
-            if(filter.CategoryId >= 0)
+            if(filter.CategoryId != 0)
                 query = query.Where(s => s.CategoryId == filter.CategoryId);
 
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
@@ -138,6 +139,7 @@ namespace SaeedNA.Service.Implementations
 
             return new PortfolioEditDTO
             {
+                PortfolioId = query.Id,
                 Image = query.Image,
                 CategoryId = query.CategoryId,
                 ProjectAddress = query.ProjectAddress,
