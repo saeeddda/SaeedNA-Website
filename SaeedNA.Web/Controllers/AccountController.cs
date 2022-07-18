@@ -117,7 +117,7 @@ namespace SaeedNA.Web.Controllers
 
         #region log out
 
-        [HttpGet("log-out")]
+        [HttpGet("logout")]
         public async Task<IActionResult> LogOut()
         {
             await HttpContext.SignOutAsync();

@@ -10,6 +10,7 @@ using SaeedNA.Data.DTOs.Site;
 using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Application.ViewModels;
 using System.IO;
+using Microsoft.Extensions.Configuration;
 
 namespace SaeedNA.Web.Areas.Admin.Controllers
 {
@@ -23,13 +24,15 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         private readonly ISeoService _seoService;
         private readonly ISiteSettingService _settingService;
         private readonly ISocialMediaService _socialMediaService;
+        private readonly IConfiguration _configuration;
 
-        public SettingsController(IPersonalInfoService personalService, ISeoService seoService, ISiteSettingService settingService, ISocialMediaService socialMediaService)
+        public SettingsController(IPersonalInfoService personalService, ISeoService seoService, ISiteSettingService settingService, ISocialMediaService socialMediaService, IConfiguration configuration)
         {
             _personalService = personalService;
             _seoService = seoService;
             _settingService = settingService;
             _socialMediaService = socialMediaService;
+            _configuration = configuration;
         }
 
         #endregion
@@ -43,7 +46,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddSocialMedia()
+        public IActionResult AddSocialMedia()
         {
             return PartialView();
         }
@@ -105,6 +108,8 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            ViewBag.HasSettings = false;
+
             var setting = await _settingService.GetDefaultSetting();
             var personalInfo = await _personalService.GetDefaultInfo();
             var seo = await _seoService.GetDefaultSeo();
@@ -115,6 +120,15 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
                 PersonalInfo = personalInfo,
                 Seo = seo
             };
+
+            if (setting != null && personalInfo != null && seo != null)
+            {
+                ViewBag.HasSettings = true;
+
+                var appSettings = AppSettingsManager.GetAppSettings(false);
+                appSettings.SiteInstall = true;
+                AppSettingsManager.SetAppSettings(appSettings, false);
+            }
 
             return View("SiteSettings",settings);
         }
@@ -166,7 +180,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index");
             }
 
-            ModelState.AddModelError("sitestting", "مشکلی در ذخیره تنظیمات بوجود آمده!");
+            ModelState.AddModelError("page-account-settings", "مشکلی در ذخیره تنظیمات بوجود آمده!");
 
             return View("SiteSettings", settings);
         }

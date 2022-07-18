@@ -27,9 +27,10 @@ namespace SaeedNA.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var IsSiteInstall = bool.Parse(_configuration.GetSection("SiteInstall").Value);
-            if (!IsSiteInstall) return RedirectToAction("Index", "Install");
+            if (!IsSiteInstall) return RedirectToAction("Index", "Settings",new { area = "Admin" });
 
             var data = await _personalService.GetDefaultInfo();
+
             return View("Index", data);
         }
 

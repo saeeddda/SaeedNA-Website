@@ -136,27 +136,35 @@ namespace SaeedNA.Service.Implementations
         {
             try
             {
+                ServiceResult isEdited = ServiceResult.NotFond;
+                var backupSeo = new SeoGetSetDTO();
+
                 #region Delete Old Data
 
-                var seoData = await _seoRepository.GetQuery().AsQueryable()
-                    .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == seo.SeoId);
-
-                var oldSeo = new SeoGetSetDTO
+                if (seo.SeoId > 0)
                 {
-                    SeoId = seoData.Id,
-                    IsDefault = false,
-                    Author = seoData.Author,
-                    Canonical = seoData.Canonical,
-                    GoogleAnalytics = seoData.GoogleAnalytics,
-                    MetaDescription = seoData.MetaDescription,
-                    MetaTags = seoData.MetaTags,
-                    Publisher = seoData.Publisher,
-                    RobotsTxt = seoData.RobotsTxt,
-                    SiteMap = seoData.SiteMap
-                };
+                    var seoData = await _seoRepository.GetQuery().AsQueryable()
+                        .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == seo.SeoId);
 
-                var editResult = await EditSeo(oldSeo);
-                var deleteResult = await DeleteSeo(seo.SeoId);
+                    var oldSeo = new SeoGetSetDTO
+                    {
+                        SeoId = seoData.Id,
+                        IsDefault = false,
+                        Author = seoData.Author,
+                        Canonical = seoData.Canonical,
+                        GoogleAnalytics = seoData.GoogleAnalytics,
+                        MetaDescription = seoData.MetaDescription,
+                        MetaTags = seoData.MetaTags,
+                        Publisher = seoData.Publisher,
+                        RobotsTxt = seoData.RobotsTxt,
+                        SiteMap = seoData.SiteMap
+                    };
+
+                    backupSeo = oldSeo;
+
+                    isEdited = (await EditSeo(oldSeo) == ServiceResult.Success) &&
+                        (await DeleteSeo(seo.SeoId) == ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+                }
 
                 #endregion
 
@@ -164,20 +172,20 @@ namespace SaeedNA.Service.Implementations
 
                 var data = new SeoCreateDTO
                 {
-                    Author = string.IsNullOrEmpty(seo.Author) ? seoData.Author : seo.Author,
-                    Canonical = string.IsNullOrEmpty(seo.Canonical) ? seoData.Canonical : seo.Canonical,
-                    GoogleAnalytics = string.IsNullOrEmpty(seo.GoogleAnalytics) ? seoData.GoogleAnalytics : seo.GoogleAnalytics,
-                    MetaDescription = string.IsNullOrEmpty(seo.MetaDescription) ? seoData.MetaDescription : seo.MetaDescription,
-                    MetaTags = string.IsNullOrEmpty(seo.MetaTags) ? seoData.MetaTags : seo.MetaTags,
-                    Publisher = string.IsNullOrEmpty(seo.Publisher) ? seoData.Publisher : seo.Publisher,
+                    Author = string.IsNullOrEmpty(seo.Author) ? backupSeo.Author : seo.Author,
+                    Canonical = string.IsNullOrEmpty(seo.Canonical) ? backupSeo.Canonical : seo.Canonical,
+                    GoogleAnalytics = string.IsNullOrEmpty(seo.GoogleAnalytics) ? backupSeo.GoogleAnalytics : seo.GoogleAnalytics,
+                    MetaDescription = string.IsNullOrEmpty(seo.MetaDescription) ? backupSeo.MetaDescription : seo.MetaDescription,
+                    MetaTags = string.IsNullOrEmpty(seo.MetaTags) ? backupSeo.MetaTags : seo.MetaTags,
+                    Publisher = string.IsNullOrEmpty(seo.Publisher) ? backupSeo.Publisher : seo.Publisher,
                     IsDefault = true
                 };
 
-                var addResult = await AddNewSeo(data);
+                var addResult = await AddNewSeo(data) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
 
                 #endregion
 
-                return (editResult == ServiceResult.Success && deleteResult == ServiceResult.Success && addResult == ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+                return isEdited == ServiceResult.Success && addResult == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {

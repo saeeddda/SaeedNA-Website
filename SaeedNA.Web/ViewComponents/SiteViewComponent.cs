@@ -39,6 +39,7 @@ namespace SaeedNA.Web.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            await Task.CompletedTask;
             return View("SiteFooter");
         }
     }
@@ -51,6 +52,7 @@ namespace SaeedNA.Web.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            await Task.CompletedTask;
             return View("SiteMenu");
         }
     }
@@ -67,6 +69,7 @@ namespace SaeedNA.Web.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            await Task.CompletedTask;
             return View("InstallHeader");
         }
     }
@@ -79,6 +82,7 @@ namespace SaeedNA.Web.ViewComponents
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
+            await Task.CompletedTask;
             return View("InstallFooter");
         }
     }

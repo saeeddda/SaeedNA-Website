@@ -152,32 +152,40 @@ namespace SaeedNA.Service.Implementations
         {
             try
             {
+                ServiceResult isEdidted = ServiceResult.NotFond;
+                var backupInfo = new PersonalInfoGetSetDTO();
+
                 #region Delete Old Data
 
-                var infoData = await _personalInfoRepository.GetQuery().AsQueryable()
-                    .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == personalInfo.PersonalInfoId);
-
-                var oldInfo = new PersonalInfoGetSetDTO
+                if (personalInfo.PersonalInfoId > 0)
                 {
-                    PersonalInfoId = infoData.Id,
-                    IsDefault = false,
-                    AboutMe = infoData.AboutMe,
-                    Address = infoData.Address,
-                    Age = infoData.Age,
-                    AvatarImage = infoData.AvatarImage,
-                    Birthday = infoData.Birthday,
-                    Email = infoData.Email,
-                    FullName = infoData.FullName,
-                    Language = infoData.Language,
-                    Mobile = infoData.Mobile,
-                    Nationality = infoData.Nationality,
-                    PhoneNumber = infoData.PhoneNumber,
-                    ResumeFile = infoData.ResumeFile,
-                    ResumeImage = infoData.ResumeImage
-                };
+                    var infoData = await _personalInfoRepository.GetQuery().AsQueryable()
+                        .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == personalInfo.PersonalInfoId);
 
-                var editResult = await EditInfo(oldInfo);
-                var deleteResult = await DeleteInfo(personalInfo.PersonalInfoId);
+                    var oldInfo = new PersonalInfoGetSetDTO
+                    {
+                        PersonalInfoId = infoData.Id,
+                        IsDefault = false,
+                        AboutMe = infoData.AboutMe,
+                        Address = infoData.Address,
+                        Age = infoData.Age,
+                        AvatarImage = infoData.AvatarImage,
+                        Birthday = infoData.Birthday,
+                        Email = infoData.Email,
+                        FullName = infoData.FullName,
+                        Language = infoData.Language,
+                        Mobile = infoData.Mobile,
+                        Nationality = infoData.Nationality,
+                        PhoneNumber = infoData.PhoneNumber,
+                        ResumeFile = infoData.ResumeFile,
+                        ResumeImage = infoData.ResumeImage
+                    };
+
+                    backupInfo = oldInfo;
+
+                    isEdidted =  await EditInfo(oldInfo) == ServiceResult.Success &&
+                        await DeleteInfo(oldInfo.PersonalInfoId) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
+                }
 
                 #endregion
 
@@ -185,27 +193,27 @@ namespace SaeedNA.Service.Implementations
 
                 var newInfo = new PersonalInfoCreateDTO
                 {
-                    AboutMe = string.IsNullOrEmpty(personalInfo.AboutMe) ? infoData.AboutMe : personalInfo.AboutMe,
-                    Address = string.IsNullOrEmpty(personalInfo.Address) ? infoData.Address : personalInfo.Address,
-                    Age = string.IsNullOrEmpty(personalInfo.Age) ? infoData.Age : personalInfo.Age,
-                    AvatarImage = string.IsNullOrEmpty(personalInfo.AvatarImage) ? infoData.AvatarImage : personalInfo.AvatarImage,
-                    Birthday = string.IsNullOrEmpty(personalInfo.Birthday) ? infoData.Birthday : personalInfo.Birthday,
-                    Email = string.IsNullOrEmpty(personalInfo.Email) ? infoData.Email : personalInfo.Email,
-                    FullName = string.IsNullOrEmpty(personalInfo.FullName) ? infoData.FullName : personalInfo.FullName,
-                    Language = string.IsNullOrEmpty(personalInfo.Language) ? infoData.Language : personalInfo.Language,
-                    Mobile = string.IsNullOrEmpty(personalInfo.Mobile) ? infoData.Mobile : personalInfo.Mobile,
-                    Nationality = string.IsNullOrEmpty(personalInfo.Nationality) ? infoData.Nationality : personalInfo.Nationality,
-                    PhoneNumber = string.IsNullOrEmpty(personalInfo.PhoneNumber) ? infoData.PhoneNumber : personalInfo.PhoneNumber,
-                    ResumeFile = string.IsNullOrEmpty(personalInfo.ResumeFile) ? infoData.ResumeFile : personalInfo.ResumeFile,
-                    ResumeImage = string.IsNullOrEmpty(personalInfo.ResumeImage) ? infoData.ResumeImage : personalInfo.ResumeImage,
+                    AboutMe = string.IsNullOrEmpty(personalInfo.AboutMe) ? backupInfo.AboutMe : personalInfo.AboutMe,
+                    Address = string.IsNullOrEmpty(personalInfo.Address) ? backupInfo.Address : personalInfo.Address,
+                    Age = string.IsNullOrEmpty(personalInfo.Age) ? backupInfo.Age : personalInfo.Age,
+                    AvatarImage = string.IsNullOrEmpty(personalInfo.AvatarImage) ? backupInfo.AvatarImage : personalInfo.AvatarImage,
+                    Birthday = string.IsNullOrEmpty(personalInfo.Birthday) ? backupInfo.Birthday : personalInfo.Birthday,
+                    Email = string.IsNullOrEmpty(personalInfo.Email) ? backupInfo.Email : personalInfo.Email,
+                    FullName = string.IsNullOrEmpty(personalInfo.FullName) ? backupInfo.FullName : personalInfo.FullName,
+                    Language = string.IsNullOrEmpty(personalInfo.Language) ? backupInfo.Language : personalInfo.Language,
+                    Mobile = string.IsNullOrEmpty(personalInfo.Mobile) ? backupInfo.Mobile : personalInfo.Mobile,
+                    Nationality = string.IsNullOrEmpty(personalInfo.Nationality) ? backupInfo.Nationality : personalInfo.Nationality,
+                    PhoneNumber = string.IsNullOrEmpty(personalInfo.PhoneNumber) ? backupInfo.PhoneNumber : personalInfo.PhoneNumber,
+                    ResumeFile = string.IsNullOrEmpty(personalInfo.ResumeFile) ? backupInfo.ResumeFile : personalInfo.ResumeFile,
+                    ResumeImage = string.IsNullOrEmpty(personalInfo.ResumeImage) ? backupInfo.ResumeImage : personalInfo.ResumeImage,
                     IsDefault = true
                 };
 
-                var addResult = await AddNewInfo(newInfo);
+                var addResult = await AddNewInfo(newInfo) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
 
                 #endregion
 
-                return (editResult == ServiceResult.Success && deleteResult == ServiceResult.Success && addResult == ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+                return isEdidted == ServiceResult.Success && addResult == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {

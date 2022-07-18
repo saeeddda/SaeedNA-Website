@@ -1,7 +1,139 @@
-﻿@model SiteSettingsViewModel
+﻿@model dynamic
 @{
     ViewData["Title"] = "نصب اولیه سایت";
     Layout = "_InstallLayout";
 }
 
-<h1>install </h1>
+<div class="main-content">
+    <div class="header">
+        <h1>نصب اولیه سایت</h1>
+        <span>با استفاده از این نصب، به راحتی سایت راه اندازی می گردد.</span>
+    </div>
+    <div class="content">
+        <fieldset>
+            <div class="title">
+                <h2>رشته اتصال</h2>
+                <span>رشته اتصال به بانک اطلاعاتی را وارد کنید.</span>
+            </div>
+            <div class="form-element">
+                <label for="bank_host">آدرس هاست</label>
+                <input type="text" name="bank_host" id="bank_host" dir="ltr" value="localhost">
+            </div>
+            <div class="form-element">
+                <label for="bank_name">نام بانک</label>
+                <input type="text" name="bank_name" id="bank_name" dir="ltr">
+            </div>
+            <div class="form-element">
+                <label for="bank_username">نام کاربری</label>
+                <input type="text" name="bank_username" id="bank_username" dir="ltr">
+            </div>
+            <div class="form-element">
+                <label for="bank_password">کلمه عبور</label>
+                <input type="text" name="bank_password" id="bank_password" dir="ltr">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <div class="title">
+                <h2>سرور ایمیل</h2>
+                <span>سرور ارسال ایمیل را وارد کنید.</span>
+            </div>
+            <div class="form-element">
+                <label for="mail_server">آدرس سرور</label>
+                <input type="text" name="mail_server" id="mail_server" dir="ltr" placeholder="smtp.gmail.com">
+            </div>
+            <div class="form-element">
+                <label for="mail_port">پورت اتصال</label>
+                <input type="number" name="mail_port" id="mail_port">
+            </div>
+            <div class="form-element">
+                <label for="mail_username">نام کاربری</label>
+                <input type="text" name="mail_username" id="mail_username" dir="ltr">
+            </div>
+            <div class="form-element">
+                <label for="mail_password">کلمه عبور</label>
+                <input type="text" name="mail_password" id="mail_password" dir="ltr">
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <div class="title">
+                <h2>تنظیمات Google reCaptcha</h2>
+                <span>تنظیمات Google reCaptcha را وارد کنید.</span>
+            </div>
+        </fieldset>
+
+
+
+        <div class="title">
+            <h2>لوگو و آیکون</h2>
+            <span>لوگوی خود را در این قسمت مشخص کنید.</span>
+        </div>
+        <div class="form-element">
+            <label for="file">لوگو سایت</label>
+            <input type="file" name="file" id="file">
+        </div>
+        <div class="form-element">
+            <label for="file">فاو آیکون</label>
+            <input type="file" name="file" id="file">
+        </div>
+        <div class="form-element">
+            <label for="file">تصویر پروفایل</label>
+            <input type="file" name="file" id="file">
+        </div>
+        <div class="form-element">
+            <label for="file">تصویر آواتار</label>
+            <input type="file" name="file" id="file">
+        </div>
+
+        <div class="title">
+            <h2>مشخصات سایت</h2>
+            <span>مشخصات سایت خود را در این قسمت وارد کنید.</span>
+        </div>
+        <div class="form-element">
+            <label for="text">عنوان سایت</label>
+            <input type="text" name="text" id="text">
+        </div>
+        <div class="form-element">
+            <label for="text">آدرس سایت</label>
+            <input type="text" name="text" id="text" dir="ltr" placeholder="https://...">
+        </div>
+
+
+
+
+        <div class="form-element">
+            <label for="text">این متنه</label>
+            <input type="text" name="text" id="text">
+        </div>
+        <div class="form-element">
+            <label for="file">این فایله</label>
+            <input type="file" name="file" id="file">
+        </div>
+        <div class="form-element">
+            <label for="select">این لیست باکسه</label>
+            <select name="select" id="select">
+                <option value="0">عدد 0</option>
+                <option value="1">عدد 1</option>
+                <option value="2">عدد 2</option>
+                <option value="3">عدد 3</option>
+                <option value="4">عدد 4</option>
+            </select>
+        </div>
+        <div class="form-element">
+            <label for="textarea">این متنه</label>
+            <textarea name="textarea" id="textarea" rows="10"></textarea>
+        </div>
+        <button class="button" type="submit">
+            <i class="fa fa-check"></i>
+            <span>نصب کن!</span>
+        </button>
+        <button class="button button-secondary" type="submit">
+            <i class="fa fa-info"></i>
+            <span>راهنما</span>
+        </button>
+    </div>
+    <div class="footer">
+        <span>با استفاده از این نصب، به راحتی سایت راه اندازی می گردد.</span>
+    </div>
+</div>

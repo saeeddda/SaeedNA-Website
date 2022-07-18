@@ -1,10 +1,9 @@
-﻿
-@{
+﻿@{
     var settings = ViewBag.Settings as SettingGetSetDTO;
     var seoInfos = ViewBag.Seo as SeoGetSetDTO;
     var personalInfo = ViewBag.PersonalInfo as PersonalInfoGetSetDTO;
 
-    if(!string.IsNullOrEmpty(seoInfos.MetaTags) && !string.IsNullOrEmpty(seoInfos.MetaDescription))
+    if(seoInfos != null && personalInfo != null && settings != null)
     {
         Html.SetSeoInfo(seo =>
         {
@@ -14,8 +13,7 @@
         });
     }
 }
-
-@if(!string.IsNullOrEmpty(seoInfos.MetaTags) && !string.IsNullOrEmpty(seoInfos.MetaDescription))
+@if(seoInfos != null && personalInfo != null && settings != null)
 {
     @Html.SeoTags()
 }
@@ -26,8 +24,10 @@
 <link rel="mask-icon" href="@(PathExtension.UploadPath)img/safari-pinned-tab.svg" color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
-<link rel="shortcut icon" href="@(PathExtension.UploadPath + settings.SiteFavIcon)" type="image/png">
-
+@if (seoInfos != null && personalInfo != null && settings != null)
+{
+    <link rel="shortcut icon" href="@(PathExtension.UploadPath + settings.SiteFavIcon)" type="image/png">
+}
 <!-- Template CSS Files -->
 <link href="/site/css/bootstrap.min.css" rel="stylesheet">
 <link href="/site/css/preloader.min.css" rel="stylesheet">
@@ -35,10 +35,8 @@
 <link href="/site/css/font-awesome.min.css" rel="stylesheet">
 <link href="/site/css/fm.revealator.jquery.min.css" rel="stylesheet">
 <link href="/site/fonts/dana/fontiran.css" rel="stylesheet">
-
 <!-- CSS Skin File -->
 <link href="/site/css/style.css" rel="stylesheet">
 <link href="/site/css/skins/blue.css" rel="stylesheet">
-
 <!-- Modernizr JS File -->
 <script src="/site/js/modernizr.custom.js"></script>

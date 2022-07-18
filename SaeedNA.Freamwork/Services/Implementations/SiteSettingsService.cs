@@ -127,44 +127,52 @@ namespace SaeedNA.Service.Implementations
         {
             try
             {
+                ServiceResult isEdited = ServiceResult.NotFond;
+                var backupSettig = new SettingGetSetDTO();
+
                 #region Delete Old Data
 
-                var settingData = await _settingRepository.GetQuery().AsQueryable()
-                    .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == setting.SettingId);
-
-                var oldSetting = new SettingGetSetDTO
+                if (setting.SettingId > 0)
                 {
-                    SettingId = settingData.Id,
-                    IsDefault = false,
-                    SiteFavIcon = settingData.SiteFavIcon,
-                    SiteLogo = settingData.SiteLogo,
-                    SiteMode = settingData.SiteMode,
-                    SiteTitle = settingData.SiteTitle,
-                    SiteUrl = settingData.SiteUrl
-                };
+                    var settingData = await _settingRepository.GetQuery().AsQueryable()
+                        .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == setting.SettingId);
 
-                var editResult = await EditSetting(oldSetting);
-                var deleteResult = await DeleteSetting(setting.SettingId);
+                    var oldSetting = new SettingGetSetDTO
+                    {
+                        SettingId = settingData.Id,
+                        IsDefault = false,
+                        SiteFavIcon = settingData.SiteFavIcon,
+                        SiteLogo = settingData.SiteLogo,
+                        SiteMode = settingData.SiteMode,
+                        SiteTitle = settingData.SiteTitle,
+                        SiteUrl = settingData.SiteUrl
+                    };
+
+                    backupSettig = oldSetting;
+
+                    isEdited = (await EditSetting(oldSetting) == ServiceResult.Success) &&
+                        (await DeleteSetting(setting.SettingId)== ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+                }
 
                 #endregion
 
                 #region Add New Data
 
-                var data = new SettingCreateDTO
-                {
-                    IsDefault = true,
-                    SiteFavIcon = string.IsNullOrEmpty(setting.SiteFavIcon) ? settingData.SiteFavIcon : setting.SiteFavIcon,
-                    SiteLogo = string.IsNullOrEmpty(setting.SiteLogo) ? settingData.SiteLogo : setting.SiteLogo,
-                    SiteMode = setting.SiteMode,
-                    SiteTitle = string.IsNullOrEmpty(setting.SiteTitle) ? settingData.SiteTitle : setting.SiteTitle,
-                    SiteUrl = string.IsNullOrEmpty(setting.SiteUrl) ? settingData.SiteUrl : setting.SiteUrl
-                };
+                    var data = new SettingCreateDTO
+                    {
+                        SiteFavIcon = string.IsNullOrEmpty(setting.SiteFavIcon) ? backupSettig.SiteFavIcon  : setting.SiteFavIcon,
+                        SiteLogo = string.IsNullOrEmpty(setting.SiteLogo) ? backupSettig.SiteLogo : setting.SiteLogo,
+                        SiteMode = setting.SiteMode,
+                        SiteTitle = string.IsNullOrEmpty(setting.SiteTitle) ? backupSettig.SiteTitle : setting.SiteTitle,
+                        SiteUrl = string.IsNullOrEmpty(setting.SiteUrl) ? backupSettig.SiteUrl : setting.SiteUrl,
+                        IsDefault = true
+                    };
 
-                var addResult = await AddNewSetting(data);
+                    var addResult = await AddNewSetting(data) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
 
                 #endregion
 
-                return (editResult == ServiceResult.Success && deleteResult == ServiceResult.Success && addResult == ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+                return isEdited == ServiceResult.Success && addResult == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {

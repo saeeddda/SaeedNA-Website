@@ -7,7 +7,11 @@
 
 <footer class="footer footer-static footer-light">
     <p class="clearfix mb-0">
-        <span class="float-left d-inline-block">2021 &copy; <a href="@sett.SiteUrl">@sett.SiteTitle</a></span>
+        @if (sett != null) {
+            <span class="float-left d-inline-block">2021 &copy; <a href="@sett.SiteUrl">@sett.SiteTitle</a></span>
+        }else{
+            <span class="float-left d-inline-block">2021 &copy; <a href="https://site.com">سایت شخصی</a></span>
+        }
     </p>
 </footer>
 

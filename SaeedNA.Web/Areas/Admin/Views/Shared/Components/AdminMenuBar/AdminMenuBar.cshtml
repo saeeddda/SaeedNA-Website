@@ -20,17 +20,25 @@
                     <li class="dropdown dropdown-user nav-item">
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#!." data-toggle="dropdown">
                             <div class="user-nav d-sm-flex d-none">
-                                <span class="user-name">@infos.FullName</span>
+                                @if (infos != null) {
+                                    <span class="user-name">@infos.FullName</span>
+                                }else{
+                                    <span class="user-name">نام کاربری</span>
+                                }
                             </div>
                             <span>
-                                <img class="round" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" height="40" width="40">
+                                @if (infos != null){
+                                    <img class="round" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" height="40" width="40">
+                                }else{
+                                    <img class="round" src="@(PathExtension.UploadPath)/img/SiteLogo.png" alt="Site Logo" height="40" width="40">
+                                }
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right pb-0">
                             <a class="dropdown-item" asp-action="Index" asp-controller="Settings" asp-area="Admin"><i class="bx bx-user mr-50"></i> ویرایش پروفایل </a>
                             <a class="dropdown-item" asp-action="Index" asp-controller="Email" asp-area="Admin"><i class="bx bx-envelope mr-50"></i> صندوق ارتباط </a>
                             <div class="dropdown-divider mb-0"></div>
-                            <a class="dropdown-item" href="/account/log-out"><i class="bx bx-power-off mr-50"></i> خروج </a>
+                            <a class="dropdown-item" asp-action="LogOut" asp-controller="Account"><i class="bx bx-power-off mr-50"></i> خروج </a>
                         </div>
                     </li>
                 </ul>
@@ -44,10 +52,17 @@
         <ul class="nav navbar-nav flex-row">
             <li class="nav-item mr-auto">
                 <a class="navbar-brand" href="/">
-                    <div class="brand-logo">
-                        <img class="logo" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" />
-                    </div>
-                    <h2 class="brand-text mb-0">@infos.FullName</h2>
+                    @if ( infos != null) {
+                        <div class="brand-logo">
+                            <img class="logo" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" />
+                        </div>
+                        <h2 class="brand-text mb-0">@infos.FullName</h2>
+                    }else{
+                        <div class="brand-logo">
+                            <img class="logo" src="@(PathExtension.UploadPath)/img/SiteLogo.png" alt="Site Logo" />
+                        </div>
+                        <h2 class="brand-text mb-0">نام و نام خانوادگی</h2>
+                    }
                 </a>
             </li>
             <li class="nav-item nav-toggle">
