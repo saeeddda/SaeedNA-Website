@@ -18,6 +18,16 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     [Authorize]
     public class SettingsController : Controller
     {
+        //TODO : Create site setting single page
+        //TODO : Create profile setting single page
+        //TODO : Create seo setting single page
+        //TODO : Modify site setting service and repository
+        //TODO : Modify profile setting service and repository
+        //TODO : Modify seo setting service and repository
+        //TODO : Change all setting use models 
+        //TODO : Create seo and sitemap settings 
+        //TODO : Create google recaptcha settings 
+
         #region Ctor
 
         private readonly IPersonalInfoService _personalService;

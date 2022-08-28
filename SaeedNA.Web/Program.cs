@@ -80,7 +80,7 @@ builder.Services.AddReCaptcha(builder.Configuration.GetSection("ReCaptcha"));
 
 #region Localization
 
-builder.Services.AddLocalization();
+//builder.Services.AddLocalization();
 
 #endregion
 
@@ -114,17 +114,17 @@ else
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
-var supportedLocales =
-    "en-US,fa-IR"
-        .Split(',')
-        .Select(code => new CultureInfo(code))
-        .ToList();
+//var supportedLocales =
+//    "en-US,fa-IR"
+//        .Split(',')
+//        .Select(code => new CultureInfo(code))
+//        .ToList();
 
-app.UseRequestLocalization(new RequestLocalizationOptions
-{
-    SupportedCultures = supportedLocales,
-    SupportedUICultures = supportedLocales,
-});
+//app.UseRequestLocalization(new RequestLocalizationOptions
+//{
+//    SupportedCultures = supportedLocales,
+//    SupportedUICultures = supportedLocales,
+//});
 
 app.UseRouting();
 
