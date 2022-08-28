@@ -1,0 +1,51 @@
+﻿@model SeoGetSetDTO
+
+<form asp-action="Edit" asp-controller="SeoSetting" asp-area="Admin" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="SeoId">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="MetaDescription"></label>
+        <input type="text" class="form-control" asp-for="MetaDescription">
+        <span asp-validation-for="MetaDescription"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MetaTags"></label>
+        <input type="text" class="form-control" asp-for="MetaTags">
+        <span asp-validation-for="MetaTags"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Author"></label>
+        <input type="text" class="form-control" asp-for="Author">
+        <span asp-validation-for="Author"></span>
+    </div>
+    @*<div class="form-group">
+                            <label asp-for="Seo.Canonical"></label>
+                            <input type="text" class="form-control" asp-for="Seo.Canonical">
+
+                        </div>*@
+    <div class="form-group">
+        <label asp-for="Publisher"></label>
+        <input type="text" class="form-control" asp-for="Publisher">
+        <span asp-validation-for="Publisher"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="RobotsTxt"></label>
+        <input type="text" class="form-control" asp-for="RobotsTxt" readonly>
+        <span asp-validation-for="RobotsTxt"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SiteMap"></label>
+        <input type="text" class="form-control" asp-for="SiteMap" readonly>
+        <span asp-validation-for="SiteMap"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="GoogleAnalytics"></label>
+        <textarea class="form-control" asp-for="GoogleAnalytics" rows="10" dir="ltr"></textarea>
+        <span asp-validation-for="GoogleAnalytics"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">ثبت</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">بستن</button>
+    </div>
+</form>

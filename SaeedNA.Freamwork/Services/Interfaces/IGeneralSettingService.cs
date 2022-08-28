@@ -6,7 +6,7 @@ using SaeedNA.Data.Entities.Settings;
 
 namespace SaeedNA.Service.Interfaces
 {
-    public interface ISiteSettingService:IAsyncDisposable
+    public interface IGeneralSettingService:IAsyncDisposable
     {
         Task<ServiceResult> AddNewSetting(SettingCreateDTO setting);
         Task<ServiceResult> EditSetting(SettingGetSetDTO setting);

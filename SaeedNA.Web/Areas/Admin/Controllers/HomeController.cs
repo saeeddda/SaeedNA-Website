@@ -11,10 +11,10 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         #region Ctor
 
-        private readonly ISiteSettingService _settingService;
+        private readonly IGeneralSettingService _settingService;
         private readonly IPostService _post;
 
-        public HomeController(ISiteSettingService settingService, IPostService post)
+        public HomeController(IGeneralSettingService settingService, IPostService post)
         {
             _settingService = settingService;
             _post = post;

@@ -110,10 +110,10 @@ namespace SaeedNA.Service.Implementations
             return filter.SetSeo(allEntities).SetPaging(pager);
         }
 
-        public async Task<SeoGetSetDTO> GetDefaultSeo()
+        public async Task<SeoGetSetDTO> GetSeoById(long seoId)
         {
             var query = await _seoRepository.GetQuery().AsQueryable()
-                .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
+                .SingleOrDefaultAsync(s => s.Id == seoId && !s.IsDelete);
 
             if (query == null) return null;
 
@@ -132,60 +132,30 @@ namespace SaeedNA.Service.Implementations
             };
         }
 
-        public async Task<ServiceResult> SetDefaultSeo(SeoGetSetDTO seo)
+        public async Task<ServiceResult> SetDefaultSeo(long seoId)
         {
             try
             {
-                ServiceResult isEdited = ServiceResult.NotFond;
-                var backupSeo = new SeoGetSetDTO();
+                if (seoId == 0) return ServiceResult.Error; 
 
-                #region Delete Old Data
-
-                if (seo.SeoId > 0)
+                var oldEntity = await _seoRepository.GetQuery().AsQueryable()
+                    .Where(s => s.IsDefault).ToListAsync();
+                foreach (var oe in oldEntity)
                 {
-                    var seoData = await _seoRepository.GetQuery().AsQueryable()
-                        .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == seo.SeoId);
-
-                    var oldSeo = new SeoGetSetDTO
-                    {
-                        SeoId = seoData.Id,
-                        IsDefault = false,
-                        Author = seoData.Author,
-                        Canonical = seoData.Canonical,
-                        GoogleAnalytics = seoData.GoogleAnalytics,
-                        MetaDescription = seoData.MetaDescription,
-                        MetaTags = seoData.MetaTags,
-                        Publisher = seoData.Publisher,
-                        RobotsTxt = seoData.RobotsTxt,
-                        SiteMap = seoData.SiteMap
-                    };
-
-                    backupSeo = oldSeo;
-
-                    isEdited = (await EditSeo(oldSeo) == ServiceResult.Success) &&
-                        (await DeleteSeo(seo.SeoId) == ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+                    oe.IsDefault = false;
+                    _seoRepository.EditEntity(oe);
+                    await _seoRepository.SaveChanges();
                 }
 
-                #endregion
+                var entity = await _seoRepository.GetEntityById(seoId);
+                if (entity == null) return ServiceResult.NotFond;
 
-                #region Add New Data
+                entity.IsDefault = true;
 
-                var data = new SeoCreateDTO
-                {
-                    Author = string.IsNullOrEmpty(seo.Author) ? backupSeo.Author : seo.Author,
-                    Canonical = string.IsNullOrEmpty(seo.Canonical) ? backupSeo.Canonical : seo.Canonical,
-                    GoogleAnalytics = string.IsNullOrEmpty(seo.GoogleAnalytics) ? backupSeo.GoogleAnalytics : seo.GoogleAnalytics,
-                    MetaDescription = string.IsNullOrEmpty(seo.MetaDescription) ? backupSeo.MetaDescription : seo.MetaDescription,
-                    MetaTags = string.IsNullOrEmpty(seo.MetaTags) ? backupSeo.MetaTags : seo.MetaTags,
-                    Publisher = string.IsNullOrEmpty(seo.Publisher) ? backupSeo.Publisher : seo.Publisher,
-                    IsDefault = true
-                };
+                var result = _seoRepository.EditEntity(entity);
+                await _seoRepository.SaveChanges();
 
-                var addResult = await AddNewSeo(data) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
-
-                #endregion
-
-                return isEdited == ServiceResult.Success && addResult == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
+                return result ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {

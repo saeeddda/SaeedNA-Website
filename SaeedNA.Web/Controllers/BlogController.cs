@@ -13,10 +13,10 @@ namespace SaeedNA.Web.Controllers
     public class BlogController : Controller
     {
         private readonly IPostService _postService;
-        private readonly ISiteSettingService _settingService;
+        private readonly IGeneralSettingService _settingService;
         private readonly IPortfolioService _portfolioService;
 
-        public BlogController(IPostService postService, ISiteSettingService settingService, IPortfolioService portfolioService)
+        public BlogController(IPostService postService, IGeneralSettingService settingService, IPortfolioService portfolioService)
         {
             _postService = postService;
             _settingService = settingService;

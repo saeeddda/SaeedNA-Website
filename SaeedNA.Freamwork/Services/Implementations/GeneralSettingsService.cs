@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Implementations
 {
-    public class SiteSettingsService : ISiteSettingService
+    public class GeneralSettingsService : IGeneralSettingService
     {
         private readonly IGenericRepository<Setting> _settingRepository;
 
-        public SiteSettingsService(IGenericRepository<Setting> settingRepository)
+        public GeneralSettingsService(IGenericRepository<Setting> settingRepository)
         {
             _settingRepository = settingRepository;
         }

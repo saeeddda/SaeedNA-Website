@@ -27,7 +27,7 @@ builder.Services.AddScoped<IPersonalInfoService, PersonalInfoService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ISeoService, SeoService>();
-builder.Services.AddScoped<ISiteSettingService, SiteSettingsService>();
+builder.Services.AddScoped<IGeneralSettingService, GeneralSettingsService>();
 builder.Services.AddScoped<ISkillService, SkillService>();
 builder.Services.AddScoped<ISocialMediaService, SocialMediaService>();
 builder.Services.AddScoped<IUserService, UserService>();

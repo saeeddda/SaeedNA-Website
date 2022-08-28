@@ -66,14 +66,14 @@
 @section Scripts{
     <script>
         function addNewSocialMedia() {
-            $.get("/Admin/Settings/AddSocialMedia", function (result) {
+            $.get("/Admin/SocialMedia/Add", function (result) {
                 $("#modal-title").html("افزودن شبکه");
                 $("#modal-body").html(result);
                 $("#category-modal").modal();
             });
         }
         function editSocialMedia(id) {
-            $.get("/Admin/Settings/EditSocialMedia/" + id, function (result) {
+            $.get("/Admin/SocialMedia/Edit/" + id, function (result) {
                 $("#modal-title").html("ویرایش شبکه");
                 $("#modal-body").html(result);
                 $("#category-modal").modal();
@@ -94,7 +94,7 @@
                 buttonsStyling: !1
             }).then(function (t) {
                 if (t.value) {
-                    $.post("/Admin/Settings/DeleteSocialMedia/" + id, function (result) {
+                    $.post("/Admin/SocialMedia/Delete/" + id, function (result) {
                         if (result.status === "ok") {
                             setTimeout(function () {
                                 location.reload();
@@ -123,4 +123,3 @@
         }
     </script>
 }
-

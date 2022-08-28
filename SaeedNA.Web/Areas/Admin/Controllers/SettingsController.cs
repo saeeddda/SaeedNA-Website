@@ -20,7 +20,6 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
     {
         //TODO : Create site setting single page
         //TODO : Create profile setting single page
-        //TODO : Create seo setting single page
         //TODO : Modify site setting service and repository
         //TODO : Modify profile setting service and repository
         //TODO : Modify seo setting service and repository
@@ -32,11 +31,11 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         private readonly IPersonalInfoService _personalService;
         private readonly ISeoService _seoService;
-        private readonly ISiteSettingService _settingService;
+        private readonly IGeneralSettingService _settingService;
         private readonly ISocialMediaService _socialMediaService;
         private readonly IConfiguration _configuration;
 
-        public SettingsController(IPersonalInfoService personalService, ISeoService seoService, ISiteSettingService settingService, ISocialMediaService socialMediaService, IConfiguration configuration)
+        public SettingsController(IPersonalInfoService personalService, ISeoService seoService, IGeneralSettingService settingService, ISocialMediaService socialMediaService, IConfiguration configuration)
         {
             _personalService = personalService;
             _seoService = seoService;
@@ -47,71 +46,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
         #endregion
 
-        #region Social Media Actions
-
-        [HttpGet]
-        public async Task<IActionResult> SocialMedia(SocialMediaFilterDTO filter)
-        {
-            return View("SocialMedia", await _socialMediaService.FilterSocialMedia(filter));
-        }
-
-        [HttpGet]
-        public IActionResult AddSocialMedia()
-        {
-            return PartialView();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> AddSocialMedia(SocialMediaCreateDTO socialMedia)
-        {
-            if (ModelState.IsValid)
-            {
-                await _socialMediaService.AddNewSocialMedia(socialMedia);
-                return RedirectToAction("SocialMedia");
-            }
-
-            return PartialView(socialMedia);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> EditSocialMedia(long id)
-        {
-            var data = await _socialMediaService.GetSocialMediaForEdit(id);
-
-            return PartialView(data);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> EditSocialMedia(SocialMediaEditDTO socialMedia)
-        {
-            if (ModelState.IsValid)
-            {
-                await _socialMediaService.EditSocialMedia(socialMedia);
-                return RedirectToAction("SocialMedia");
-            }
-
-            return PartialView(socialMedia);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> DeleteSocialMedia(long id)
-        {
-            var result = await _socialMediaService.DeleteSocialMedia(id);
-
-            switch (result)
-            {
-                case ServiceResult.NotFond:
-                    return Json(new { status = "error", msg = "SocialMedia not found!" });
-                case ServiceResult.Error:
-                    return Json(new { status = "error", msg = "ID not valid!" });
-                case ServiceResult.Success:
-                    return Json(new { status = "ok", msg = "SocialMedia deleted" });
-                default:
-                    return Json(new { status = "", msg = "" });
-            }
-        }
-
-        #endregion
+        
 
         #region Site Settings Actions
 
@@ -122,16 +57,16 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
             var setting = await _settingService.GetDefaultSetting();
             var personalInfo = await _personalService.GetDefaultInfo();
-            var seo = await _seoService.GetDefaultSeo();
+            //var seo = await _seoService.GetDefaultSeo();
 
             var settings = new SiteSettingsViewModel
             {
                 Setting = setting,
                 PersonalInfo = personalInfo,
-                Seo = seo
+                //Seo = seo
             };
 
-            if (setting != null && personalInfo != null && seo != null)
+            if (setting != null && personalInfo != null)
             {
                 ViewBag.HasSettings = true;
 
@@ -185,7 +120,7 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
 
                 await _personalService.SetDefaultPersonalInfo(settings.PersonalInfo);
                 await _settingService.SetDefaultSetting(settings.Setting);
-                await _seoService.SetDefaultSeo(settings.Seo);
+                //await _seoService.SetDefaultSeo(settings.Seo);
 
                 return RedirectToAction("Index");
             }

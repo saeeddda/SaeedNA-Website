@@ -10,11 +10,11 @@ namespace SaeedNA.Web.ViewComponents
 
     public class SiteHeaderViewComponent : ViewComponent
     {
-        private readonly ISiteSettingService _settingService;
+        private readonly IGeneralSettingService _settingService;
         private readonly ISeoService _seoService;
         private readonly IPersonalInfoService _personalService;
 
-        public SiteHeaderViewComponent(ISiteSettingService settingService, ISeoService seoService, IPersonalInfoService personalService)
+        public SiteHeaderViewComponent(IGeneralSettingService settingService, ISeoService seoService, IPersonalInfoService personalService)
         {
             _settingService = settingService;
             _seoService = seoService;
@@ -24,7 +24,7 @@ namespace SaeedNA.Web.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync()
         {
             ViewBag.Settings = await _settingService.GetDefaultSetting();
-            ViewBag.Seo = await _seoService.GetDefaultSeo();
+            //ViewBag.Seo = await _seoService.GetDefaultSeo();
             ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
 
             return View("SiteHeader");

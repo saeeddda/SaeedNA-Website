@@ -172,21 +172,33 @@
                 </a>
             </li>
             <li id="settings-index" class=" nav-item">
-                <a asp-action="Index" asp-controller="Settings" asp-area="Admin">
+                <a href="#">
                     <i class="menu-livicon" data-icon="gears"></i>
                     <span class="menu-title text-truncate">تنظیمات</span>
                 </a>
                 <ul class="menu-content">
-                    <li id="servicecounter-index" class="">
-                        <a class="d-flex align-items-center" asp-action="SocialMedia" asp-controller="Settings" asp-area="Admin">
+                    <li id="myservice-index">
+                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="GeneralSetting" asp-area="Admin">
                             <i class="bx bx-right-arrow-alt"></i>
-                            <span class="menu-item text-truncate">شبکه های اجتماعی</span>
+                            <span class="menu-item text-truncate">تنظیمات عمومی</span>
                         </a>
                     </li>
                     <li id="myservice-index">
-                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="Settings" asp-area="Admin">
+                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="ProfileSetting" asp-area="Admin">
                             <i class="bx bx-right-arrow-alt"></i>
-                            <span class="menu-item text-truncate">تنظیمات سایت</span>
+                            <span class="menu-item text-truncate">تنظیمات پروفایل</span>
+                        </a>
+                    </li>
+                    <li id="myservice-index">
+                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="SeoSetting" asp-area="Admin">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item text-truncate">تنظیمات سئو</span>
+                        </a>
+                    </li>
+                    <li id="servicecounter-index" class="">
+                        <a class="d-flex align-items-center" asp-action="Index" asp-controller="SocialMedia" asp-area="Admin">
+                            <i class="bx bx-right-arrow-alt"></i>
+                            <span class="menu-item text-truncate">شبکه های اجتماعی</span>
                         </a>
                     </li>
                 </ul>

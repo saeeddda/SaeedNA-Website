@@ -1,6 +1,6 @@
 ﻿@model SocialMediaEditDTO
 
-<form asp-action="EditSocialMedia" asp-controller="Settings" asp-area="Admin" method="post">
+<form asp-action="Edit" asp-controller="SocialMedia" asp-area="Admin" method="post">
     @Html.AntiForgeryToken()
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="SocialMediaId" />

@@ -6,9 +6,9 @@ namespace SaeedNA.Web.Areas.Admin.ViewComponents
 {
     public class AdminHeaderViewComponent:ViewComponent
     {
-        private readonly ISiteSettingService _settingService;
+        private readonly IGeneralSettingService _settingService;
 
-        public AdminHeaderViewComponent(ISiteSettingService settingService)
+        public AdminHeaderViewComponent(IGeneralSettingService settingService)
         {
             _settingService = settingService;
         }
@@ -22,9 +22,9 @@ namespace SaeedNA.Web.Areas.Admin.ViewComponents
 
     public class AdminFooterViewComponent : ViewComponent
     {
-        private readonly ISiteSettingService _settingService;
+        private readonly IGeneralSettingService _settingService;
 
-        public AdminFooterViewComponent(ISiteSettingService settingService)
+        public AdminFooterViewComponent(IGeneralSettingService settingService)
         {
             _settingService = settingService;
         }

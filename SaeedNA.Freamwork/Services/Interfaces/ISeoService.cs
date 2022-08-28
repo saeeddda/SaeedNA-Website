@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using SaeedNA.Data.DTOs.Common;
+﻿using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Site;
-using SaeedNA.Data.Entities.Settings;
+using System;
+using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Interfaces
 {
@@ -12,7 +11,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> EditSeo(SeoGetSetDTO seo);
         Task<ServiceResult> DeleteSeo(long seoId);
         Task<SeoFilterDTO> FilterSeo(SeoFilterDTO filter);
-        Task<SeoGetSetDTO> GetDefaultSeo();
-        Task<ServiceResult> SetDefaultSeo(SeoGetSetDTO seo);
+        Task<SeoGetSetDTO> GetSeoById(long seoId);
+        Task<ServiceResult> SetDefaultSeo(long seoId);
     }
 }
