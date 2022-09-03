@@ -5,6 +5,7 @@ using SaeedNA.Data.DTOs.Site;
 using SaeedNA.Data.Entities.Settings;
 using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -98,6 +99,8 @@ namespace SaeedNA.Service.Implementations
 
             query = query.Where(s => s.IsDelete == filter.IsDelete);
 
+            //query = query.Where(s => s.IsDefault == filter.IsDefault);
+
             var pager = Pager.Build(filter.PageId, await query.CountAsync(), filter.TakeEntity, filter.HowManyBeforeAndAfter);
             var allEntities = await query.Paging(pager).ToListAsync();
 
@@ -121,6 +124,32 @@ namespace SaeedNA.Service.Implementations
                 SiteTitle = query.SiteTitle,
                 SiteUrl = query.SiteUrl
             };
+        }
+
+        public async Task<ICollection<SettingGetSetDTO>> GetDefaultSetting()
+        {
+            var query = await _settingRepository.GetQuery().AsQueryable()
+                .Where(s => s.IsDefault && !s.IsDelete).ToListAsync();
+
+            if (query == null) return null;
+
+            var result = new List<SettingGetSetDTO>();
+
+            foreach (var setting in query)
+            {
+                result.Add(new SettingGetSetDTO()
+                {
+                    SettingId = setting.Id,
+                    SiteFavIcon = setting.SiteFavIcon,
+                    SiteLogo = setting.SiteLogo,
+                    SiteMode = setting.SiteMode,
+                    SiteTitle = setting.SiteTitle,
+                    SiteUrl = setting.SiteUrl,
+                    IsDefault = setting.IsDefault
+                }) ;
+            }
+
+            return result;
         }
 
         public async Task<ServiceResult> SetDefaultSetting(long settingId)

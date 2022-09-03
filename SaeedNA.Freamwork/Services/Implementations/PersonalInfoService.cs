@@ -5,6 +5,7 @@ using SaeedNA.Data.DTOs.Site;
 using SaeedNA.Data.Entities.Settings;
 using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -44,7 +45,7 @@ namespace SaeedNA.Service.Implementations
                     ResumeFile = info.ResumeFile,
                     AvatarImage = info.AvatarImage,
                     IsDefault = info.IsDefault
-                    
+
                 };
 
                 var result = await _personalInfoRepository.AddEntity(entity);
@@ -146,6 +147,40 @@ namespace SaeedNA.Service.Implementations
                 ResumeImage = query.ResumeImage,
                 PersonalInfoId = query.Id
             };
+        }
+
+        public async Task<ICollection<PersonalInfoGetSetDTO>> GetDefaultInfo()
+        {
+            var query = await _personalInfoRepository.GetQuery().AsQueryable()
+                .Where(s => s.IsDefault && !s.IsDelete).ToListAsync();
+
+            if (query == null) return null;
+
+            var result = new List<PersonalInfoGetSetDTO>();
+
+            foreach (var item in query)
+            {
+                result.Add(new PersonalInfoGetSetDTO
+                {
+                    AboutMe = item.AboutMe,
+                    Address = item.Address,
+                    Age = item.Age,
+                    AvatarImage = item.AvatarImage,
+                    Birthday = item.Birthday,
+                    Email = item.Email,
+                    FullName = item.FullName,
+                    IsDefault = item.IsDefault,
+                    Language = item.Language,
+                    Mobile = item.Mobile,
+                    Nationality = item.Nationality,
+                    PhoneNumber = item.PhoneNumber,
+                    ResumeFile = item.ResumeFile,
+                    ResumeImage = item.ResumeImage,
+                    PersonalInfoId = item.Id
+                });
+            }
+
+            return result;
         }
 
         public async Task<ServiceResult> SetDefaultPersonalInfo(long infoId)

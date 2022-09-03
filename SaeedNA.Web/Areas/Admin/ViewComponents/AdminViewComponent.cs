@@ -6,33 +6,33 @@ namespace SaeedNA.Web.Areas.Admin.ViewComponents
 {
     public class AdminHeaderViewComponent:ViewComponent
     {
-        private readonly IGeneralSettingService _settingService;
+        private readonly IGeneralSettingService _generalSettingService;
 
-        public AdminHeaderViewComponent(IGeneralSettingService settingService)
+        public AdminHeaderViewComponent(IGeneralSettingService generalSettingService)
         {
-            _settingService = settingService;
+            _generalSettingService = generalSettingService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            //ViewBag.Settings = await _settingService.GetDefaultSetting();
-            return View("AdminHeader");
+            var data = await _generalSettingService.GetDefaultSetting();
+            return View("AdminHeader", data);
         }
     }
 
     public class AdminFooterViewComponent : ViewComponent
     {
-        private readonly IGeneralSettingService _settingService;
+        private readonly IGeneralSettingService _generalSettingService;
 
-        public AdminFooterViewComponent(IGeneralSettingService settingService)
+        public AdminFooterViewComponent(IGeneralSettingService generalSettingService)
         {
-            _settingService = settingService;
+            _generalSettingService = generalSettingService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            //ViewBag.Settings = await _settingService.GetDefaultSetting();
-            return View("AdminFooter");
+            var data = await _generalSettingService.GetDefaultSetting();
+            return View("AdminFooter",data);
         }
     }
 
@@ -47,8 +47,8 @@ namespace SaeedNA.Web.Areas.Admin.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            await Task.CompletedTask;
-            return View("AdminMenuBar");
+            var data = await _personalService.GetDefaultInfo();
+            return View("AdminMenuBar",data);
         }
     }
 }

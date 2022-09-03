@@ -5,6 +5,7 @@ using SaeedNA.Data.DTOs.Site;
 using SaeedNA.Data.Entities.Settings;
 using SaeedNA.Domain.Repository;
 using SaeedNA.Service.Interfaces;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -132,11 +133,40 @@ namespace SaeedNA.Service.Implementations
             };
         }
 
+        public async Task<ICollection<SeoGetSetDTO>> GetDefaultSeo()
+        {
+            var query = await _seoRepository.GetQuery().AsQueryable()
+                .Where(s => s.IsDefault && !s.IsDelete).ToListAsync();
+
+            if (query == null) return null;
+
+            var result = new List<SeoGetSetDTO>();
+
+            foreach (var item in query)
+            {
+                result.Add(new SeoGetSetDTO
+                {
+                    Author = item.Author,
+                    Canonical = item.Canonical,
+                    GoogleAnalytics = item.GoogleAnalytics,
+                    IsDefault = item.IsDefault,
+                    MetaDescription = item.MetaDescription,
+                    MetaTags = item.MetaTags,
+                    Publisher = item.Publisher,
+                    RobotsTxt = item.RobotsTxt,
+                    SeoId = item.Id,
+                    SiteMap = item.SiteMap
+                });
+            }
+
+            return result;
+        }
+
         public async Task<ServiceResult> SetDefaultSeo(long seoId)
         {
             try
             {
-                if (seoId == 0) return ServiceResult.Error; 
+                if (seoId == 0) return ServiceResult.Error;
 
                 var oldEntity = await _seoRepository.GetQuery().AsQueryable()
                     .Where(s => s.IsDefault).ToListAsync();

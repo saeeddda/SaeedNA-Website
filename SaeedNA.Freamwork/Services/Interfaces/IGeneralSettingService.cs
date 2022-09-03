@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading.Tasks;
-using SaeedNA.Data.DTOs.Common;
+﻿using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Site;
-using SaeedNA.Data.Entities.Settings;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Interfaces
 {
@@ -13,6 +13,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> DeleteSetting(long settingId);
         Task<SettingFilterDTO> FilterSetting(SettingFilterDTO filter);
         Task<SettingGetSetDTO> GetSettingById(long settingId);
+        Task<ICollection<SettingGetSetDTO>> GetDefaultSetting();
         Task<ServiceResult> SetDefaultSetting(long settingId);
     }
 }

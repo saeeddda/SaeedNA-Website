@@ -1,16 +1,17 @@
-﻿@{
-    var sett = ViewBag.Settings as SettingGetSetDTO;
-}
+﻿@model ICollection<SettingGetSetDTO>
 
 <div class="sidenav-overlay"></div>
 <div class="drag-target"></div>
 
 <footer class="footer footer-static footer-light">
     <p class="clearfix mb-0">
-        @if (sett != null) {
-            <span class="float-left d-inline-block">2021 &copy; <a href="@sett.SiteUrl">@sett.SiteTitle</a></span>
+        @if (Model.Any()) {
+            @foreach (var item in Model)
+            {
+                <span class="float-left d-inline-block">@DateTime.Now.Year &copy; <a href="@item.SiteUrl">@item.SiteTitle</a></span>
+            }
         }else{
-            <span class="float-left d-inline-block">2021 &copy; <a href="https://site.com">سایت شخصی</a></span>
+            <span class="float-left d-inline-block">@DateTime.Now.Year &copy; <a href="https://site.com">سایت شخصی</a></span>
         }
     </p>
 </footer>

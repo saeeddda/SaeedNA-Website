@@ -26,6 +26,7 @@ namespace SaeedNA.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(SettingFilterDTO filter)
         {
+            filter.IsDefault=true;
             return View("Index",await _generalSettingService.FilterSetting(filter));
         }
 

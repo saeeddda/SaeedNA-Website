@@ -1,6 +1,7 @@
 ﻿using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Site;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Interfaces
@@ -12,6 +13,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> DeleteSeo(long seoId);
         Task<SeoFilterDTO> FilterSeo(SeoFilterDTO filter);
         Task<SeoGetSetDTO> GetSeoById(long seoId);
+        Task<ICollection<SeoGetSetDTO>> GetDefaultSeo();
         Task<ServiceResult> SetDefaultSeo(long seoId);
     }
 }

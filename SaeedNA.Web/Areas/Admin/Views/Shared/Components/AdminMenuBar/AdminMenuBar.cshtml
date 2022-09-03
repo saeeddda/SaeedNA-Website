@@ -1,6 +1,4 @@
-﻿@{
-    var infos = ViewBag.PersonalInfo as PersonalInfoGetSetDTO;
-}
+﻿@model ICollection<PersonalInfoGetSetDTO>
 
 <div class="header-navbar-shadow"></div>
 <nav class="header-navbar main-header-navbar navbar-expand-lg navbar navbar-with-menu fixed-top ">
@@ -20,15 +18,21 @@
                     <li class="dropdown dropdown-user nav-item">
                         <a class="dropdown-toggle nav-link dropdown-user-link" href="#!." data-toggle="dropdown">
                             <div class="user-nav d-sm-flex d-none">
-                                @if (infos != null) {
-                                    <span class="user-name">@infos.FullName</span>
+                                @if (Model.Any()) {
+                                    @foreach (var item in Model)
+                                    {
+                                        <span class="user-name">@item.FullName</span>
+                                    }
                                 }else{
                                     <span class="user-name">نام کاربری</span>
                                 }
                             </div>
                             <span>
-                                @if (infos != null){
-                                    <img class="round" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" height="40" width="40">
+                                @if (Model.Any()){
+                                    @foreach (var item in Model)
+                                    {
+                                        <img class="round" src="@(PathExtension.UploadPath + item.AvatarImage)" alt="@item.FullName" height="40" width="40">
+                                    }
                                 }else{
                                     <img class="round" src="@(PathExtension.UploadPath)/img/SiteLogo.png" alt="Site Logo" height="40" width="40">
                                 }
@@ -52,11 +56,14 @@
         <ul class="nav navbar-nav flex-row">
             <li class="nav-item mr-auto">
                 <a class="navbar-brand" href="/">
-                    @if ( infos != null) {
-                        <div class="brand-logo">
-                            <img class="logo" src="@(PathExtension.UploadPath + infos.AvatarImage)" alt="@infos.FullName" />
-                        </div>
-                        <h2 class="brand-text mb-0">@infos.FullName</h2>
+                    @if ( Model.Any()) {
+                        @foreach (var item in Model)
+                        {
+                            <div class="brand-logo">
+                                <img class="logo" src="@(PathExtension.UploadPath + item.AvatarImage)" alt="@item.FullName" />
+                            </div>
+                            <h2 class="brand-text mb-0">@item.FullName</h2>
+                        }
                     }else{
                         <div class="brand-logo">
                             <img class="logo" src="@(PathExtension.UploadPath)/img/SiteLogo.png" alt="Site Logo" />

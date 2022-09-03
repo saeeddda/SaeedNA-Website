@@ -1,6 +1,7 @@
 ﻿using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Site;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SaeedNA.Service.Interfaces
@@ -12,6 +13,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> DeleteInfo(long infoId);
         Task<PersonalInfoFilterDTO> FilterInfo(PersonalInfoFilterDTO filter);
         Task<PersonalInfoGetSetDTO> GetInfoById(long infoId);
+        Task<ICollection<PersonalInfoGetSetDTO>> GetDefaultInfo();
         Task<ServiceResult> SetDefaultPersonalInfo(long infoId);
     }
 }

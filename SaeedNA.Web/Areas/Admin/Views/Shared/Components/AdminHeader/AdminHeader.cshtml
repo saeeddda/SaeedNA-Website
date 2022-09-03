@@ -1,14 +1,17 @@
-﻿@{
-    var sett = ViewBag.Settings as SettingGetSetDTO;
-}
+﻿@model ICollection<SettingGetSetDTO>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-@if (sett != null)
+
+@if (Model.Any())
 {
-    <link rel="shortcut icon" type="image/x-icon" href="@sett.SiteFavIcon">
+    @foreach (var item in Model)
+    {
+        <link rel="shortcut icon" type="image/x-icon" href="@(PathExtension.UploadPath + item.SiteFavIcon)">    
+    }
 }
+
 <link rel="stylesheet" type="text/css" href="~/admin/css/vendors-rtl.min.css">
 <link rel="stylesheet" type="text/css" href="~/admin/css/bootstrap.min.css">
 <link rel="stylesheet" type="text/css" href="~/admin/css/bootstrap-extended.min.css">
