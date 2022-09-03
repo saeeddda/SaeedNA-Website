@@ -8,3 +8,6 @@
 *.swift linguist-detectable=false
 *.kt linguist-detectable=false
 *.css linguist-detectable=false
+*.js linguist-detectable=false
+*.php linguist-detectable=false
+*.htm linguist-detectable=false
