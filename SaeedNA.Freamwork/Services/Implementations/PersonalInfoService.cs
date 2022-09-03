@@ -44,7 +44,7 @@ namespace SaeedNA.Service.Implementations
                     ResumeFile = info.ResumeFile,
                     AvatarImage = info.AvatarImage,
                     IsDefault = info.IsDefault
-
+                    
                 };
 
                 var result = await _personalInfoRepository.AddEntity(entity);
@@ -121,10 +121,10 @@ namespace SaeedNA.Service.Implementations
             return filter.SetPersonalInfo(allEntities).SetPaging(pager);
         }
 
-        public async Task<PersonalInfoGetSetDTO> GetDefaultInfo()
+        public async Task<PersonalInfoGetSetDTO> GetInfoById(long infoId)
         {
             var query = await _personalInfoRepository.GetQuery().AsQueryable()
-                .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
+                .SingleOrDefaultAsync(s => s.Id == infoId && !s.IsDelete);
 
             if (query == null) return null;
 
@@ -148,72 +148,30 @@ namespace SaeedNA.Service.Implementations
             };
         }
 
-        public async Task<ServiceResult> SetDefaultPersonalInfo(PersonalInfoGetSetDTO personalInfo)
+        public async Task<ServiceResult> SetDefaultPersonalInfo(long infoId)
         {
             try
             {
-                ServiceResult isEdidted = ServiceResult.NotFond;
-                var backupInfo = new PersonalInfoGetSetDTO();
+                if (infoId == 0) return ServiceResult.Error;
 
-                #region Delete Old Data
-
-                if (personalInfo.PersonalInfoId > 0)
+                var oldEntity = await _personalInfoRepository.GetQuery().AsQueryable()
+                    .Where(s => s.IsDefault).ToListAsync();
+                foreach (var oe in oldEntity)
                 {
-                    var infoData = await _personalInfoRepository.GetQuery().AsQueryable()
-                        .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == personalInfo.PersonalInfoId);
-
-                    var oldInfo = new PersonalInfoGetSetDTO
-                    {
-                        PersonalInfoId = infoData.Id,
-                        IsDefault = false,
-                        AboutMe = infoData.AboutMe,
-                        Address = infoData.Address,
-                        Age = infoData.Age,
-                        AvatarImage = infoData.AvatarImage,
-                        Birthday = infoData.Birthday,
-                        Email = infoData.Email,
-                        FullName = infoData.FullName,
-                        Language = infoData.Language,
-                        Mobile = infoData.Mobile,
-                        Nationality = infoData.Nationality,
-                        PhoneNumber = infoData.PhoneNumber,
-                        ResumeFile = infoData.ResumeFile,
-                        ResumeImage = infoData.ResumeImage
-                    };
-
-                    backupInfo = oldInfo;
-
-                    isEdidted =  await EditInfo(oldInfo) == ServiceResult.Success &&
-                        await DeleteInfo(oldInfo.PersonalInfoId) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
+                    oe.IsDefault = false;
+                    _personalInfoRepository.EditEntity(oe);
+                    await _personalInfoRepository.SaveChanges();
                 }
 
-                #endregion
+                var entity = await _personalInfoRepository.GetEntityById(infoId);
+                if (entity == null) return ServiceResult.NotFond;
 
-                #region Add New Data
+                entity.IsDefault = true;
 
-                var newInfo = new PersonalInfoCreateDTO
-                {
-                    AboutMe = string.IsNullOrEmpty(personalInfo.AboutMe) ? backupInfo.AboutMe : personalInfo.AboutMe,
-                    Address = string.IsNullOrEmpty(personalInfo.Address) ? backupInfo.Address : personalInfo.Address,
-                    Age = string.IsNullOrEmpty(personalInfo.Age) ? backupInfo.Age : personalInfo.Age,
-                    AvatarImage = string.IsNullOrEmpty(personalInfo.AvatarImage) ? backupInfo.AvatarImage : personalInfo.AvatarImage,
-                    Birthday = string.IsNullOrEmpty(personalInfo.Birthday) ? backupInfo.Birthday : personalInfo.Birthday,
-                    Email = string.IsNullOrEmpty(personalInfo.Email) ? backupInfo.Email : personalInfo.Email,
-                    FullName = string.IsNullOrEmpty(personalInfo.FullName) ? backupInfo.FullName : personalInfo.FullName,
-                    Language = string.IsNullOrEmpty(personalInfo.Language) ? backupInfo.Language : personalInfo.Language,
-                    Mobile = string.IsNullOrEmpty(personalInfo.Mobile) ? backupInfo.Mobile : personalInfo.Mobile,
-                    Nationality = string.IsNullOrEmpty(personalInfo.Nationality) ? backupInfo.Nationality : personalInfo.Nationality,
-                    PhoneNumber = string.IsNullOrEmpty(personalInfo.PhoneNumber) ? backupInfo.PhoneNumber : personalInfo.PhoneNumber,
-                    ResumeFile = string.IsNullOrEmpty(personalInfo.ResumeFile) ? backupInfo.ResumeFile : personalInfo.ResumeFile,
-                    ResumeImage = string.IsNullOrEmpty(personalInfo.ResumeImage) ? backupInfo.ResumeImage : personalInfo.ResumeImage,
-                    IsDefault = true
-                };
+                var result = _personalInfoRepository.EditEntity(entity);
+                await _personalInfoRepository.SaveChanges();
 
-                var addResult = await AddNewInfo(newInfo) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
-
-                #endregion
-
-                return isEdidted == ServiceResult.Success && addResult == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
+                return result ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {

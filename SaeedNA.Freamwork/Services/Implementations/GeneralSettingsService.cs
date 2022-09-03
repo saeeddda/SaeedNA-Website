@@ -104,10 +104,10 @@ namespace SaeedNA.Service.Implementations
             return filter.SetSetting(allEntities).SetPaging(pager);
         }
 
-        public async Task<SettingGetSetDTO> GetDefaultSetting()
+        public async Task<SettingGetSetDTO> GetSettingById(long settingId)
         {
             var query = await _settingRepository.GetQuery().AsQueryable()
-                .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete);
+                .SingleOrDefaultAsync(s => s.Id == settingId && !s.IsDelete);
 
             if (query == null) return null;
 
@@ -123,56 +123,30 @@ namespace SaeedNA.Service.Implementations
             };
         }
 
-        public async Task<ServiceResult> SetDefaultSetting(SettingGetSetDTO setting)
+        public async Task<ServiceResult> SetDefaultSetting(long settingId)
         {
             try
             {
-                ServiceResult isEdited = ServiceResult.NotFond;
-                var backupSettig = new SettingGetSetDTO();
+                if (settingId == 0) return ServiceResult.Error;
 
-                #region Delete Old Data
-
-                if (setting.SettingId > 0)
+                var oldEntity = await _settingRepository.GetQuery().AsQueryable()
+                    .Where(s => s.IsDefault).ToListAsync();
+                foreach (var oe in oldEntity)
                 {
-                    var settingData = await _settingRepository.GetQuery().AsQueryable()
-                        .SingleOrDefaultAsync(s => s.IsDefault && !s.IsDelete && s.Id == setting.SettingId);
-
-                    var oldSetting = new SettingGetSetDTO
-                    {
-                        SettingId = settingData.Id,
-                        IsDefault = false,
-                        SiteFavIcon = settingData.SiteFavIcon,
-                        SiteLogo = settingData.SiteLogo,
-                        SiteMode = settingData.SiteMode,
-                        SiteTitle = settingData.SiteTitle,
-                        SiteUrl = settingData.SiteUrl
-                    };
-
-                    backupSettig = oldSetting;
-
-                    isEdited = (await EditSetting(oldSetting) == ServiceResult.Success) &&
-                        (await DeleteSetting(setting.SettingId)== ServiceResult.Success) ? ServiceResult.Success : ServiceResult.Error;
+                    oe.IsDefault = false;
+                    _settingRepository.EditEntity(oe);
+                    await _settingRepository.SaveChanges();
                 }
 
-                #endregion
+                var entity = await _settingRepository.GetEntityById(settingId);
+                if (entity == null) return ServiceResult.NotFond;
 
-                #region Add New Data
+                entity.IsDefault = true;
 
-                    var data = new SettingCreateDTO
-                    {
-                        SiteFavIcon = string.IsNullOrEmpty(setting.SiteFavIcon) ? backupSettig.SiteFavIcon  : setting.SiteFavIcon,
-                        SiteLogo = string.IsNullOrEmpty(setting.SiteLogo) ? backupSettig.SiteLogo : setting.SiteLogo,
-                        SiteMode = setting.SiteMode,
-                        SiteTitle = string.IsNullOrEmpty(setting.SiteTitle) ? backupSettig.SiteTitle : setting.SiteTitle,
-                        SiteUrl = string.IsNullOrEmpty(setting.SiteUrl) ? backupSettig.SiteUrl : setting.SiteUrl,
-                        IsDefault = true
-                    };
+                var result = _settingRepository.EditEntity(entity);
+                await _settingRepository.SaveChanges();
 
-                    var addResult = await AddNewSetting(data) == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
-
-                #endregion
-
-                return isEdited == ServiceResult.Success && addResult == ServiceResult.Success ? ServiceResult.Success : ServiceResult.Error;
+                return result ? ServiceResult.Success : ServiceResult.Error;
             }
             catch
             {

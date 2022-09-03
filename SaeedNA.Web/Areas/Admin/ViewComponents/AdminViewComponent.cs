@@ -15,7 +15,7 @@ namespace SaeedNA.Web.Areas.Admin.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.Settings = await _settingService.GetDefaultSetting();
+            //ViewBag.Settings = await _settingService.GetDefaultSetting();
             return View("AdminHeader");
         }
     }
@@ -31,7 +31,7 @@ namespace SaeedNA.Web.Areas.Admin.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.Settings = await _settingService.GetDefaultSetting();
+            //ViewBag.Settings = await _settingService.GetDefaultSetting();
             return View("AdminFooter");
         }
     }
@@ -47,7 +47,7 @@ namespace SaeedNA.Web.Areas.Admin.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
+            await Task.CompletedTask;
             return View("AdminMenuBar");
         }
     }

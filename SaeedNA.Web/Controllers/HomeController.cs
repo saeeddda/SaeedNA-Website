@@ -29,9 +29,9 @@ namespace SaeedNA.Web.Controllers
             var IsSiteInstall = bool.Parse(_configuration.GetSection("SiteInstall").Value);
             if (!IsSiteInstall) return RedirectToAction("Index", "Settings",new { area = "Admin" });
 
-            var data = await _personalService.GetDefaultInfo();
+            //var data = await _personalService.GetDefaultInfo();
 
-            return View("Index", data);
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

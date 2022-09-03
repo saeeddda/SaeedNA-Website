@@ -1,0 +1,63 @@
+﻿@model SettingCreateDTO
+@{
+    ViewData["Title"] = "افزودن تنظیمات";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section>
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Add" asp-controller="GeneralSetting" asp-area="Admin" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-6">
+                        <label for="resumeImage" class="btn btn-sm btn-light-primary d-flex justify-content-center align-items-center flex-column">
+                            <span class="mb-50 font-weight-bold">لوگو سایت</span>
+                            <input class="mb-50" id="logo" name="logo" type="file">
+                            <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                        </label>
+                    </div>
+                    <div class="col-6">
+                        <label for="resumeImage" class="btn btn-sm btn-light-primary d-flex justify-content-center align-items-center flex-column">
+                            <span class="mb-50 font-weight-bold">فاو آیکون</span>
+                            <input class="mb-50" id="fav" name="fav" type="file">
+                            <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                        </label>
+                    </div>
+                    <hr>
+                    
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="SiteTitle"></label>
+                                <input type="text" class="form-control" asp-for="SiteTitle">
+                                <span asp-validation-for="SiteTitle"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="SiteUrl"></label>
+                                <input type="text" class="form-control" dir="ltr" placeholder="https://..." asp-for="SiteUrl">
+                                <span asp-validation-for="SiteUrl"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label asp-for="SiteMode"></label>
+                            <select class="form-control" asp-for="SiteMode" asp-items="@Html.GetEnumSelectList<SiteMode>()"></select>
+                            <span asp-validation-for="SiteMode"></span>
+                        </div>
+                    </div>
+            
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

@@ -12,7 +12,7 @@ namespace SaeedNA.Service.Interfaces
         Task<ServiceResult> EditSetting(SettingGetSetDTO setting);
         Task<ServiceResult> DeleteSetting(long settingId);
         Task<SettingFilterDTO> FilterSetting(SettingFilterDTO filter);
-        Task<SettingGetSetDTO> GetDefaultSetting();
-        Task<ServiceResult> SetDefaultSetting(SettingGetSetDTO setting);
+        Task<SettingGetSetDTO> GetSettingById(long settingId);
+        Task<ServiceResult> SetDefaultSetting(long settingId);
     }
 }

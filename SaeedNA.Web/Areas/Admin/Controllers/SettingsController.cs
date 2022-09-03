@@ -55,31 +55,31 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
         {
             ViewBag.HasSettings = false;
 
-            var setting = await _settingService.GetDefaultSetting();
-            var personalInfo = await _personalService.GetDefaultInfo();
+            //var setting = await _settingService.GetDefaultSetting();
+            //var personalInfo = await _personalService.GetDefaultInfo();
             //var seo = await _seoService.GetDefaultSeo();
 
-            var settings = new SiteSettingsViewModel
-            {
-                Setting = setting,
-                PersonalInfo = personalInfo,
-                //Seo = seo
-            };
+            //var settings = new SiteSettingsViewModel
+            //{
+            //    Setting = setting,
+            //    //PersonalInfo = personalInfo,
+            //    //Seo = seo
+            //};
 
-            if (setting != null && personalInfo != null)
-            {
-                ViewBag.HasSettings = true;
+            //if (setting != null )
+            //{
+            //    ViewBag.HasSettings = true;
 
-                var appSettings = AppSettingsManager.GetAppSettings(false);
-                appSettings.SiteInstall = true;
-                AppSettingsManager.SetAppSettings(appSettings, false);
-            }
+            //    var appSettings = AppSettingsManager.GetAppSettings(false);
+            //    appSettings.SiteInstall = true;
+            //    AppSettingsManager.SetAppSettings(appSettings, false);
+            //}
 
-            return View("SiteSettings",settings);
+            return View("SiteSettings");
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index(SiteSettingsViewModel settings, IFormFile logo, IFormFile fav, IFormFile resumeImage, IFormFile avatarImage, IFormFile resumeFile)
+        public async Task<IActionResult> Index(SiteSettingsViewModel settings, IFormFile logo, IFormFile fav)
         {
             if (ModelState.IsValid)
             {
@@ -97,29 +97,10 @@ namespace SaeedNA.Web.Areas.Admin.Controllers
                     if (result == UploaderExtension.FileUploadResult.Success) settings.Setting.SiteFavIcon = fileName;
                 }
 
-                if (resumeImage != null)
-                {
-                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(resumeImage.FileName);
-                    var result = await resumeImage.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
-                    if (result == UploaderExtension.FileUploadResult.Success) settings.PersonalInfo.ResumeImage = fileName;
-                }
+                
 
-                if (avatarImage != null)
-                {
-                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(avatarImage.FileName);
-                    var result = await avatarImage.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
-                    if (result == UploaderExtension.FileUploadResult.Success) settings.PersonalInfo.AvatarImage = fileName;
-                }
-
-                if (resumeFile != null)
-                {
-                    string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(resumeFile.FileName);
-                    var result = await resumeFile.UploadToServer(fileName, PathExtension.UploadPathServer, null, null);
-                    if (result == UploaderExtension.FileUploadResult.Success) settings.PersonalInfo.ResumeFile = fileName;
-                }
-
-                await _personalService.SetDefaultPersonalInfo(settings.PersonalInfo);
-                await _settingService.SetDefaultSetting(settings.Setting);
+                //await _personalService.SetDefaultPersonalInfo(settings.PersonalInfo);
+                //await _settingService.SetDefaultSetting(settings.Setting);
                 //await _seoService.SetDefaultSeo(settings.Seo);
 
                 return RedirectToAction("Index");

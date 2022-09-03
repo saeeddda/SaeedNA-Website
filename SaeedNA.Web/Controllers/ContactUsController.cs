@@ -31,7 +31,7 @@ namespace SaeedNA.Web.Controllers
         [HttpGet("contact-us")]
         public async Task<IActionResult> Index()
         {
-            ViewBag.PersonalInfo = await _personalInfoService.GetDefaultInfo();
+            //ViewBag.PersonalInfo = await _personalInfoService.GetDefaultInfo();
             ViewBag.SocialMedia = await _socialMediaService.FilterSocialMedia(new SocialMediaFilterDTO());
 
             return View("Index");

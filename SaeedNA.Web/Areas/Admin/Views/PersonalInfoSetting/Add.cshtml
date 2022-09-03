@@ -1,0 +1,130 @@
+﻿@model PersonalInfoCreateDTO
+@{
+    ViewData["Title"] = "افزودن پروفایل";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<section>
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="Add" asp-controller="PersonalInfoSetting" asp-area="Admin" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="row">
+                    <div class="col-4">
+                        <label for="resumeImage" class="btn btn-sm btn-light-primary d-flex justify-content-center align-items-center flex-column">
+                            <span class="mb-50 font-weight-bold">تصویر رزومه</span>
+                            <input class="mb-50" id="resumeImage" name="resumeImage" type="file">
+                            <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                        </label>
+                    </div>
+                    <div class="col-4">
+                        <label for="avatarImage" class="btn btn-sm btn-light-primary d-flex justify-content-center align-items-center flex-column">
+                            <span class="mb-50 font-weight-bold">تصویر آواتار</span>
+                            <input class="mb-50" id="avatarImage" name="avatarImage" type="file">
+                            <small>فرمت های PNG, JPG, ICO قابل قبول میباشد.</small>
+                        </label>
+                    </div>
+                    <div class="col-4">    
+                        <label for="resumeFile" class="btn btn-sm btn-light-primary  d-flex justify-content-center align-items-center flex-column">
+                            <span class="mb-50 font-weight-bold">فایل رزومه</span>
+                            <input class="mb-50" id="resumeFile" name="resumeFile" type="file">
+                            <small>فرمت های PDF قابل قبول میباشد.</small>
+                        </label>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="FullName"></label>
+                                <input type="text" class="form-control" asp-for="FullName">
+                                <span asp-validation-for="FullName"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="PhoneNumber"></label>
+                                <input type="tel" class="form-control" asp-for="PhoneNumber">
+                                <span asp-validation-for="PhoneNumber"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="Mobile"></label>
+                                <input type="tel" class="form-control" asp-for="Mobile">
+                                <span asp-validation-for="Mobile"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="Email"></label>
+                                <input type="email" class="form-control" asp-for="Email">
+                                <span asp-validation-for="Email"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="Birthday"></label>
+                                <input type="text" class="form-control" asp-for="Birthday">
+                                <span asp-validation-for="Birthday"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="Age"></label>
+                                <input type="text" class="form-control" asp-for="Age">
+                                <span asp-validation-for="Age"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="Language"></label>
+                                <input type="text" class="form-control" asp-for="Language">
+                                <span asp-validation-for="Language"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="Nationality"></label>
+                                <input type="text" class="form-control" asp-for="Nationality">
+                                <span asp-validation-for="Nationality"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <div class="controls">
+                                <label asp-for="Address"></label>
+                                <input type="text" class="form-control" asp-for="Address">
+                                <span asp-validation-for="Address"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label asp-for="AboutMe"></label>
+                            <textarea class="form-control" asp-for="AboutMe" rows="5"></textarea>
+                            <span asp-validation-for="AboutMe"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">ثبت</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

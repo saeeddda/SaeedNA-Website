@@ -36,7 +36,7 @@ namespace SaeedNA.Web.Controllers
             ViewBag.Skills = await _skillService.FilterSkill(new SkillFilterDTO());
             ViewBag.Counters = await _counterService.FilterCounter(new CounterFilterDTO());
             ViewBag.MyServices = await _myService.FilterService(new MyServiceFilterDTO());
-            ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
+            //ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
 
             return View("Index");
         }

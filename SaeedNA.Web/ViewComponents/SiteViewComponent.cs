@@ -23,9 +23,9 @@ namespace SaeedNA.Web.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            ViewBag.Settings = await _settingService.GetDefaultSetting();
+            //ViewBag.Settings = await _settingService.GetDefaultSetting();
             //ViewBag.Seo = await _seoService.GetDefaultSeo();
-            ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
+            //ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
 
             return View("SiteHeader");
         }
