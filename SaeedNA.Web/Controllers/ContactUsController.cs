@@ -1,5 +1,6 @@
 ﻿using AspNetCore.ReCaptcha;
 using Microsoft.AspNetCore.Mvc;
+using SaeedNA.Application.ViewModels;
 using SaeedNA.Data.DTOs.Common;
 using SaeedNA.Data.DTOs.Contact;
 using SaeedNA.Data.DTOs.Site;
@@ -31,13 +32,15 @@ namespace SaeedNA.Web.Controllers
         [HttpGet("contact-us")]
         public async Task<IActionResult> Index()
         {
-            //ViewBag.PersonalInfo = await _personalInfoService.GetDefaultInfo();
-            ViewBag.SocialMedia = await _socialMediaService.FilterSocialMedia(new SocialMediaFilterDTO());
-
-            return View("Index");
+            var data = new ContactUsViewModel()
+            {
+                PersonalInfos = await _personalInfoService.GetDefaultInfo(),
+                SocialMedia = await _socialMediaService.FilterSocialMedia(new SocialMediaFilterDTO())
+            };
+            return View("Index",data);
         }
 
-        [HttpPost("contact-us"),ValidateAntiForgeryToken,ValidateReCaptcha]
+        [HttpPost(), ValidateAntiForgeryToken, ValidateReCaptcha]
         public async Task<IActionResult> SendMail(string name, string tel, string email, string subject, string message)
         {
             try
@@ -58,14 +61,14 @@ namespace SaeedNA.Web.Controllers
                     switch (result)
                     {
                         case ServiceResult.Success:
-                            return Json(new { status = "success" ,data = "پیام شما با موفقیت ارسال شد."});
+                            return Json(new { status = "success", data = "پیام شما با موفقیت ارسال شد." });
                         case ServiceResult.Error:
                             return Json(new { status = "error", data = "مشکلی پیش آمده. پیام شما ارسال نشد." });
                     }
                 }
-                return Json(new { status = "error",data ="مشکلی پیش آمده. مجدد تلاش کنید." });
+                return Json(new { status = "error", data = "مشکلی پیش آمده. مجدد تلاش کنید." });
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new { status = "error", msg = ex.Message });
             }

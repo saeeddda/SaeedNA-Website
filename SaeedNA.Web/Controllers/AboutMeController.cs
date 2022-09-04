@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SaeedNA.Application.ViewModels;
 using SaeedNA.Data.DTOs.MService;
 using SaeedNA.Data.DTOs.Resume;
 using SaeedNA.Service.Interfaces;
@@ -32,13 +33,16 @@ namespace SaeedNA.Web.Controllers
         [HttpGet("about-me")]
         public async Task<IActionResult> Index()
         {
-            ViewBag.Histories = await _historyService.FilterHistory(new HistoryFilterDTO{IsDescending = true});
-            ViewBag.Skills = await _skillService.FilterSkill(new SkillFilterDTO());
-            ViewBag.Counters = await _counterService.FilterCounter(new CounterFilterDTO());
-            ViewBag.MyServices = await _myService.FilterService(new MyServiceFilterDTO());
-            //ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
+            var data = new AboutMeViewModel() 
+            {
+                History = await _historyService.FilterHistory(new HistoryFilterDTO { IsDescending = true }),
+                Skill = await _skillService.FilterSkill(new SkillFilterDTO()),
+                Counter = await _counterService.FilterCounter(new CounterFilterDTO()),
+                MyService = await _myService.FilterService(new MyServiceFilterDTO()),
+                PersonalInfos = await _personalService.GetDefaultInfo()
+            };
 
-            return View("Index");
+            return View("Index",data);
         }
 
         #endregion

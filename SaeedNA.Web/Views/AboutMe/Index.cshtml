@@ -1,11 +1,6 @@
-﻿@{
+﻿@model AboutMeViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var histories = ViewBag.Histories as HistoryFilterDTO;
-    var skills = ViewBag.Skills as SkillFilterDTO;
-    var counters = ViewBag.Counters as CounterFilterDTO;
-    var myService = ViewBag.MyServices as MyServiceFilterDTO;
-    var personalInfo = ViewBag.PersonalInfo as PersonalInfoGetSetDTO;
 }
 
 <section class="title-section text-left text-sm-center revealator-slideup revealator-once revealator-delay1">
@@ -20,37 +15,45 @@
                     <div class="col-12">
                         <h3 class="text-uppercase custom-title mb-0 ft-wt-600">اطلاعات شخصی</h3>
                     </div>
-                    <div class="col-12 d-block d-sm-none">
-                        <img src="@(PathExtension.UploadPath + personalInfo.AvatarImage)" class="img-fluid main-img-mobile" alt="@(personalInfo.FullName)" />
-                    </div>
-                    <div class="col-6">
-                        <ul class="about-list list-unstyled open-sans-font">
-                            <li> <span class="title">نام و نام خانوادکی :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(personalInfo.FullName)</span> </li>
-                            <li> <span class="title">سن :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(personalInfo.Age) سال</span> </li>
-                            <li> <span class="title">ملیت :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(personalInfo.Nationality)</span> </li>
-                        </ul>
-                    </div>
-                    <div class="col-6">
-                        <ul class="about-list list-unstyled open-sans-font">
-                            <li> <span class="title">آدرس :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(personalInfo.Address)</span> </li>
-                            <li> <span class="title">تلفن :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(personalInfo.PhoneNumber)</span> </li>
-                            <li> <span class="title">ایمیل  :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(personalInfo.Email)</span> </li>
-                            <li> <span class="title">زبان  :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(personalInfo.Language)</span> </li>
-                        </ul>
-                    </div>
-                    <div class="col-12 mt-3">
-                        <a class="button" href="@(personalInfo.ResumeFile)">
-                            <span class="button-text">دانلود رزومه</span>
-                            <span class="button-icon fa fa-download"></span>
-                        </a>
-                    </div>
+                    @if (Model.PersonalInfos.Any())
+                    {
+                        foreach (var item in Model.PersonalInfos)
+                        {
+                            <div class="col-12 d-block d-sm-none">
+
+                                <img src="@(PathExtension.UploadPath + item.AvatarImage)" class="img-fluid main-img-mobile" alt="@(item.FullName)" />
+
+                            </div>
+                            <div class="col-6">
+                                <ul class="about-list list-unstyled open-sans-font">
+                                    <li> <span class="title">نام و نام خانوادکی :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(item.FullName)</span> </li>
+                                    <li> <span class="title">سن :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(item.Age) سال</span> </li>
+                                    <li> <span class="title">ملیت :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(item.Nationality)</span> </li>
+                                </ul>
+                            </div>
+                            <div class="col-6">
+                                <ul class="about-list list-unstyled open-sans-font">
+                                    <li> <span class="title">آدرس :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(item.Address)</span> </li>
+                                    <li> <span class="title">تلفن :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(item.PhoneNumber)</span> </li>
+                                    <li> <span class="title">ایمیل  :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(item.Email)</span> </li>
+                                    <li> <span class="title">زبان  :</span> <span class="value d-block d-sm-inline-block d-lg-block d-xl-inline-block">@(item.Language)</span> </li>
+                                </ul>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <a class="button" href="@(item.ResumeFile)">
+                                    <span class="button-text">دانلود رزومه</span>
+                                    <span class="button-icon fa fa-download"></span>
+                                </a>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
-            @if (counters.Counters != null && counters.Counters.Any())
+            @if (Model.Counter.Counters.Any())
             {
                 <div class="col-12 col-lg-7 col-xl-6 mt-5 mt-lg-0">
                     <div class="row">
-                        @foreach(var counter  in counters.Counters)
+                        @foreach (var counter in Model.Counter.Counters)
                         {
                             <div class="col-6">
                                 <div class="box-stats with-margin">
@@ -64,13 +67,13 @@
             }
         </div>
         <hr class="separator">
-        @if(skills.Skills!=null && skills.Skills.Any())
+        @if (Model.Skill.Skills.Any())
         {
             <div class="row">
                 <div class="col-12">
                     <h3 class="text-uppercase pb-4 pb-sm-5 mb-3 mb-sm-0 text-left text-sm-center custom-title ft-wt-600">مهارت های من </h3>
                 </div>
-                @foreach(var skill in skills.Skills)
+                @foreach (var skill in Model.Skill.Skills)
                 {
                     <div class="col-6 col-md-3 mb-3 mb-sm-5">
                         <div class="c100 p@(skill.Progress)">
@@ -86,13 +89,13 @@
             </div>
         }
         <hr class="separator">
-        @if(myService.MyServices != null && myService.MyServices.Any())
+        @if (Model.MyService.MyServices.Any())
         {
             <div class="row">
                 <div class="col-12">
                     <h3 class="text-uppercase pb-4 pb-sm-5 mb-3 mb-sm-0 text-left text-sm-center custom-title ft-wt-600">خدمات من </h3>
                 </div>
-                @foreach(var service in myService.MyServices)
+                @foreach (var service in Model.MyService.MyServices)
                 {
                     <div class="col-6 col-md-3 mb-3 mb-sm-5">
                         <div class="box-service with-margin">
@@ -104,30 +107,30 @@
             </div>
         }
         <hr class="separator mt-1">
-        @if(histories.Histories != null && histories.Histories.Any())
+        @if (Model.History.Histories.Any())
         {
-        <div class="row">
-            <div class="col-12">
-                <h3 class="text-uppercase pb-5 mb-0 text-left text-sm-center custom-title ft-wt-600">تجربیات</h3>
-            </div>
-            <div class="col-lg-6 m-15px-tb">
-                <div class="resume-box">
-                    <ul>
-                        @foreach(var history in histories.Histories)
-                        {
-                            <li>
-                                <div class="icon">
-                                    <i class="fa fa-briefcase"></i>
-                                </div>
-                                <span class="time text-uppercase">@history.Date</span>
-                                <h5 class=" text-uppercase">@history.Title <span class="place">@history.WorkPlace</span></h5>
-                                <p>@history.Description </p>
-                            </li>
-                        }
-                    </ul>
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="text-uppercase pb-5 mb-0 text-left text-sm-center custom-title ft-wt-600">تجربیات</h3>
+                </div>
+                <div class="col-lg-6 m-15px-tb">
+                    <div class="resume-box">
+                        <ul>
+                            @foreach (var history in Model.History.Histories)
+                            {
+                                <li>
+                                    <div class="icon">
+                                        <i class="fa fa-briefcase"></i>
+                                    </div>
+                                    <span class="time text-uppercase">@history.Date</span>
+                                    <h5 class=" text-uppercase">@history.Title <span class="place">@history.WorkPlace</span></h5>
+                                    <p>@history.Description </p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
         }
     </div>
 </section>

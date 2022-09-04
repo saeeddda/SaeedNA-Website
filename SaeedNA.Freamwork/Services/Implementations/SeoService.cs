@@ -144,7 +144,7 @@ namespace SaeedNA.Service.Implementations
 
             foreach (var item in query)
             {
-                result.Add(new SeoGetSetDTO
+                result.Add(new SeoGetSetDTO()
                 {
                     Author = item.Author,
                     Canonical = item.Canonical,

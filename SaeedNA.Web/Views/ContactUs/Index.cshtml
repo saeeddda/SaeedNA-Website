@@ -1,8 +1,6 @@
-﻿@{
+﻿@model ContactUsViewModel
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    var personalInfo = ViewBag.PersonalInfo as PersonalInfoGetSetDTO;
-    var socialMedia = ViewBag.SocialMedia as SocialMediaFilterDTO;
 }
 
 <section class="title-section text-left text-sm-center revealator-slideup revealator-once revealator-delay1">
@@ -15,18 +13,24 @@
             <div class="col-12 col-lg-4">
                 <h3 class="text-uppercase custom-title mb-0 ft-wt-600 pb-3">خجالت نکشید!</h3>
                 <p class="open-sans-font mb-3">در صورت تمایل با من در تماس باشید. من همیشه در مورد بحث درباره پروژه های جدید ، ایده های خلاقانه یا فرصت هایی که بخشی از دیدگاه های شما باشد ، آماده هستم.</p>
-                <p class="open-sans-font custom-span-contact position-relative">
-                    <i class="fa fa-envelope-open position-absolute"></i>
-                    <span class="d-block">ایمیل من</span>@personalInfo.Email
-                </p>
-                <p class="open-sans-font custom-span-contact position-relative">
-                    <i class="fa fa-phone-square position-absolute"></i>
-                    <span class="d-block">تلفن من</span>@personalInfo.Mobile
-                </p>
-                @if (socialMedia.SocialMediae != null && socialMedia.SocialMediae.Any())
+                @if (Model.PersonalInfos.Any())
+                {
+                    @foreach (var item in Model.PersonalInfos)
+                    {
+                        <p class="open-sans-font custom-span-contact position-relative">
+                            <i class="fa fa-envelope-open position-absolute"></i>
+                            <span class="d-block">ایمیل من</span>@item.Email
+                        </p>
+                        <p class="open-sans-font custom-span-contact position-relative">
+                            <i class="fa fa-phone-square position-absolute"></i>
+                            <span class="d-block">تلفن من</span>@item.Mobile
+                        </p>
+                    }
+                }
+                @if (Model.SocialMedia.SocialMediae != null && Model.SocialMedia.SocialMediae.Any())
                 {
                     <ul class="social list-unstyled pt-1 mb-5">
-                        @foreach(var social in socialMedia.SocialMediae)
+                        @foreach (var social in Model.SocialMedia.SocialMediae)
                         {
                             <li class="">
                                 <a title="@social.MediaName.ToLower()" href="@social.MediaLink"><i class="@social.MediaIcon"></i></a>
@@ -73,8 +77,8 @@
 
 @section Scripts{
     <script>
-        $(function () {
-            $('.contactform').submit(function (e) {
+        $(function() {
+            $('.contactform').submit(function(e) {
                 e.preventDefault();
                 $(".output_message").text("در حال ارسال...");
 
@@ -85,7 +89,7 @@
                     method: form.attr("method"),
                     data: form.serialize(),
 
-                }).done(function (result) {
+                }).done(function(result) {
                     if (result.status === "success") {
                         $(".output_message").text(result.data);
                         $(".contactform").find(".output_message").addClass("success");

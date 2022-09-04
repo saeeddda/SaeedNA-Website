@@ -160,7 +160,7 @@ namespace SaeedNA.Service.Implementations
 
             foreach (var item in query)
             {
-                result.Add(new PersonalInfoGetSetDTO
+                result.Add(new PersonalInfoGetSetDTO()
                 {
                     AboutMe = item.AboutMe,
                     Address = item.Address,

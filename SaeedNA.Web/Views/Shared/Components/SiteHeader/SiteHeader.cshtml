@@ -1,19 +1,25 @@
-﻿@{
-    var settings = ViewBag.Settings as SettingGetSetDTO;
-    var seoInfos = ViewBag.Seo as SeoGetSetDTO;
-    var personalInfo = ViewBag.PersonalInfo as PersonalInfoGetSetDTO;
-
-    if(seoInfos != null && personalInfo != null && settings != null)
+﻿@model SiteSettingsViewModel
+@{
+    if (Model.Seos.Any() && Model.PersonalInfos.Any() && Model.Settings.Any())
     {
         Html.SetSeoInfo(seo =>
         {
-            seo.SetCommonInfo(settings.SiteTitle, seoInfos.MetaDescription, settings.SiteUrl, seoInfos.MetaTags.Split(','));
-            seo.SetImageInfo(url: PathExtension.UploadPath + personalInfo.ResumeImage, alt: personalInfo.FullName);
-            seo.SetArticleInfo(personalInfo.FullName, DateTime.Now);
+            foreach (var seoItem in Model.Seos)
+            {
+                foreach (var personalItem in Model.PersonalInfos)
+                {
+                    foreach (var settingItem in Model.Settings)
+                    {
+                        seo.SetCommonInfo(settingItem.SiteTitle, seoItem.MetaDescription, settingItem.SiteUrl, seoItem.MetaTags.Split(','));
+                        seo.SetImageInfo(url: PathExtension.UploadPath + personalItem.ResumeImage, alt: personalItem.FullName);
+                        seo.SetArticleInfo(personalItem.FullName, DateTime.Now);
+                    }
+                }
+            }
         });
     }
 }
-@if(seoInfos != null && personalInfo != null && settings != null)
+@if (Model.Seos.Any() && Model.PersonalInfos.Any() && Model.Settings.Any())
 {
     @Html.SeoTags()
 }
@@ -24,9 +30,11 @@
 <link rel="mask-icon" href="@(PathExtension.UploadPath)img/safari-pinned-tab.svg" color="#5bbad5">
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
-@if (seoInfos != null && personalInfo != null && settings != null)
+@if (Model.Settings.Any())
 {
-    <link rel="shortcut icon" href="@(PathExtension.UploadPath + settings.SiteFavIcon)" type="image/png">
+    @foreach (var item in Model.Settings) {
+        <link rel="shortcut icon" href="@(PathExtension.UploadPath + item.SiteFavIcon)" type="image/png">
+    }
 }
 <!-- Template CSS Files -->
 <link href="/site/css/bootstrap.min.css" rel="stylesheet">

@@ -1,19 +1,25 @@
-﻿@model PersonalInfoGetSetDTO
+﻿@model ICollection<PersonalInfoGetSetDTO>
 
-<section class="container-fluid main-container container-home p-0 revealator-slideup revealator-once revealator-delay1">
-    <div class="color-block d-none d-lg-block"></div>
-    <div class="row home-details-container align-items-center">
-        <div class="col-lg-4 bg position-fixed d-none d-lg-block" style="background-image: url('@(PathExtension.UploadPath + Model.ResumeImage != null ? PathExtension.UploadPath + Model.ResumeImage : "")');"></div>
-        <div class="col-12 col-lg-8 offset-lg-4 home-details text-left text-sm-center text-lg-left">
-            <div>
-                <img src="@(PathExtension.UploadPath + Model.AvatarImage != null ? PathExtension.UploadPath + Model.AvatarImage : "")" class="img-fluid main-img-mobile d-none d-sm-block d-lg-none" alt="@(Model.FullName)" />
-                <h1 class="text-uppercase poppins-font">@(Model.FullName)</h1>
-                <p class="dana-font">@(Model.AboutMe)</p>
-                <a class="button" asp-action="Index" asp-controller="AboutMe">
-                    <span class="button-text">بیشتر درباره من ؟!</span>
-                    <span class="button-icon fa fa-arrow-left"></span>
-                </a>
+@if (Model.Any())
+{
+    @foreach (var item in Model)
+    {
+        <section class="container-fluid main-container container-home p-0 revealator-slideup revealator-once revealator-delay1">
+            <div class="color-block d-none d-lg-block"></div>
+            <div class="row home-details-container align-items-center">
+                <div class="col-lg-4 bg position-fixed d-none d-lg-block" style="background-image: url('@(PathExtension.UploadPath + item.ResumeImage != null ? PathExtension.UploadPath + item.ResumeImage : "")');"></div>
+                <div class="col-12 col-lg-8 offset-lg-4 home-details text-left text-sm-center text-lg-left">
+                    <div>
+                        <img src="@(PathExtension.UploadPath + item.AvatarImage != null ? PathExtension.UploadPath + item.AvatarImage : "")" class="img-fluid main-img-mobile d-none d-sm-block d-lg-none" alt="@(item.FullName)" />
+                        <h1 class="text-uppercase poppins-font">@(item.FullName)</h1>
+                        <p class="dana-font">@(item.AboutMe)</p>
+                        <a class="button" asp-action="Index" asp-controller="AboutMe">
+                            <span class="button-text">بیشتر درباره من ؟!</span>
+                            <span class="button-icon fa fa-arrow-left"></span>
+                        </a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
+    }
+}

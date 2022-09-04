@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SaeedNA.Application.ViewModels;
 using SaeedNA.Service.Interfaces;
 
 namespace SaeedNA.Web.ViewComponents
@@ -10,24 +11,31 @@ namespace SaeedNA.Web.ViewComponents
 
     public class SiteHeaderViewComponent : ViewComponent
     {
-        private readonly IGeneralSettingService _settingService;
+        private readonly IGeneralSettingService _generalSettingService;
         private readonly ISeoService _seoService;
         private readonly IPersonalInfoService _personalService;
 
-        public SiteHeaderViewComponent(IGeneralSettingService settingService, ISeoService seoService, IPersonalInfoService personalService)
+        public SiteHeaderViewComponent(IGeneralSettingService generalSettingService, ISeoService seoService, IPersonalInfoService personalService)
         {
-            _settingService = settingService;
+            _generalSettingService = generalSettingService;
             _seoService = seoService;
             _personalService = personalService;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            //ViewBag.Settings = await _settingService.GetDefaultSetting();
-            //ViewBag.Seo = await _seoService.GetDefaultSeo();
-            //ViewBag.PersonalInfo = await _personalService.GetDefaultInfo();
+            var general = await _generalSettingService.GetDefaultSetting();
+            var seo = await _seoService.GetDefaultSeo();
+            var personalInfo = await _personalService.GetDefaultInfo();
 
-            return View("SiteHeader");
+            var data = new SiteSettingsViewModel()
+            {
+                Settings = general,
+                Seos = seo,
+                PersonalInfos = personalInfo
+            };
+
+            return View("SiteHeader", data);
         }
     }
 
